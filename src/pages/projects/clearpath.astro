@@ -1,0 +1,145 @@
+---
+import CaseStudy from '../../layouts/CaseStudy.astro';
+import Icon from '../../components/Icon.astro';
+
+const portals = [
+  { name: 'Patient', text: 'A view-only portal where patients follow their care plan, goals, and progress between visits.' },
+  { name: 'Virtual Care Coordinator (VCC)', text: 'The daily workspace for care coordinators running monthly CCM outreach, documentation, and follow-up.' },
+  { name: 'Doctor', text: 'Physician oversight of their patient panel, encounter review, and sign-off on monthly billing reports.' },
+  { name: 'Admin', text: 'Organization-level management of users, roles, and operations across the platform.' },
+];
+---
+
+<CaseStudy
+  name="ClearPath Virtual Health"
+  description="Case study: how Sām Kazemi architected ClearPath Virtual Health, a production HIPAA-compliant CCM/RPM platform with four role-based portals."
+  summary="A production HIPAA-compliant chronic care management (CCM) and remote patient monitoring (RPM) platform that helps patients stay on track and helps providers deliver better care between visits."
+  role="Lead Software Engineer: architecture, frontend, cloud, team lead"
+  org="MedManage Solutions"
+  period="Sep 2025 – Present"
+  status="Live in production"
+  live="https://clearpathvirtualhealth.com/"
+  liveLabel="clearpathvirtualhealth.com"
+  stack={[
+    'React',
+    'JavaScript',
+    'React Router',
+    'Tailwind CSS',
+    'Material UI',
+    'REST APIs (JWT)',
+    'RBAC',
+    'MFA',
+    'AWS S3',
+    'AWS CloudFront',
+    'AWS ECS Fargate',
+    'CI/CD',
+    'PDF export',
+    'HIPAA',
+    'CPT / ICD-10',
+  ]}
+>
+  <section class="reveal">
+    <p class="eyebrow">The challenge</p>
+    <h2>Chronic care happens between visits</h2>
+    <p>
+      Patients living with chronic conditions need support every month, not only when they are in
+      the exam room. Medicare’s Chronic Care Management program pays for that ongoing coordination,
+      but only when the work is documented precisely, time is tracked accurately, and a physician
+      signs off.
+    </p>
+    <p>
+      The platform had to serve four very different users with strict boundaries between what each
+      of them can see and do, hold up to HIPAA, and produce billing records that stand up to
+      Medicare, all without adding work to clinicians’ days.
+    </p>
+  </section>
+
+  <section class="reveal">
+    <p class="eyebrow">My role</p>
+    <h2>Architected from the ground up</h2>
+    <p>
+      I architected and built ClearPath from the ground up and lead its ongoing development: designing
+      scalable features, improving clinical workflows with the care team, and managing a distributed
+      engineering team. I own the frontend across all four portals and its integration with the
+      platform’s secure APIs, and I work across the AWS infrastructure and delivery pipeline.
+    </p>
+  </section>
+
+  <section class="reveal">
+    <p class="eyebrow">What I built</p>
+    <h2>Four portals, one platform</h2>
+    <p>
+      ClearPath spans 30+ components across four role-based portals, each scoped to exactly what that
+      role needs.
+    </p>
+    <ul class="cs-flow">
+      {
+        portals.map((p) => (
+          <li>
+            <div>
+              <strong>{p.name}</strong>
+              <span>{p.text}</span>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="cs-features">
+      <div class="card">
+        <span class="icon-badge"><Icon name="lock" /></span>
+        <h3>Security and compliance</h3>
+        <p>
+          HIPAA-compliant session management, multi-factor authentication, and audit logging, with
+          JWT-authenticated REST APIs and role-based access control at every boundary.
+        </p>
+      </div>
+      <div class="card">
+        <span class="icon-badge"><Icon name="file-text" /></span>
+        <h3>Monthly CCM billing reports</h3>
+        <p>
+          Encounter documentation, CPT and ICD-10 code management, physician sign-off workflows, and
+          PDF export, directly supporting Medicare reimbursement compliance.
+        </p>
+      </div>
+      <div class="card">
+        <span class="icon-badge"><Icon name="users" /></span>
+        <h3>Patient engagement and care coordination</h3>
+        <p>
+          End-to-end workflows that keep patients connected to their care team between visits, from
+          outreach and scheduling to follow-up.
+        </p>
+      </div>
+      <div class="card">
+        <span class="icon-badge"><Icon name="cloud" /></span>
+        <h3>Cloud and delivery</h3>
+        <p>
+          AWS infrastructure on S3, CloudFront, and ECS Fargate, shipped through automated CI/CD
+          pipelines.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <p class="eyebrow">Impact</p>
+    <h2>Measurable results for the business and for patients</h2>
+    <ul class="cs-metrics">
+      <li><strong>200%+</strong><span>increase in recurring revenue</span></li>
+      <li><strong>15%</strong><span>fewer missed appointments</span></li>
+      <li><strong>40%</strong><span>less administrative overhead</span></li>
+      <li><strong>35%</strong><span>faster deployments</span></li>
+    </ul>
+  </section>
+
+  <section class="reveal">
+    <p class="eyebrow">What I learned</p>
+    <h2>In healthcare, correctness is the feature</h2>
+    <p>
+      A billing code, a timestamp, or a permission check that is slightly wrong is not a cosmetic
+      bug. It affects patient care and Medicare compliance. Building ClearPath taught me to design for
+      that: strict role boundaries, defensive handling of every piece of data, and a delivery process
+      where nothing ships without passing its checks.
+    </p>
+  </section>
+</CaseStudy>

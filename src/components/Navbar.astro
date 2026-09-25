@@ -1,0 +1,312 @@
+---
+import Icon from './Icon.astro';
+import Logo from './Logo.astro';
+import { nav } from '../data/site';
+import { url, isActive } from '../lib/url';
+
+const path = Astro.url.pathname;
+---
+
+<header class="nav" data-nav>
+  <div class="container nav__inner">
+    <a href={url('/')} class="nav__brand" aria-label="Sām Kazemi, home">
+      <Logo />
+    </a>
+
+    <nav class="nav__links" aria-label="Primary">
+      <ul>
+        {
+          nav.map((item) => (
+            <li>
+              <a
+                href={url(item.href)}
+                aria-current={isActive(path, url(item.href)) ? 'page' : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="nav__actions">
+      <button class="nav__icon-btn" type="button" data-theme-toggle aria-label="Toggle dark mode">
+        <Icon name="moon" class="icon-moon" />
+        <Icon name="sun" class="icon-sun" />
+      </button>
+      <a href={url('/contact')} class="btn btn--primary nav__cta">Get in touch</a>
+      <button
+        class="nav__icon-btn nav__toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        data-menu-toggle
+      >
+        <span class="visually-hidden">Open menu</span>
+        <Icon name="menu" class="icon-open" />
+        <Icon name="close" class="icon-close" />
+      </button>
+    </div>
+  </div>
+
+  <nav class="nav__mobile" id="mobile-menu" aria-label="Mobile" hidden>
+    <ul class="container">
+      {
+        nav.map((item) => (
+          <li>
+            <a
+              href={url(item.href)}
+              aria-current={isActive(path, url(item.href)) ? 'page' : undefined}
+            >
+              {item.label}
+              <Icon name="arrow-right" size={18} />
+            </a>
+          </li>
+        ))
+      }
+      <li>
+        <a href={url('/contact')} class="btn btn--primary">Get in touch</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-nav]');
+  const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const menu = document.getElementById('mobile-menu');
+  const themeBtn = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
+
+  const setMenu = (open: boolean) => {
+    if (!toggle || !menu || !header) return;
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.querySelector('.visually-hidden')!.textContent = open ? 'Close menu' : 'Open menu';
+    menu.hidden = !open;
+    header.classList.toggle('is-open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  };
+
+  toggle?.addEventListener('click', () => setMenu(toggle.getAttribute('aria-expanded') !== 'true'));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && toggle?.getAttribute('aria-expanded') === 'true') {
+      setMenu(false);
+      toggle.focus();
+    }
+  });
+  window.matchMedia('(min-width: 1080px)').addEventListener('change', (e) => {
+    if (e.matches) setMenu(false);
+  });
+
+  const onScroll = () => header?.classList.toggle('is-scrolled', window.scrollY > 8);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  themeBtn?.addEventListener('click', () => {
+    const root = document.documentElement;
+    const current =
+      root.dataset.theme ?? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    const next = current === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    try {
+      localStorage.setItem('theme', next);
+    } catch {
+      // Storage can be unavailable (private mode); the choice then lasts for this page only.
+    }
+  });
+</script>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--bg) 82%, transparent);
+    backdrop-filter: saturate(1.4) blur(14px);
+    -webkit-backdrop-filter: saturate(1.4) blur(14px);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.25s, box-shadow 0.25s;
+  }
+
+  .nav.is-scrolled,
+  .nav.is-open {
+    border-bottom-color: var(--line);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .nav__inner {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    height: 72px;
+  }
+
+  .nav__brand {
+    text-decoration: none;
+    color: var(--ink);
+    margin-right: auto;
+  }
+
+  .nav__links {
+    display: none;
+  }
+
+  .nav__links ul {
+    display: flex;
+    gap: 4px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .nav__links a {
+    position: relative;
+    display: block;
+    padding: 8px 12px;
+    border-radius: 8px;
+    color: var(--ink-soft);
+    font-size: 0.925rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.2s, background 0.2s;
+  }
+
+  .nav__links a:hover {
+    color: var(--ink);
+    background: var(--bg-alt);
+  }
+
+  .nav__links a[aria-current='page'] {
+    color: var(--turquoise-strong);
+    font-weight: 600;
+  }
+
+  .nav__links a[aria-current='page']::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 6px;
+    height: 6px;
+    background: var(--saffron);
+    border-radius: 1px;
+    transform: translateX(-50%) rotate(45deg);
+  }
+
+  .nav__actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .nav__icon-btn {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--surface);
+    color: var(--ink);
+    cursor: pointer;
+  }
+
+  .nav__icon-btn:hover {
+    border-color: var(--turquoise);
+    color: var(--turquoise-strong);
+  }
+
+  /* Icon renders its own <svg>, outside this component's style scope. */
+  .nav__icon-btn :global(.icon-sun),
+  .nav__icon-btn :global(.icon-close) {
+    display: none;
+  }
+
+  :global(:root[data-theme='dark']) .nav__icon-btn :global(.icon-sun) {
+    display: block;
+  }
+  :global(:root[data-theme='dark']) .nav__icon-btn :global(.icon-moon) {
+    display: none;
+  }
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme='light'])) .nav__icon-btn :global(.icon-sun) {
+      display: block;
+    }
+    :global(:root:not([data-theme='light'])) .nav__icon-btn :global(.icon-moon) {
+      display: none;
+    }
+  }
+
+  .nav.is-open .nav__icon-btn :global(.icon-open) {
+    display: none;
+  }
+  .nav.is-open .nav__icon-btn :global(.icon-close) {
+    display: block;
+  }
+
+  .nav__cta {
+    display: none;
+    min-height: 42px;
+    padding: 9px 18px;
+  }
+
+  .nav__mobile {
+    height: calc(100dvh - 72px);
+    overflow-y: auto;
+    border-top: 1px solid var(--line);
+    background: var(--bg);
+  }
+
+  .nav__mobile ul {
+    display: grid;
+    gap: 2px;
+    margin: 0 auto;
+    padding-top: 12px;
+    padding-bottom: 32px;
+    list-style: none;
+  }
+
+  .nav__mobile a:not(.btn) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 4px;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink);
+    font-size: 1.15rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .nav__mobile a[aria-current='page'] {
+    color: var(--turquoise-strong);
+  }
+
+  .nav__mobile .btn {
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  @media (min-width: 640px) {
+    .nav__cta {
+      display: inline-flex;
+    }
+  }
+
+  @media (min-width: 1080px) {
+    .nav__links {
+      display: block;
+    }
+    .nav__toggle,
+    .nav__mobile {
+      display: none;
+    }
+    .nav__brand {
+      margin-right: 0;
+    }
+    .nav__links {
+      margin: 0 auto;
+    }
+  }
+</style>

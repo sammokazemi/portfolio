@@ -1,0 +1,330 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { site, socials, experience, education, skills } from '../data/site';
+import { url } from '../lib/url';
+
+const linked = socials.filter((s) => !s.placeholder);
+const summary =
+  'Health tech software engineer with hands-on experience architecting a production HIPAA-compliant CCM/RPM platform from the ground up. Specialized in React, AWS, and clinical workflow systems across multi-portal, regulated environments.';
+const work = experience.filter((r) => r.org !== 'MESA Program at San Francisco State');
+const activities = experience.filter((r) => r.org === 'MESA Program at San Francisco State');
+---
+
+<Base title="Resume" description="Resume of Sām Kazemi, Lead Software Engineer. View online or download as a PDF.">
+  <section class="section resume-wrap">
+    <div class="container">
+      <div class="toolbar reveal">
+        <div>
+          <p class="eyebrow">Resume</p>
+          <h1>Resume</h1>
+        </div>
+        <div class="btn-row">
+          <a class="btn btn--primary" href={url(site.resumePdf)} download>
+            <Icon name="download" /> Download PDF
+          </a>
+          <a class="btn btn--ghost" href={url('/contact')}>Contact me</a>
+        </div>
+      </div>
+
+      <article class="paper reveal" style="--delay: 0.08s">
+        <header class="paper__head">
+          <div>
+            <h2 class="paper__name">{site.legalName}</h2>
+            <p class="paper__title">{site.title}</p>
+          </div>
+          <ul class="paper__contact">
+            <li><Icon name="mail" size={16} /><a href={`mailto:${site.email}`}>{site.email}</a></li>
+            {
+              linked.map((s) => (
+                <li>
+                  <Icon name={s.icon} size={16} />
+                  <a href={s.href} target="_blank" rel="noopener">
+                    {s.label}
+                  </a>
+                </li>
+              ))
+            }
+            <li><Icon name="map-pin" size={16} />US Citizen · {site.location}</li>
+          </ul>
+        </header>
+
+        <section class="paper__section">
+          <h3>Summary</h3>
+          <p>{summary}</p>
+        </section>
+
+        <section class="paper__section">
+          <h3>Experience</h3>
+          {
+            work.map((r) => (
+              <div class="entry">
+                <div class="entry__head">
+                  <div>
+                    <p class="entry__title">{r.org}</p>
+                    <p class="entry__sub">{r.title}</p>
+                  </div>
+                  <div class="entry__meta">
+                    <p>{r.location}</p>
+                    <p>
+                      {r.start} – {r.end}
+                    </p>
+                  </div>
+                </div>
+                <ul>
+                  {r.points.map((p) => (
+                    <li>{p}</li>
+                  ))}
+                </ul>
+              </div>
+            ))
+          }
+        </section>
+
+        <section class="paper__section">
+          <h3>Education</h3>
+          {
+            education.map((e) => (
+              <div class="entry">
+                <div class="entry__head">
+                  <div>
+                    <p class="entry__title">{e.school}</p>
+                    <p class="entry__sub">
+                      {e.degree}, {e.minor}
+                    </p>
+                  </div>
+                  <div class="entry__meta">
+                    <p>{e.location}</p>
+                    <p>
+                      {e.start} – {e.end}
+                    </p>
+                  </div>
+                </div>
+                <ul>
+                  <li>{e.highlights.slice(0, 2).join(', ')}</li>
+                </ul>
+              </div>
+            ))
+          }
+        </section>
+
+        <section class="paper__section">
+          <h3>Activities &amp; Leadership</h3>
+          {
+            activities.map((r) => (
+              <div class="entry">
+                <div class="entry__head">
+                  <div>
+                    <p class="entry__title">{r.org}</p>
+                    <p class="entry__sub">{r.title}</p>
+                  </div>
+                  <div class="entry__meta">
+                    <p>{r.location}</p>
+                    <p>
+                      {r.start} – {r.end}
+                    </p>
+                  </div>
+                </div>
+                <ul>
+                  {r.points.map((p) => (
+                    <li>{p}</li>
+                  ))}
+                </ul>
+              </div>
+            ))
+          }
+        </section>
+
+        <section class="paper__section">
+          <h3>Skills</h3>
+          <dl class="skills">
+            {
+              skills.map((s) => (
+                <div>
+                  <dt>{s.group}:</dt>
+                  <dd>{s.items.join(', ')}</dd>
+                </div>
+              ))
+            }
+          </dl>
+        </section>
+      </article>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .resume-wrap {
+    background:
+      radial-gradient(circle at 85% 0%, var(--turquoise-tint), transparent 40%),
+      var(--bg);
+  }
+
+  .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 20px;
+    max-width: 880px;
+    margin: 0 auto 32px;
+  }
+
+  .toolbar h1 {
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 2.75rem);
+  }
+
+  .paper {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: clamp(24px, 5vw, 56px);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-top: 5px solid var(--turquoise);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    font-size: 0.975rem;
+  }
+
+  .paper p {
+    margin: 0;
+  }
+
+  .paper__head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .paper__name {
+    margin: 0;
+    font-size: clamp(1.6rem, 3.5vw, 2.1rem);
+  }
+
+  .paper__title {
+    color: var(--turquoise-strong);
+    font-weight: 600;
+  }
+
+  .paper__contact {
+    display: grid;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+  }
+
+  .paper__contact li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    overflow-wrap: anywhere;
+  }
+
+  .paper__contact :global(svg) {
+    flex: none;
+    color: var(--turquoise);
+  }
+
+  .paper__section {
+    padding-top: 24px;
+  }
+
+  .paper__section h3 {
+    margin-bottom: 14px;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--turquoise-strong);
+  }
+
+  .paper__section > p {
+    color: var(--ink-soft);
+  }
+
+  .entry + .entry {
+    margin-top: 20px;
+  }
+
+  .entry__head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 4px 20px;
+  }
+
+  .entry__title {
+    font-weight: 700;
+  }
+
+  .entry__sub {
+    font-style: italic;
+    color: var(--ink-soft);
+  }
+
+  .entry__meta {
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+
+  @media (min-width: 640px) {
+    .entry__meta {
+      text-align: right;
+    }
+  }
+
+  .entry ul {
+    margin: 10px 0 0;
+    padding-left: 20px;
+    color: var(--ink-soft);
+  }
+
+  .entry li + li {
+    margin-top: 6px;
+  }
+
+  .entry li::marker {
+    color: var(--saffron);
+  }
+
+  .skills {
+    display: grid;
+    gap: 8px;
+    margin: 0;
+  }
+
+  .skills dt {
+    display: inline;
+    font-weight: 700;
+  }
+
+  .skills dd {
+    display: inline;
+    margin: 0 0 0 4px;
+    color: var(--ink-soft);
+  }
+
+  @media print {
+    :global(.nav),
+    :global(.footer),
+    .toolbar {
+      display: none !important;
+    }
+    .resume-wrap {
+      padding: 0;
+      background: none;
+    }
+    .paper {
+      border: 0;
+      box-shadow: none;
+      padding: 0;
+    }
+  }
+</style>

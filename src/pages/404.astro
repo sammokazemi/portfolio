@@ -1,0 +1,41 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import Girih from '../components/Girih.astro';
+import { url } from '../lib/url';
+---
+
+<Base title="Page not found">
+  <section class="nf">
+    <Girih id="nf-girih" size={72} />
+    <div class="container nf__inner">
+      <p class="eyebrow">404</p>
+      <h1>This page wandered off</h1>
+      <p class="lead">The page you’re looking for doesn’t exist or has moved.</p>
+      <div class="btn-row">
+        <a class="btn btn--primary" href={url('/')}>Back home <Icon name="arrow-right" /></a>
+        <a class="btn btn--ghost" href={url('/projects')}>See projects</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf {
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    align-items: center;
+    min-height: 60vh;
+    padding: 96px 0;
+    text-align: center;
+  }
+
+  .nf__inner {
+    position: relative;
+  }
+
+  .nf .btn-row {
+    justify-content: center;
+  }
+</style>

@@ -1,0 +1,55 @@
+---
+import Girih from './Girih.astro';
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  lead?: string;
+}
+
+const { eyebrow, title, lead } = Astro.props;
+---
+
+<section class="page-header">
+  <div class="page-header__pattern" aria-hidden="true">
+    <Girih id="page-header-girih" size={72} />
+  </div>
+  <div class="container page-header__inner">
+    <p class="eyebrow reveal">{eyebrow}</p>
+    <h1 class="reveal" style="--delay: 0.05s">{title}</h1>
+    {lead && <p class="lead reveal" style="--delay: 0.1s">{lead}</p>}
+    <slot />
+  </div>
+</section>
+
+<style>
+  .page-header {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(56px, 9vw, 104px) 0 clamp(40px, 6vw, 64px);
+    background:
+      radial-gradient(circle at 85% 20%, var(--turquoise-tint), transparent 55%),
+      radial-gradient(circle at 10% 110%, var(--saffron-tint), transparent 45%);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .page-header__pattern {
+    position: absolute;
+    inset: 0 0 0 40%;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 60%);
+    mask-image: linear-gradient(90deg, transparent, #000 60%);
+  }
+
+  .page-header__inner {
+    position: relative;
+  }
+
+  .page-header h1 {
+    max-width: 18ch;
+  }
+
+  .page-header .lead {
+    max-width: 62ch;
+    margin-bottom: 0;
+  }
+</style>

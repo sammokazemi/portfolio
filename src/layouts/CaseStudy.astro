@@ -1,0 +1,309 @@
+---
+import Base from './Base.astro';
+import Icon from '../components/Icon.astro';
+import Girih from '../components/Girih.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { url } from '../lib/url';
+
+interface Props {
+  name: string;
+  description: string;
+  summary: string;
+  role: string;
+  org: string;
+  period: string;
+  status: string;
+  live: string;
+  liveLabel: string;
+  stack: string[];
+  accent?: 'turquoise' | 'lapis';
+}
+
+const { name, description, summary, role, org, period, status, live, liveLabel, stack, accent = 'turquoise' } =
+  Astro.props;
+---
+
+<Base title={name} description={description}>
+  <section class={`cs-hero cs-hero--${accent}`}>
+    <Girih id="cs-girih" size={64} />
+    <div class="container cs-hero__inner">
+      <a class="cs-back reveal" href={url('/projects')}>
+        <Icon name="arrow-left" size={16} /> All projects
+      </a>
+      <p class="eyebrow cs-eyebrow reveal">Case study</p>
+      <h1 class="reveal" style="--delay: 0.05s">{name}</h1>
+      <p class="cs-summary reveal" style="--delay: 0.1s">{summary}</p>
+      <div class="btn-row reveal" style="--delay: 0.15s">
+        <a class="btn cs-live" href={live} target="_blank" rel="noopener">
+          Visit {liveLabel} <Icon name="arrow-up-right" />
+          <span class="visually-hidden">(opens in a new tab)</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+    <dl class="cs-facts card reveal">
+      <div>
+        <dt>Role</dt>
+        <dd>{role}</dd>
+      </div>
+      <div>
+        <dt>Company</dt>
+        <dd>{org}</dd>
+      </div>
+      <div>
+        <dt>Timeline</dt>
+        <dd>{period}</dd>
+      </div>
+      <div>
+        <dt>Status</dt>
+        <dd>{status}</dd>
+      </div>
+    </dl>
+  </div>
+
+  <div class="container cs-body">
+    <article class="cs-content">
+      <slot />
+    </article>
+    <aside class="cs-aside reveal">
+      <div class="card">
+        <h2 class="cs-aside__title">Tech &amp; tools</h2>
+        <ul class="tag-list">
+          {stack.map((s) => <li class="tag">{s}</li>)}
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .cs-hero {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(40px, 7vw, 80px) 0 clamp(96px, 12vw, 136px);
+    background: linear-gradient(135deg, #142a63 0%, #0a6e6f 100%);
+    color: #f3eee4;
+  }
+
+  .cs-hero--lapis {
+    background: linear-gradient(135deg, #0f1f4d 0%, #1f3c88 100%);
+  }
+
+  .cs-hero :global(.girih) {
+    color: rgba(255, 255, 255, 0.08);
+  }
+
+  .cs-hero__inner {
+    position: relative;
+  }
+
+  .cs-back {
+    display: flex;
+    width: fit-content;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 28px;
+    color: rgba(243, 238, 228, 0.85);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .cs-back:hover {
+    color: #fff;
+  }
+
+  .cs-eyebrow {
+    color: #e9b64d;
+  }
+
+  .cs-hero h1 {
+    color: #fff;
+    max-width: 16ch;
+  }
+
+  .cs-summary {
+    max-width: 62ch;
+    margin: 16px 0 30px;
+    font-size: clamp(1.1rem, 1.8vw, 1.25rem);
+    color: rgba(243, 238, 228, 0.88);
+  }
+
+  .cs-live {
+    background: #d49a2a;
+    color: #13203b;
+  }
+
+  .cs-live:hover {
+    background: #e9b64d;
+    color: #13203b;
+    transform: translateY(-1px);
+  }
+
+  .cs-facts {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin: -64px 0 0;
+    box-shadow: var(--shadow);
+  }
+
+  @media (min-width: 800px) {
+    .cs-facts {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .cs-facts dt {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--turquoise-strong);
+  }
+
+  .cs-facts dd {
+    margin: 4px 0 0;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .cs-body {
+    display: grid;
+    gap: 40px;
+    padding-top: clamp(48px, 7vw, 80px);
+  }
+
+  @media (min-width: 1000px) {
+    .cs-body {
+      grid-template-columns: 1fr 300px;
+      gap: 64px;
+      align-items: start;
+    }
+    .cs-aside {
+      position: sticky;
+      top: 104px;
+      order: 2;
+    }
+  }
+
+  .cs-aside__title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .cs-content :global(section) {
+    margin-bottom: clamp(48px, 7vw, 72px);
+  }
+
+  .cs-content :global(h2) {
+    font-size: clamp(1.6rem, 3vw, 2rem);
+  }
+
+  .cs-content :global(p) {
+    color: var(--ink-soft);
+    max-width: 68ch;
+  }
+
+  .cs-content :global(.cs-features) {
+    display: grid;
+    gap: 16px;
+    margin-top: 24px;
+  }
+
+  @media (min-width: 720px) {
+    .cs-content :global(.cs-features) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .cs-content :global(.cs-features h3) {
+    margin: 16px 0 8px;
+    font-size: 1.1rem;
+  }
+
+  .cs-content :global(.cs-features p) {
+    margin: 0;
+    font-size: 0.975rem;
+  }
+
+  .cs-content :global(.cs-metrics) {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin: 24px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .cs-content :global(.cs-metrics li) {
+    padding: 22px;
+    border-radius: var(--radius);
+    background: var(--turquoise-tint);
+  }
+
+  .cs-content :global(.cs-metrics strong) {
+    display: block;
+    font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    color: var(--turquoise-strong);
+  }
+
+  .cs-content :global(.cs-metrics span) {
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+  }
+
+  .cs-content :global(.cs-flow) {
+    display: grid;
+    gap: 12px;
+    margin: 24px 0 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: flow;
+  }
+
+  .cs-content :global(.cs-flow li) {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 16px;
+    align-items: start;
+    padding: 18px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+    counter-increment: flow;
+  }
+
+  .cs-content :global(.cs-flow li::before) {
+    content: counter(flow);
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--saffron-tint);
+    color: var(--ink);
+    font-weight: 800;
+  }
+
+  .cs-content :global(.cs-flow strong) {
+    display: block;
+    color: var(--ink);
+  }
+
+  .cs-content :global(.cs-flow span) {
+    color: var(--ink-soft);
+    font-size: 0.975rem;
+  }
+</style>

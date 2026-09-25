@@ -1,0 +1,193 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Icon from '../components/Icon.astro';
+import { site, socials } from '../data/site';
+import { url } from '../lib/url';
+
+const reasons = [
+  'Engineering roles and technical leadership in health tech or labor tech',
+  'Unions and healthcare organizations exploring better software',
+  'Speaking, mentorship, or collaboration with the Iranian community',
+  'Students who want advice on transferring into computer science',
+];
+
+const linked = socials.filter((s) => !s.placeholder);
+---
+
+<Base title="Contact" description="Get in touch with Sām Kazemi by email, LinkedIn, or GitHub.">
+  <PageHeader
+    eyebrow="Contact"
+    title="Let’s talk"
+    lead="Whether it’s a role, a project, or a conversation about community, I’d like to hear from you. Email is the fastest way to reach me."
+  />
+
+  <section class="section">
+    <div class="container contact">
+      <div class="contact__main">
+        <a class="email card card--hover reveal" href={`mailto:${site.email}`}>
+          <span class="icon-badge"><Icon name="mail" /></span>
+          <span class="email__label">Email me</span>
+          <span class="email__address">{site.email}</span>
+          <span class="email__cta">Write an email <Icon name="arrow-right" size={16} /></span>
+        </a>
+
+        <div class="grid grid--2 socials">
+          {
+            linked.map((s, i) => (
+              <a
+                class="social card card--hover reveal"
+                style={`--delay: ${0.06 + i * 0.06}s`}
+                href={s.href}
+                target="_blank"
+                rel="noopener me"
+              >
+                <span class="icon-badge">
+                  <Icon name={s.icon} />
+                </span>
+                <span>
+                  <span class="social__label">{s.label}</span>
+                  <span class="social__handle">{s.handle}</span>
+                </span>
+                <Icon name="arrow-up-right" size={18} class="social__arrow" />
+                <span class="visually-hidden">(opens in a new tab)</span>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+
+      <aside class="card contact__aside reveal" style="--delay: 0.1s">
+        <h2>Good reasons to reach out</h2>
+        <ul class="check-list">
+          {reasons.map((r) => <li>{r}</li>)}
+        </ul>
+        <div class="contact__loc">
+          <Icon name="map-pin" size={18} />
+          <span>Based in the {site.location}</span>
+        </div>
+        <a class="btn btn--ghost" href={url('/resume')}>
+          <Icon name="file-text" /> View my resume
+        </a>
+      </aside>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .contact {
+    display: grid;
+    gap: 24px;
+  }
+
+  @media (min-width: 960px) {
+    .contact {
+      grid-template-columns: 1.3fr 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+  }
+
+  .contact__main {
+    display: grid;
+    gap: 24px;
+  }
+
+  .email {
+    display: grid;
+    gap: 6px;
+    padding: clamp(28px, 4vw, 44px);
+    color: inherit;
+    text-decoration: none;
+    border-top: 4px solid var(--turquoise);
+  }
+
+  .email:hover {
+    color: inherit;
+  }
+
+  .email .icon-badge {
+    margin-bottom: 14px;
+  }
+
+  .email__label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .email__address {
+    font-size: clamp(1.05rem, 2.2vw, 1.45rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    overflow-wrap: anywhere;
+  }
+
+  .email__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+    font-weight: 600;
+    color: var(--turquoise-strong);
+  }
+
+  .social {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .social:hover {
+    color: inherit;
+  }
+
+  .social > span:nth-child(2) {
+    display: grid;
+    min-width: 0;
+  }
+
+  .social__label {
+    font-weight: 700;
+  }
+
+  .social__handle {
+    font-size: 0.875rem;
+    color: var(--muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .social :global(.social__arrow) {
+    margin-left: auto;
+    flex: none;
+    color: var(--turquoise);
+  }
+
+  .contact__aside h2 {
+    font-size: 1.3rem;
+    margin-bottom: 18px;
+  }
+
+  .contact__loc {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 24px 0 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+
+  .contact__loc :global(svg) {
+    color: var(--turquoise);
+    flex: none;
+  }
+</style>

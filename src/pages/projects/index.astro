@@ -1,0 +1,228 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Icon from '../../components/Icon.astro';
+import Girih from '../../components/Girih.astro';
+import { url } from '../../lib/url';
+
+const projects = [
+  {
+    name: 'ClearPath Virtual Health',
+    org: 'MedManage Solutions',
+    role: 'Lead Software Engineer',
+    period: 'Sep 2025 – Present',
+    href: '/projects/clearpath',
+    live: 'https://clearpathvirtualhealth.com/',
+    liveLabel: 'clearpathvirtualhealth.com',
+    icon: 'heart-pulse',
+    accent: 'turquoise',
+    text: 'A production HIPAA-compliant CCM/RPM platform, architected from the ground up. Four role-based portals, MFA and audit logging, Medicare billing workflows, and AWS infrastructure behind it.',
+    stats: [
+      { value: '4', label: 'role-based portals' },
+      { value: '30+', label: 'components' },
+      { value: '200%+', label: 'recurring revenue' },
+    ],
+    tags: ['React', 'AWS', 'HIPAA', 'RBAC', 'CI/CD', 'CPT / ICD-10'],
+  },
+  {
+    name: 'Union Workforce Ecosystem',
+    org: 'Workforce Systems (WFS)',
+    role: 'Lead Engineer',
+    period: 'Apr 2026 – Present',
+    href: '/projects/union-workforce',
+    live: 'https://workforcesystems.net/',
+    liveLabel: 'workforcesystems.net',
+    icon: 'users',
+    accent: 'lapis',
+    text: 'A five-portal labor workforce platform unifying dispatch, dues, grievances, training, and benefits into one system of record, with a carrier-agnostic health coverage model and a shared design system.',
+    stats: [
+      { value: '5', label: 'portals' },
+      { value: '100+', label: 'screens' },
+      { value: '1', label: 'system of record' },
+    ],
+    tags: ['Platform design', 'Design system', 'Node.js tooling', 'Mobile UI'],
+  },
+] as const;
+---
+
+<Base
+  title="Projects"
+  description="Featured projects by Sām Kazemi: ClearPath Virtual Health and the Union Workforce Ecosystem at Workforce Systems."
+>
+  <PageHeader
+    eyebrow="Projects"
+    title="Platforms built for patients and workers"
+    lead="Case studies from the two platforms I lead today: what the problem was, what I built, and what changed because of it."
+  />
+
+  <section class="section">
+    <div class="container projects">
+      {
+        projects.map((p, i) => (
+          <article class={`project reveal project--${p.accent}`}>
+            <div class="project__visual" aria-hidden="true">
+              <Girih id={`project-girih-${i}`} size={44} />
+              <span class="project__icon">
+                <Icon name={p.icon} size={36} />
+              </span>
+              <ul class="project__stats">
+                {p.stats.map((s) => (
+                  <li>
+                    <strong>{s.value}</strong>
+                    <span>{s.label}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div class="project__body">
+              <p class="project__meta">
+                {p.role} · {p.org} · {p.period}
+              </p>
+              <h2>{p.name}</h2>
+              <p class="project__text">{p.text}</p>
+              <ul class="tag-list">
+                {p.tags.map((t) => (
+                  <li class="tag">{t}</li>
+                ))}
+              </ul>
+              <div class="btn-row project__actions">
+                <a class="btn btn--primary" href={url(p.href)}>
+                  Read case study <Icon name="arrow-right" />
+                </a>
+                <a class="btn btn--ghost" href={p.live} target="_blank" rel="noopener">
+                  {p.liveLabel} <Icon name="arrow-up-right" />
+                  <span class="visually-hidden">(opens in a new tab)</span>
+                </a>
+              </div>
+            </div>
+          </article>
+        ))
+      }
+
+      <p class="projects__more reveal">
+        More of my code lives on{' '}
+        <a href="https://github.com/sammokazemi" target="_blank" rel="noopener">GitHub <Icon name="arrow-up-right" size={14} /></a>.
+      </p>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .projects {
+    display: grid;
+    gap: clamp(32px, 5vw, 56px);
+  }
+
+  .project {
+    display: grid;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: calc(var(--radius) + 4px);
+    background: var(--surface);
+    box-shadow: var(--shadow-sm);
+  }
+
+  @media (min-width: 900px) {
+    .project {
+      grid-template-columns: 0.85fr 1.15fr;
+    }
+    .project:nth-child(even) {
+      grid-template-columns: 1.15fr 0.85fr;
+    }
+    .project:nth-child(even) .project__visual {
+      order: 2;
+    }
+  }
+
+  .project__visual {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 40px;
+    min-height: 260px;
+    padding: 32px;
+    background: linear-gradient(135deg, #142a63 0%, #0a6e6f 100%);
+    color: #fff;
+  }
+
+  .project--lapis .project__visual {
+    background: linear-gradient(135deg, #0f1f4d 0%, #1f3c88 100%);
+  }
+
+  .project__visual :global(.girih) {
+    color: rgba(255, 255, 255, 0.1);
+  }
+
+  .project__icon {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 72px;
+    height: 72px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.12);
+    color: #e9b64d;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .project__stats {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .project__stats strong {
+    display: block;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+
+  .project__stats span {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.78);
+  }
+
+  .project__body {
+    padding: clamp(24px, 4vw, 44px);
+  }
+
+  .project__meta {
+    margin-bottom: 8px;
+    color: var(--turquoise-strong);
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .project__text {
+    color: var(--ink-soft);
+    margin-bottom: 20px;
+  }
+
+  .project__actions {
+    margin-top: 28px;
+  }
+
+  .projects__more {
+    margin: 0;
+    text-align: center;
+    color: var(--muted);
+  }
+
+  .projects__more a {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 600;
+  }
+</style>

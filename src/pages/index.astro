@@ -1,0 +1,721 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import Girih from '../components/Girih.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { site, metrics } from '../data/site';
+import { url } from '../lib/url';
+
+const featured = [
+  {
+    name: 'ClearPath Virtual Health',
+    role: 'Lead Software Engineer · MedManage Solutions',
+    href: '/projects/clearpath',
+    live: 'https://clearpathvirtualhealth.com/',
+    liveLabel: 'clearpathvirtualhealth.com',
+    icon: 'heart-pulse',
+    text: 'A production HIPAA-compliant chronic care management and remote patient monitoring platform, architected from the ground up across four role-based portals.',
+    tags: ['React', 'AWS', 'HIPAA', 'Medicare billing'],
+    accent: 'turquoise',
+  },
+  {
+    name: 'Union Workforce Ecosystem',
+    role: 'Lead Engineer · Workforce Systems',
+    href: '/projects/union-workforce',
+    live: 'https://workforcesystems.net/',
+    liveLabel: 'workforcesystems.net',
+    icon: 'users',
+    text: 'A five-portal platform that unifies union dispatch, dues, grievances, training, and benefits into one system of record for members, contractors, and staff.',
+    tags: ['Platform design', 'Design system', 'Node.js tooling'],
+    accent: 'lapis',
+  },
+] as const;
+
+const strengths = [
+  {
+    icon: 'lock',
+    title: 'Regulated systems',
+    text: 'HIPAA-compliant session management, MFA, audit logging, and RBAC, built so clinical teams can trust the software with patient care.',
+  },
+  {
+    icon: 'layers',
+    title: 'Frontend to cloud',
+    text: 'React interfaces and AWS infrastructure (S3, CloudFront, ECS Fargate) shipped through automated CI/CD pipelines.',
+  },
+  {
+    icon: 'compass',
+    title: 'Technical leadership',
+    text: 'Leading a distributed engineering team and working directly with clinicians and union leadership to turn workflows into products.',
+  },
+] as const;
+---
+
+<Base>
+  <section class="hero">
+    <div class="hero__glow" aria-hidden="true"></div>
+    <div class="container hero__grid">
+      <div class="hero__copy">
+        <p class="pill hero__pill reveal">
+          <span class="dot" aria-hidden="true"></span>
+          Lead Software Engineer · Health tech &amp; labor tech
+        </p>
+        <h1 class="reveal" style="--delay: 0.05s">
+          Building platforms that serve <span class="highlight">real people</span>
+        </h1>
+        <p class="lead reveal" style="--delay: 0.1s">
+          I’m {site.name}. I architected <strong>ClearPath Virtual Health</strong>, a HIPAA-compliant
+          chronic care platform, and I lead engineering at <strong>Workforce Systems</strong>, building
+          software for the unions that keep the Bay Area working.
+        </p>
+        <div class="btn-row reveal" style="--delay: 0.15s">
+          <a href={url('/projects')} class="btn btn--primary">
+            See my work <Icon name="arrow-right" />
+          </a>
+          <a href={url('/about')} class="btn btn--ghost">My story</a>
+        </div>
+        <ul class="hero__badges reveal" style="--delay: 0.2s" aria-label="Highlights">
+          <li class="pill"><Icon name="shield" /> HIPAA-compliant systems</li>
+          <li class="pill"><Icon name="cloud" /> React · AWS</li>
+          <li class="pill"><Icon name="languages" /> English · <span class="persian" lang="fa">فارسی</span></li>
+        </ul>
+      </div>
+
+      <div class="hero__visual reveal" style="--delay: 0.1s">
+        <div class="arch">
+          <svg class="arch__shape" viewBox="0 0 400 500" aria-hidden="true">
+            <defs>
+              <linearGradient id="arch-fill" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#142a63" />
+                <stop offset="1" stop-color="#0a6e6f" />
+              </linearGradient>
+            </defs>
+            <path d="M0 500V210C0 95 110 30 200 0c90 30 200 95 200 210v290z" fill="url(#arch-fill)" />
+          </svg>
+          <div class="arch__pattern" aria-hidden="true">
+            <Girih id="arch-girih" size={50} />
+          </div>
+          <p class="arch__name persian" lang="fa" aria-hidden="true">سام</p>
+
+          <div class="float float--1 card">
+            <div class="float__row">
+              <span class="icon-badge"><Icon name="heart-pulse" /></span>
+              <div>
+                <p class="float__title">ClearPath Virtual Health</p>
+                <p class="float__sub">4 role-based portals</p>
+              </div>
+            </div>
+            <span class="status"><Icon name="check-circle" size={14} /> Live in production</span>
+          </div>
+
+          <div class="float float--2 card">
+            <p class="float__metric">200%+</p>
+            <p class="float__sub">recurring revenue growth</p>
+            <svg class="spark" viewBox="0 0 120 36" aria-hidden="true">
+              <path d="M2 32 C 20 30, 30 26, 44 24 S 70 18, 82 12 S 104 6, 118 3" />
+            </svg>
+          </div>
+
+          <div class="float float--3 card">
+            <span class="icon-badge icon-badge--lapis"><Icon name="users" /></span>
+            <div>
+              <p class="float__title">Union Workforce Ecosystem</p>
+              <p class="float__sub">5 portals · 1 system of record</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="metrics" aria-label="Impact at MedManage Solutions">
+    <div class="container">
+      <ul class="metrics__grid">
+        {
+          metrics.map((m, i) => (
+            <li class="reveal" style={`--delay: ${i * 0.06}s`}>
+              <span class="metrics__value">{m.value}</span>
+              <span class="metrics__label">{m.label}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">Featured work</p>
+        <h2>Software people depend on every day</h2>
+        <p class="lead">
+          Two platforms, two industries, one principle: the software has to work for the people on
+          the other side of the screen: patients, care coordinators, laborers, and the organizations
+          that serve them.
+        </p>
+      </div>
+
+      <div class="grid grid--2">
+        {
+          featured.map((p, i) => (
+            <article class={`work card card--hover reveal work--${p.accent}`} style={`--delay: ${i * 0.08}s`}>
+              <div class="work__top">
+                <span class="icon-badge">
+                  <Icon name={p.icon} />
+                </span>
+                <a class="work__live" href={p.live} target="_blank" rel="noopener">
+                  {p.liveLabel} <Icon name="arrow-up-right" size={14} />
+                  <span class="visually-hidden">(opens in a new tab)</span>
+                </a>
+              </div>
+              <h3>{p.name}</h3>
+              <p class="work__role">{p.role}</p>
+              <p>{p.text}</p>
+              <ul class="tag-list">
+                {p.tags.map((t) => <li class="tag">{t}</li>)}
+              </ul>
+              <a class="work__link" href={url(p.href)}>
+                Read the case study <Icon name="arrow-right" size={18} />
+              </a>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt story">
+    <div class="container story__grid">
+      <div class="reveal">
+        <p class="eyebrow">My story</p>
+        <h2>From Antioch to architecting health tech</h2>
+        <p class="lead">
+          I grew up in Antioch, California, where I saw what gang violence did to friends and family.
+          I chose a different path: community college, a transfer to San Francisco State, and a
+          career building software that matters.
+        </p>
+        <p class="muted">
+          Along the way I reclaimed my name, Sām, and made my Iranian heritage central to who I am,
+          as an engineer and as someone committed to his community.
+        </p>
+        <a href={url('/about')} class="btn btn--ghost">
+          Read my story <Icon name="arrow-right" />
+        </a>
+      </div>
+
+      <ol class="journey reveal" style="--delay: 0.1s">
+        <li>
+          <span class="journey__when">Antioch, CA</span>
+          <span class="journey__what">Born and raised in the East Bay</span>
+        </li>
+        <li>
+          <span class="journey__when">2020 – 2023</span>
+          <span class="journey__what">Los Medanos College · Honor Roll</span>
+        </li>
+        <li>
+          <span class="journey__when">2024 – 2026</span>
+          <span class="journey__what">SFSU · B.S. Computer Science, Minor in Persian Studies · Dean’s List</span>
+        </li>
+        <li>
+          <span class="journey__when">2025</span>
+          <span class="journey__what">Lead Software Engineer, MedManage Solutions</span>
+        </li>
+        <li>
+          <span class="journey__when">2026</span>
+          <span class="journey__what">Lead Engineer, Workforce Systems</span>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head section-head--center reveal">
+        <p class="eyebrow">What I bring</p>
+        <h2>Engineering for high-stakes environments</h2>
+      </div>
+      <div class="grid grid--3">
+        {
+          strengths.map((s, i) => (
+            <div class="card reveal" style={`--delay: ${i * 0.08}s`}>
+              <span class="icon-badge">
+                <Icon name={s.icon} />
+              </span>
+              <h3 class="strength__title">{s.title}</h3>
+              <p class="muted">{s.text}</p>
+            </div>
+          ))
+        }
+      </div>
+      <p class="center-link reveal">
+        <a href={url('/skills')}>See all skills and tools <Icon name="arrow-right" size={16} /></a>
+      </p>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .hero {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(40px, 7vw, 88px) 0 clamp(56px, 8vw, 96px);
+  }
+
+  .hero__glow {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 80% 30%, var(--turquoise-tint), transparent 50%),
+      radial-gradient(circle at 5% 90%, var(--saffron-tint), transparent 40%);
+    pointer-events: none;
+  }
+
+  .hero__grid {
+    position: relative;
+    display: grid;
+    gap: 56px;
+    align-items: center;
+  }
+
+  @media (min-width: 960px) {
+    .hero__grid {
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 48px;
+    }
+  }
+
+  .hero__pill {
+    margin: 0 0 22px;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--turquoise);
+    box-shadow: 0 0 0 4px var(--turquoise-tint);
+  }
+
+  .hero h1 {
+    max-width: 14ch;
+  }
+
+  .hero .lead {
+    max-width: 54ch;
+    margin: 20px 0 30px;
+  }
+
+  .hero .lead strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .hero__badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 28px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .hero__badges .persian {
+    line-height: 1.4;
+  }
+
+  /* Hero visual: a Persian pointed arch framing floating UI cards, echoing ClearPath's hero. */
+  .hero__visual {
+    display: flex;
+    justify-content: center;
+  }
+
+  .arch {
+    position: relative;
+    width: min(100%, 400px);
+    aspect-ratio: 4 / 5;
+    margin: 0 32px;
+  }
+
+  .arch__shape {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 30px 40px rgba(20, 42, 99, 0.25));
+  }
+
+  .arch__pattern {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    --arch: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500' preserveAspectRatio='none'%3E%3Cpath d='M0 500V210C0 95 110 30 200 0c90 30 200 95 200 210v290z'/%3E%3C/svg%3E");
+    -webkit-mask: var(--arch) center / 100% 100% no-repeat;
+    mask: var(--arch) center / 100% 100% no-repeat;
+  }
+
+  .arch__pattern :global(.girih) {
+    color: rgba(255, 255, 255, 0.14);
+  }
+
+  .arch__name {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 29%;
+    margin: 0;
+    text-align: center;
+    font-size: clamp(4.5rem, 12vw, 6.5rem);
+    line-height: 1.6;
+    color: #e9b64d;
+    text-shadow: 0 6px 30px rgba(0, 0, 0, 0.25);
+  }
+
+  .float {
+    position: absolute;
+    padding: 14px 16px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    animation: bob 6s ease-in-out infinite;
+  }
+
+  .float p {
+    margin: 0;
+  }
+
+  .float--1 {
+    top: 7%;
+    left: -32px;
+    width: 240px;
+    display: grid;
+    gap: 10px;
+  }
+
+  .float--2 {
+    right: -32px;
+    top: 56%;
+    width: 180px;
+    animation-delay: -2s;
+  }
+
+  .float--3 {
+    left: -20px;
+    bottom: 4%;
+    width: 270px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    animation-delay: -4s;
+  }
+
+  .float__row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .float .icon-badge {
+    width: 38px;
+    height: 38px;
+    flex: none;
+  }
+
+  .icon-badge--lapis {
+    background: color-mix(in srgb, var(--lapis) 14%, transparent);
+    color: var(--lapis);
+  }
+
+  .float__title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .float__sub {
+    font-size: 0.8rem;
+    color: var(--muted);
+    line-height: 1.35;
+  }
+
+  .float__metric {
+    font-size: 1.9rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    color: var(--turquoise-strong);
+  }
+
+  .spark {
+    width: 100%;
+    height: 32px;
+    margin-top: 8px;
+  }
+
+  .spark path {
+    fill: none;
+    stroke: var(--saffron);
+    stroke-width: 3;
+    stroke-linecap: round;
+  }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    justify-self: start;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: var(--turquoise-tint);
+    color: var(--turquoise-strong);
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  @keyframes bob {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .arch {
+      margin: 0 12px;
+    }
+    .float--1 {
+      left: -12px;
+      width: 214px;
+    }
+    .float--2 {
+      right: -12px;
+      width: 150px;
+    }
+    .float--3 {
+      left: -8px;
+      width: 236px;
+    }
+  }
+
+  .metrics {
+    border-block: 1px solid var(--line);
+    background: var(--surface);
+  }
+
+  .metrics__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .metrics__grid li {
+    display: grid;
+    gap: 4px;
+    padding: 28px 12px;
+    text-align: center;
+  }
+
+  .metrics__grid li:nth-child(odd) {
+    border-right: 1px solid var(--line);
+  }
+
+  .metrics__grid li:nth-child(-n + 2) {
+    border-bottom: 1px solid var(--line);
+  }
+
+  @media (min-width: 900px) {
+    .metrics__grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+    .metrics__grid li {
+      padding: 36px 20px;
+    }
+    .metrics__grid li:nth-child(-n + 2) {
+      border-bottom: 0;
+    }
+    .metrics__grid li:not(:last-child) {
+      border-right: 1px solid var(--line);
+    }
+  }
+
+  .metrics__value {
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--turquoise-strong);
+    line-height: 1.1;
+  }
+
+  .metrics__label {
+    max-width: 24ch;
+    margin: 0 auto;
+    font-size: 0.875rem;
+    color: var(--muted);
+    line-height: 1.45;
+  }
+
+  .work {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    border-top: 4px solid var(--turquoise);
+  }
+
+  .work--lapis {
+    border-top-color: var(--lapis);
+  }
+
+  .work--lapis .icon-badge {
+    background: color-mix(in srgb, var(--lapis) 14%, transparent);
+    color: var(--lapis);
+  }
+
+  .work__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .work__live {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .work h3 {
+    font-size: 1.5rem;
+    margin-bottom: 2px;
+  }
+
+  .work__role {
+    color: var(--muted);
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 14px;
+  }
+
+  .work > p:not(.work__role) {
+    color: var(--ink-soft);
+  }
+
+  .work .tag-list {
+    margin-bottom: 24px;
+  }
+
+  .work__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: auto;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .work__link:hover {
+    gap: 10px;
+  }
+
+  .story__grid {
+    display: grid;
+    gap: 48px;
+    align-items: center;
+  }
+
+  @media (min-width: 900px) {
+    .story__grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 72px;
+    }
+  }
+
+  .story .lead {
+    margin-bottom: 14px;
+  }
+
+  .story .muted {
+    margin-bottom: 28px;
+  }
+
+  .journey {
+    position: relative;
+    display: grid;
+    gap: 22px;
+    margin: 0;
+    padding: 0 0 0 32px;
+    list-style: none;
+  }
+
+  .journey::before {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: linear-gradient(var(--turquoise), var(--saffron));
+    border-radius: 2px;
+  }
+
+  .journey li {
+    position: relative;
+    display: grid;
+    gap: 2px;
+  }
+
+  .journey li::before {
+    content: '';
+    position: absolute;
+    left: -30px;
+    top: 5px;
+    width: 12px;
+    height: 12px;
+    background: var(--surface);
+    border: 2px solid var(--turquoise);
+    transform: rotate(45deg);
+    border-radius: 2px;
+  }
+
+  .journey li:last-child::before {
+    background: var(--saffron);
+    border-color: var(--saffron);
+  }
+
+  .journey__when {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--turquoise-strong);
+  }
+
+  .journey__what {
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .strength__title {
+    margin-top: 18px;
+  }
+
+  .center-link {
+    margin: 36px 0 0;
+    text-align: center;
+    font-weight: 600;
+  }
+
+  .center-link a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+  }
+</style>

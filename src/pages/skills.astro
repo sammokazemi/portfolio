@@ -1,0 +1,163 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import { skills } from '../data/site';
+
+const practices = [
+  {
+    title: 'Security by default',
+    text: 'MFA, session management, audit logging, and role-based access control designed in from day one, not bolted on.',
+  },
+  {
+    title: 'Architecture that scales',
+    text: 'Multi-portal systems with clear role boundaries, a single source of truth, and shared components that hold up as the product grows.',
+  },
+  {
+    title: 'Automated delivery',
+    text: 'CI/CD pipelines that make deployments faster and safer, with checks that stop problems before they reach users.',
+  },
+  {
+    title: 'Domain fluency',
+    text: 'Comfortable in regulated domains: CCM/RPM programs, Medicare billing with CPT and ICD-10, EHR workflows, and union operations.',
+  },
+];
+---
+
+<Base
+  title="Skills"
+  description="Technical skills of Sām Kazemi: React, JavaScript, TypeScript, Python, AWS, CI/CD, HIPAA, Medicare billing, and more."
+>
+  <PageHeader
+    eyebrow="Skills"
+    title="The tools behind the work"
+    lead="Full-stack JavaScript and React, AWS infrastructure, and deep familiarity with regulated healthcare. Plus two languages I think in."
+  />
+
+  <section class="section">
+    <div class="container">
+      <div class="grid grid--2">
+        {
+          skills.map((s, i) => (
+            <div class="card skill reveal" style={`--delay: ${(i % 2) * 0.08}s`}>
+              <div class="skill__head">
+                <span class="icon-badge">
+                  <Icon name={s.icon} />
+                </span>
+                <h2>{s.group}</h2>
+              </div>
+              <ul class="skill__list">
+                {s.items.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">How I work</p>
+        <h2>Engineering practices I bring to every team</h2>
+      </div>
+      <ol class="practices">
+        {
+          practices.map((p, i) => (
+            <li class="reveal" style={`--delay: ${i * 0.06}s`}>
+              <span class="practices__num">{String(i + 1).padStart(2, '0')}</span>
+              <div>
+                <h3>{p.title}</h3>
+                <p class="muted">{p.text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .skill__head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 22px;
+  }
+
+  .skill__head h2 {
+    margin: 0;
+    font-size: 1.25rem;
+  }
+
+  .skill__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .skill__list li {
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--bg);
+    font-size: 0.925rem;
+    font-weight: 500;
+    color: var(--ink);
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .skill__list li:hover {
+    border-color: var(--turquoise);
+    background: var(--turquoise-tint);
+  }
+
+  .practices {
+    display: grid;
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (min-width: 800px) {
+    .practices {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px 48px;
+    }
+  }
+
+  .practices li {
+    display: flex;
+    gap: 20px;
+    padding: 24px 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .practices__num {
+    flex: none;
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-style: italic;
+    color: var(--saffron);
+    line-height: 1.2;
+  }
+
+  .practices h3 {
+    margin-bottom: 6px;
+  }
+
+  .practices p {
+    margin: 0;
+  }
+</style>

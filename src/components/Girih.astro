@@ -1,0 +1,49 @@
+---
+// Tiled eight-pointed star (khatam) pattern, the motif of Persian tilework.
+interface Props {
+  id: string;
+  size?: number;
+  class?: string;
+}
+
+const { id, size = 64, class: className } = Astro.props;
+
+const c = size / 2;
+const star = (outer: number) => {
+  const inner = outer * (Math.cos(Math.PI / 4) / Math.cos(Math.PI / 8));
+  return Array.from({ length: 16 }, (_, i) => {
+    const r = i % 2 === 0 ? outer : inner;
+    const a = (i * Math.PI) / 8 - Math.PI / 2;
+    return `${(c + r * Math.cos(a)).toFixed(2)},${(c + r * Math.sin(a)).toFixed(2)}`;
+  }).join(' ');
+};
+const big = star(size / 2);
+const small = star(size / 4.4);
+---
+
+<svg class:list={['girih', className]} aria-hidden="true" focusable="false">
+  <defs>
+    <pattern id={id} width={size} height={size} patternUnits="userSpaceOnUse">
+      <g fill="none" stroke="currentColor" stroke-width="1">
+        <polygon points={big} />
+        <polygon points={small} />
+        <circle cx="0" cy="0" r={size / 9} />
+        <circle cx={size} cy="0" r={size / 9} />
+        <circle cx="0" cy={size} r={size / 9} />
+        <circle cx={size} cy={size} r={size / 9} />
+      </g>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill={`url(#${id})`} />
+</svg>
+
+<style>
+  .girih {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    color: var(--pattern);
+    pointer-events: none;
+  }
+</style>

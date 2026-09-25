@@ -1,0 +1,67 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { url } from '../../lib/url';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const fmt = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
+---
+
+<Base title={post.data.title} description={post.data.description}>
+  <article class="section">
+    <div class="container article">
+      <a class="back" href={url('/blog')}><Icon name="arrow-left" size={16} /> All writing</a>
+      <p class="meta">
+        <span class="tag">{post.data.category}</span>
+        <time datetime={post.data.date.toISOString()}>{fmt.format(post.data.date)}</time>
+      </p>
+      <h1>{post.data.title}</h1>
+      <p class="lead">{post.data.description}</p>
+      <div class="prose">
+        <Content />
+      </div>
+    </div>
+  </article>
+  <CtaBand />
+</Base>
+
+<style>
+  .article {
+    max-width: 760px;
+  }
+
+  .back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 28px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  .article h1 {
+    font-size: clamp(2rem, 4.5vw, 3rem);
+  }
+
+  .article .lead {
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 28px;
+  }
+</style>

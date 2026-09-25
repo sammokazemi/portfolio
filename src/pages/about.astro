@@ -1,0 +1,250 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import { site } from '../data/site';
+
+const values = [
+  {
+    icon: 'target',
+    title: 'Discipline',
+    text: 'Nothing about this path was handed to me. Consistency, not luck, is what carried me from community college to leading engineering teams.',
+  },
+  {
+    icon: 'compass',
+    title: 'Identity',
+    text: 'Knowing where I come from keeps me grounded. My heritage is not a side note to my career. It is the foundation under it.',
+  },
+  {
+    icon: 'users',
+    title: 'Service',
+    text: 'I build for patients, workers, and communities, and I measure my work by whether it makes their lives easier.',
+  },
+  {
+    icon: 'book-open',
+    title: 'Education',
+    text: 'Education changed my life. I want to open that same door for others as a mentor, educator, and community leader.',
+  },
+] as const;
+---
+
+<Base
+  title="About"
+  description="Sām Kazemi's story: from Antioch, California to Lead Software Engineer, and why he reclaimed his name and his Iranian heritage."
+>
+  <PageHeader
+    eyebrow="About me"
+    title="An engineer shaped by where he comes from"
+    lead="Lead Software Engineer, SFSU computer science graduate, and a proud Iranian-American committed to advancing his community through education, cultural awareness, and advocacy."
+  />
+
+  <section class="section">
+    <div class="container about">
+      <aside class="about__aside reveal">
+        <div class="name-card card">
+          <p class="name-card__fa persian" lang="fa">{site.persianName}</p>
+          <p class="name-card__en">{site.name}</p>
+          <p class="name-card__note">Pronounced “Saam,” not short for Samuel.</p>
+          <dl class="facts">
+            <div>
+              <dt><Icon name="map-pin" size={16} /> Roots</dt>
+              <dd>Antioch, California</dd>
+            </div>
+            <div>
+              <dt><Icon name="graduation-cap" size={16} /> Education</dt>
+              <dd>B.S. Computer Science, SFSU · Minor in Persian Studies</dd>
+            </div>
+            <div>
+              <dt><Icon name="briefcase" size={16} /> Now</dt>
+              <dd>Lead Software Engineer, MedManage Solutions · Lead Engineer, Workforce Systems</dd>
+            </div>
+            <div>
+              <dt><Icon name="languages" size={16} /> Languages</dt>
+              <dd>English, Persian</dd>
+            </div>
+          </dl>
+        </div>
+      </aside>
+
+      <div class="prose">
+        <div class="reveal">
+          <h2>Where I come from</h2>
+          <p>
+            I was born and raised in Antioch, California. Growing up, I watched gang violence take a
+            real toll on friends and family, close enough to see how quickly a life can narrow when
+            the options run out. That experience taught me early that nobody was going to hand me a
+            way out. I would have to build one.
+          </p>
+          <p>
+            I decided education would be that way out. I started at Los Medanos College in Pittsburg,
+            made the Honor Roll while completing my lower-division computer science coursework, and
+            transferred to San Francisco State University. In August 2026 I graduated with a B.S. in
+            Computer Science, a 3.53 GPA, a place on the Dean’s List, and a minor in Persian Studies.
+          </p>
+        </div>
+
+        <div class="reveal">
+          <h2>Why computer science</h2>
+          <p>
+            I didn’t grow up around engineers. What changed my direction was watching a close friend
+            build a successful career in software. It showed me, up close, what the field could make
+            possible: financial stability, real opportunity, and the chance to break the cycle of
+            poverty for yourself and your family. The more I learned about computing, the more I
+            understood its reach, and I committed to it completely.
+          </p>
+          <p>
+            That commitment turned into responsibility quickly. As Lead Software Engineer at
+            MedManage Solutions, I architected <strong>ClearPath Virtual Health</strong> from the
+            ground up: a HIPAA-compliant platform that helps care teams support patients living with
+            chronic conditions. I lead its development, from scalable features and clinical
+            workflows to a distributed engineering team. I’m also Lead Engineer at{' '}
+            <strong>Workforce Systems</strong>, a startup building software for labor unions, where I
+            design the platform and help secure contracts with the unions we serve.
+          </p>
+        </div>
+
+        <div class="reveal">
+          <h2>Why Sām</h2>
+          <p>
+            I was born Mojtaba Kazemi. As I studied Iranian history, I learned where that name came
+            from and came to understand it as a slave name, one imposed on my people rather than
+            drawn from our own culture. I chose to reclaim a name that is ours.
+          </p>
+          <blockquote>
+            Sām is a name from Iran’s own epic tradition, carried by a hero of Ferdowsi’s{' '}
+            <em>Shāhnāmeh</em>.
+          </blockquote>
+          <p>
+            Sām (<span class="persian" lang="fa">سام</span>) is not a shortened Samuel. It is a
+            Persian name with its own history, and carrying it is a daily reminder of who I am and
+            who I answer to. You will still see “Mojtaba (Sām) Kazemi” on some official records.
+          </p>
+        </div>
+
+        <div class="reveal">
+          <h2>Heritage and community</h2>
+          <p>
+            My minor in Persian Studies was not a side interest. My long-term goal is to be an
+            Iranocentric scholar, educator, and community leader: someone who helps Iranians,
+            especially in the diaspora, know their history, language, and culture, and who advocates
+            for them.
+          </p>
+          <p>
+            I bring the same discipline to that mission that I bring to engineering. As a mentor in
+            the MESA Program at San Francisco State, I help other students navigate academic and
+            career decisions. I know firsthand how much one person showing you what’s possible can
+            change your trajectory. My aim is to be that person for others, and to build success
+            that is grounded in identity and values.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="container">
+      <div class="section-head section-head--center reveal">
+        <p class="eyebrow">What I stand on</p>
+        <h2>The values behind the work</h2>
+      </div>
+      <div class="grid grid--4">
+        {
+          values.map((v, i) => (
+            <div class="card reveal" style={`--delay: ${i * 0.07}s`}>
+              <span class="icon-badge">
+                <Icon name={v.icon} />
+              </span>
+              <h3 class="value__title">{v.title}</h3>
+              <p class="muted">{v.text}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .about {
+    display: grid;
+    gap: 48px;
+  }
+
+  @media (min-width: 960px) {
+    .about {
+      grid-template-columns: 340px 1fr;
+      gap: 72px;
+      align-items: start;
+    }
+    .about__aside {
+      position: sticky;
+      top: 104px;
+    }
+  }
+
+  .prose h2:first-child {
+    margin-top: 0;
+  }
+
+  .prose strong {
+    color: var(--ink);
+  }
+
+  .name-card {
+    overflow: hidden;
+    border-top: 4px solid var(--saffron);
+  }
+
+  .name-card__fa {
+    margin: 0;
+    font-size: 3rem;
+    line-height: 1.9;
+    color: var(--turquoise-strong);
+    text-align: left;
+  }
+
+  .name-card__en {
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  .name-card__note {
+    margin: 4px 0 20px;
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+
+  .facts {
+    display: grid;
+    gap: 14px;
+    margin: 0;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+  }
+
+  .facts dt {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--turquoise-strong);
+  }
+
+  .facts dd {
+    margin: 2px 0 0;
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+  }
+
+  .value__title {
+    margin-top: 18px;
+  }
+</style>
