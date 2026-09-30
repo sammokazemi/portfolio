@@ -30,7 +30,9 @@ const oldPersianText = encodeURIComponent(site.oldPersianName);
     <link rel="icon" type="image/png" sizes="192x192" href={url('/favicon-192.png')} />
     <link rel="apple-touch-icon" href={url('/apple-touch-icon.png')} />
     <link rel="sitemap" href={url('/sitemap-index.xml')} />
-    <meta name="theme-color" content="#fbf8f1" />
+    <!-- Gold so link previews (Discord's embed stripe) match the brand. Browsers
+         never see it: the theme script below swaps in the page background. -->
+    <meta name="theme-color" content="#c8962b" />
 
     <meta property="og:type" content="website" />
     <meta property="og:title" content={fullTitle} />
