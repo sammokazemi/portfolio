@@ -31,7 +31,7 @@ const projects = [
     liveLabel: 'workforcesystems.net',
     image: wfsPreview,
     imageAlt: 'Union Workforce Ecosystem operations dashboard beside the member app clock-in screen',
-    text: 'A five-portal labor workforce platform, built at Workforce Systems for a union, unifying dispatch, dues, grievances, training, and benefits into one system of record, with a carrier-agnostic health coverage model and a shared design system.',
+    text: 'A five-portal workforce platform built for a union, unifying dispatch, dues, grievances, training, and benefits into one system of record, with a carrier-agnostic health coverage model and a shared design system.',
     tags: ['Platform design', 'Design system', 'Node.js tooling', 'Mobile UI'],
   },
 ] as const;
@@ -115,9 +115,9 @@ const projects = [
     .project {
       grid-template-columns: 0.85fr 1.15fr;
     }
-    /* The WFS screenshot is landscape, so its panel takes the wider column. */
+    /* Mirror the columns so the text keeps the wider one and both cards stay the same height. */
     .project:nth-child(even) {
-      grid-template-columns: 0.85fr 1.15fr;
+      grid-template-columns: 1.15fr 0.85fr;
     }
     .project:nth-child(even) .project__visual {
       order: 2;

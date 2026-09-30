@@ -193,9 +193,6 @@ const strengths = [
       <JourneyGraph events={journey} class="story__journey reveal" style="--delay: 0.1s" />
 
       <figure class="story__photo story__photo--grad reveal" style="--delay: 0.1s">
-        <div class="story__backdrop" aria-hidden="true">
-          <Rosettes id="story-rosettes" size={44} />
-        </div>
         <Image
           src={graduationPhoto}
           alt="Sām Kazemi with classmates in purple caps and gowns at the SFSU commencement at Oracle Park, holding his diploma"
@@ -477,12 +474,12 @@ const strengths = [
   .story__photo--grad {
     grid-area: grad;
     /* Leave room for the backdrop offset so it stays inside the page. */
-    width: min(100% - 18px, 440px);
+    width: min(100% - 14px, 440px);
     margin-top: 18px;
   }
 
-  /* Hoodie photo: gold outline offset down-left. */
-  .story__photo:not(.story__photo--grad)::before {
+  /* Gold outline behind each photo: down-left for the hoodie, mirrored up-right for graduation. */
+  .story__photo::before {
     content: '';
     position: absolute;
     inset: -14px 14px 14px -14px;
@@ -490,17 +487,8 @@ const strengths = [
     border-radius: 24px;
   }
 
-  /* Graduation photo: polished-gold rosette panel offset up-right, the mirror image. */
-  .story__backdrop {
-    position: absolute;
-    inset: -18px -18px 18px 18px;
-    overflow: hidden;
-    border-radius: 24px;
-    background: var(--gold-metal);
-  }
-
-  .story__backdrop :global(.rosettes) {
-    color: rgba(31, 26, 18, 0.12);
+  .story__photo--grad::before {
+    inset: -14px -14px 14px 14px;
   }
 
   .story__photo :global(.story__img) {
