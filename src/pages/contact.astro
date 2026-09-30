@@ -2,77 +2,416 @@
 import Base from '../layouts/Base.astro';
 import PageHeader from '../components/PageHeader.astro';
 import Icon from '../components/Icon.astro';
+import { Image } from 'astro:assets';
 import { site, socials } from '../data/site';
-import { url } from '../lib/url';
-
-const reasons = [
-  'Engineering roles and technical leadership in health tech or labor tech',
-  'Unions and healthcare organizations exploring better software',
-  'Speaking, mentorship, or collaboration with the Iranian community',
-  'Students who want advice on transferring into computer science',
-];
+import benchPhoto from '../assets/photos/contact-bench.jpg';
+import { splitEmail } from '../lib/text';
 
 const linked = socials.filter((s) => !s.placeholder);
+
+const [emailUser, emailDomain] = splitEmail(site.email);
+const [workUser, workDomain] = splitEmail(site.workEmail);
 ---
 
 <Base title="Contact" description="Get in touch with Sām Kazemi by email, LinkedIn, or GitHub.">
   <PageHeader
     eyebrow="Contact"
     title="Let’s talk"
-    lead="Whether it’s a role, a project, or a conversation about community, I’d like to hear from you. Email is the fastest way to reach me."
+    lead="Whether it’s a role, a project, or a conversation about community, Sām would like to hear from you. Email is the fastest way to reach him."
   />
 
   <section class="section">
     <div class="container contact">
-      <div class="contact__main">
-        <a class="email card card--hover reveal" href={`mailto:${site.email}`}>
-          <span class="icon-badge"><Icon name="mail" /></span>
-          <span class="email__label">Email me</span>
-          <span class="email__address">{site.email}</span>
-          <span class="email__cta">Write an email <Icon name="arrow-right" size={16} /></span>
-        </a>
+      <div class="card contact__form-card reveal">
+        <h2>Send a message</h2>
+        <p class="form__intro">Fields marked <span class="req" aria-hidden="true">*</span> are required.</p>
 
-        <div class="grid grid--2 socials">
-          {
-            linked.map((s, i) => (
-              <a
-                class="social card card--hover reveal"
-                style={`--delay: ${0.06 + i * 0.06}s`}
-                href={s.href}
-                target="_blank"
-                rel="noopener me"
-              >
-                <span class="icon-badge">
-                  <Icon name={s.icon} />
-                </span>
-                <span>
-                  <span class="social__label">{s.label}</span>
-                  <span class="social__handle">{s.handle}</span>
-                </span>
-                <Icon name="arrow-up-right" size={18} class="social__arrow" />
-                <span class="visually-hidden">(opens in a new tab)</span>
-              </a>
-            ))
-          }
-        </div>
+        <form class="form" id="contact-form" novalidate data-fallback-email={site.email}>
+          <div class="form__row">
+            <div class="field">
+              <label for="cf-name">Name <span class="req" aria-hidden="true">*</span></label>
+              <input id="cf-name" name="name" type="text" autocomplete="name" maxlength="100" required />
+            </div>
+            <div class="field">
+              <label for="cf-email">Email <span class="req" aria-hidden="true">*</span></label>
+              <input id="cf-email" name="email" type="email" autocomplete="email" maxlength="254" required />
+            </div>
+          </div>
+
+          <div class="form__row">
+            <div class="field">
+              <label for="cf-company">Company <span class="opt">(optional)</span></label>
+              <input id="cf-company" name="company" type="text" autocomplete="organization" maxlength="120" />
+            </div>
+            <div class="field">
+              <label for="cf-when">Preferred date &amp; time <span class="opt">(optional)</span></label>
+              <input id="cf-when" name="when" type="datetime-local" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="cf-subject">Subject <span class="opt">(optional)</span></label>
+            <input id="cf-subject" name="subject" type="text" maxlength="150" />
+          </div>
+
+          <div class="field">
+            <label for="cf-message">Message <span class="req" aria-hidden="true">*</span></label>
+            <textarea id="cf-message" name="message" rows="6" maxlength="5000" required></textarea>
+          </div>
+
+          <!-- Cloudflare Turnstile renders here, and only becomes visible if it needs the visitor to click. -->
+          <div class="form__turnstile" id="contact-turnstile"></div>
+
+          <div class="form__status" id="contact-status" role="alert" aria-live="assertive" hidden></div>
+
+          <button type="submit" class="btn btn--primary form__submit">
+            <span class="form__spinner" aria-hidden="true"></span>
+            <span class="form__submit-label">Submit message</span>
+          </button>
+        </form>
       </div>
 
       <aside class="card contact__aside reveal" style="--delay: 0.1s">
-        <h2>Good reasons to reach out</h2>
-        <ul class="check-list">
-          {reasons.map((r) => <li>{r}</li>)}
+        <Image
+          src={benchPhoto}
+          alt="Sām Kazemi relaxing on a yellow bench in an Oakland A's cap"
+          widths={[460, 920]}
+          sizes="(min-width: 960px) 460px, calc(100vw - 32px)"
+          class="contact__photo"
+        />
+        <ul class="channels">
+          <li>
+            <a class="channel" href={`mailto:${site.email}`}>
+              <span class="icon-badge"><Icon name="mail" /></span>
+              <span class="channel__text">
+                <span class="channel__label">Email Sām</span>
+                <span class="channel__value">{emailUser}<wbr />{emailDomain}</span>
+              </span>
+              <Icon name="arrow-right" size={18} class="channel__arrow" />
+            </a>
+          </li>
+          <li>
+            <a class="channel" href={`mailto:${site.workEmail}`}>
+              <span class="icon-badge"><Icon name="mail" /></span>
+              <span class="channel__text">
+                <span class="channel__label">Work email</span>
+                <span class="channel__value">{workUser}<wbr />{workDomain}</span>
+              </span>
+              <Icon name="arrow-right" size={18} class="channel__arrow" />
+            </a>
+          </li>
+          <li class="channels__pair">
+            {
+              linked.map((s) => (
+                <a class="channel" href={s.href} target="_blank" rel="noopener me">
+                  <span class="icon-badge">
+                    <Icon name={s.icon} />
+                  </span>
+                  <span class="channel__text">
+                    <span class="channel__label">{s.label}</span>
+                    <span class="channel__value">{s.handle}</span>
+                  </span>
+                  <span class="visually-hidden">(opens in a new tab)</span>
+                </a>
+              ))
+            }
+          </li>
         </ul>
-        <div class="contact__loc">
-          <Icon name="map-pin" size={18} />
-          <span>Based in the {site.location}</span>
-        </div>
-        <a class="btn btn--ghost" href={url('/resume')}>
-          <Icon name="file-text" /> View my resume
-        </a>
       </aside>
     </div>
   </section>
 </Base>
+
+<script>
+  import { PUBLIC_CONTACT_API_URL, PUBLIC_TURNSTILE_SITE_KEY } from 'astro:env/client';
+
+  // The API lives in worker/ (a Cloudflare Worker). Every check here is repeated
+  // on the server; these only give faster, friendlier feedback.
+
+  interface TurnstileApi {
+    render(container: HTMLElement, options: Record<string, unknown>): string | undefined;
+    reset(widgetId: string): void;
+  }
+
+  interface ApiResult {
+    ok?: boolean;
+    error?: string;
+    fields?: Record<string, unknown>;
+  }
+
+  declare global {
+    interface Window {
+      turnstile?: TurnstileApi;
+      onContactTurnstileLoad?: () => void;
+    }
+  }
+
+  type Kind = 'error' | 'notice' | 'success';
+
+  const FIELD_IDS: Record<string, string> = {
+    name: 'cf-name',
+    email: 'cf-email',
+    company: 'cf-company',
+    subject: 'cf-subject',
+    when: 'cf-when',
+    message: 'cf-message',
+  };
+  const REQUEST_TIMEOUT_MS = 20_000;
+  const TOKEN_WAIT_MS = 15_000;
+
+  /**
+   * Loads Cloudflare Turnstile on first use and hands out single-use tokens.
+   * The widget stays invisible unless Cloudflare needs the visitor to click.
+   */
+  function createVerifier(container: HTMLElement, siteKey: string) {
+    let widgetId: string | undefined;
+    let token = '';
+    let loading = false;
+    const waiters = new Set<(token: string) => void>();
+    const settle = (value: string) => {
+      waiters.forEach((resolve) => resolve(value));
+      waiters.clear();
+    };
+
+    function load() {
+      if (loading) return;
+      loading = true;
+      window.onContactTurnstileLoad = () => {
+        widgetId = window.turnstile?.render(container, {
+          sitekey: siteKey,
+          action: 'contact',
+          theme: document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light',
+          appearance: 'interaction-only',
+          'response-field': false,
+          'refresh-expired': 'auto',
+          callback: (value: string) => {
+            token = value;
+            settle(value);
+          },
+          'expired-callback': () => {
+            token = '';
+          },
+          'error-callback': () => {
+            token = '';
+            settle('');
+          },
+          // Only now does the widget take up space (see .form__turnstile).
+          'before-interactive-callback': () => {
+            container.dataset.interactive = '';
+          },
+        });
+      };
+      const script = document.createElement('script');
+      script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=onContactTurnstileLoad';
+      script.async = true;
+      script.onerror = () => {
+        script.remove();
+        loading = false;
+        settle('');
+      };
+      document.head.append(script);
+    }
+
+    /** True while the visible checkbox is waiting for the visitor to click it. */
+    const needsClick = () => !token && 'interactive' in container.dataset;
+
+    return {
+      load,
+      needsClick,
+      /** Resolves with a token, or an empty string if none arrives in time. */
+      token(): Promise<string> {
+        load();
+        if (token) return Promise.resolve(token);
+        // No point waiting on a checkbox nobody has clicked yet.
+        if (needsClick()) return Promise.resolve('');
+        return new Promise((resolve) => {
+          const done = (value: string) => {
+            clearTimeout(timer);
+            waiters.delete(done);
+            resolve(value);
+          };
+          const timer = setTimeout(() => done(''), TOKEN_WAIT_MS);
+          waiters.add(done);
+        });
+      },
+      /** Tokens are single-use, so fetch a fresh one after every submission. */
+      reset() {
+        token = '';
+        delete container.dataset.interactive;
+        if (widgetId !== undefined) window.turnstile?.reset(widgetId);
+      },
+    };
+  }
+
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const status = document.getElementById('contact-status') as HTMLElement | null;
+  const turnstileBox = document.getElementById('contact-turnstile') as HTMLElement | null;
+
+  if (form && status && turnstileBox) {
+    const fallbackEmail = form.dataset.fallbackEmail ?? '';
+    const submit = form.querySelector<HTMLButtonElement>('.form__submit')!;
+    const submitLabel = submit.querySelector<HTMLElement>('.form__submit-label')!;
+    const field = (name: string) =>
+      document.getElementById(FIELD_IDS[name]!) as HTMLInputElement | HTMLTextAreaElement;
+    const fields = Object.keys(FIELD_IDS).map(field);
+    const required = ['name', 'email', 'message'].map(field);
+    const whenInput = field('when') as HTMLInputElement;
+
+    const verifier =
+      PUBLIC_CONTACT_API_URL && PUBLIC_TURNSTILE_SITE_KEY
+        ? createVerifier(turnstileBox, PUBLIC_TURNSTILE_SITE_KEY)
+        : null;
+    let sending = false;
+
+    const emailLink = () => {
+      const link = document.createElement('a');
+      link.href = `mailto:${fallbackEmail}`;
+      link.textContent = fallbackEmail;
+      return link;
+    };
+
+    /** Shows a status message. Parts are text or nodes, never HTML strings. */
+    const show = (kind: Kind, ...parts: (string | Node)[]) => {
+      status.replaceChildren(...parts);
+      status.dataset.kind = kind;
+      status.hidden = false;
+    };
+
+    const clearInvalid = (el: HTMLElement) => {
+      el.removeAttribute('aria-invalid');
+      el.removeAttribute('aria-describedby');
+    };
+
+    /** Flags exactly these fields as invalid, points them at the message, and focuses the first. */
+    const markInvalid = (invalid: HTMLElement[]) => {
+      fields.forEach(clearInvalid);
+      invalid.forEach((el) => {
+        el.setAttribute('aria-invalid', 'true');
+        el.setAttribute('aria-describedby', 'contact-status');
+      });
+      invalid[0]?.focus();
+    };
+
+    const setSending = (on: boolean) => {
+      sending = on;
+      submit.setAttribute('aria-disabled', String(on));
+      form.setAttribute('aria-busy', String(on));
+      submitLabel.textContent = on ? 'Sending…' : 'Submit message';
+    };
+
+    const unavailable = (lead: string) => show('error', `${lead}, or email `, emailLink(), ' directly.');
+
+    fields.forEach((el) => el.addEventListener('input', () => clearInvalid(el)));
+
+    // Start the bot check as soon as someone begins filling in the form, so a
+    // token is usually ready by the time they press Submit.
+    form.addEventListener('focusin', () => verifier?.load(), { once: true });
+
+    const handleFailure = (httpStatus: number, result: ApiResult | null) => {
+      const messages = Object.entries(result?.fields ?? {}).filter(
+        (entry): entry is [string, string] => typeof entry[1] === 'string',
+      );
+
+      if (httpStatus === 400 && messages.length) {
+        markInvalid(messages.filter(([name]) => name in FIELD_IDS).map(([name]) => field(name)));
+        show('error', messages.map(([, text]) => text).join(' '));
+      } else if (httpStatus === 429) {
+        show('error', 'You’ve sent several messages in the last minute. Please wait a moment and try again.');
+      } else if (httpStatus === 403 && result?.error === 'verification_failed') {
+        show('error', 'We couldn’t confirm this message came from a person. Please try sending it again.');
+      } else if (httpStatus === 413) {
+        show('error', 'Your message is too long to send. Please shorten it and try again.');
+      } else {
+        unavailable('Your message couldn’t be sent right now. Please try again in a few minutes');
+      }
+    };
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (sending) return;
+
+      const missing = required.filter((el) => !el.value.trim());
+      if (missing.length) {
+        markInvalid(missing);
+        show('error', 'Please fill in all required fields: name, email, and message.');
+        return;
+      }
+      const email = field('email');
+      if (!email.checkValidity()) {
+        markInvalid([email]);
+        show('error', 'Please enter a valid email address.');
+        return;
+      }
+      if (whenInput.validity.badInput) {
+        markInvalid([whenInput]);
+        show('error', 'Please enter a complete date and time, or clear the field.');
+        return;
+      }
+      markInvalid([]);
+
+      if (!verifier || !PUBLIC_CONTACT_API_URL) {
+        show('notice', 'The contact form isn’t available right now. Please email ', emailLink(), ' instead.');
+        return;
+      }
+
+      setSending(true);
+      status.hidden = true;
+      let tokenUsed = false;
+      try {
+        const turnstileToken = await verifier.token();
+        if (!turnstileToken) {
+          if (verifier.needsClick()) {
+            show('error', 'Please tick “Verify you are human” above the button, then send your message again.');
+          } else {
+            show('error', 'We couldn’t verify your browser. Please try again in a moment, or email ', emailLink(), '.');
+          }
+          return;
+        }
+
+        const data = new FormData(form);
+        const value = (key: string) => String(data.get(key) ?? '').trim();
+        const when = value('when');
+        const payload = {
+          name: value('name'),
+          email: value('email'),
+          company: value('company'),
+          subject: value('subject'),
+          when,
+          timeZone: when ? Intl.DateTimeFormat().resolvedOptions().timeZone : '',
+          message: value('message'),
+          turnstileToken,
+        };
+
+        tokenUsed = true;
+        const response = await fetch(PUBLIC_CONTACT_API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+          credentials: 'omit',
+          referrerPolicy: 'strict-origin',
+          signal: 'timeout' in AbortSignal ? AbortSignal.timeout(REQUEST_TIMEOUT_MS) : undefined,
+        });
+        const result = (await response.json().catch(() => null)) as ApiResult | null;
+
+        if (response.ok && result?.ok) {
+          const firstName = payload.name.split(' ')[0];
+          form.reset();
+          show(
+            'success',
+            `Thanks, ${firstName}! Your message is on its way, and Sām will get back to you at ${payload.email}.`,
+          );
+          return;
+        }
+        handleFailure(response.status, result);
+      } catch {
+        unavailable('Your message couldn’t be sent. Check your connection and try again');
+      } finally {
+        if (tokenUsed) verifier.reset();
+        setSending(false);
+      }
+    });
+  }
+</script>
 
 <style>
   .contact {
@@ -88,106 +427,270 @@ const linked = socials.filter((s) => !s.placeholder);
     }
   }
 
-  .contact__main {
-    display: grid;
-    gap: 24px;
+  .contact__form-card h2 {
+    font-size: 1.3rem;
+    margin-bottom: 6px;
   }
 
-  .email {
+  .form__intro {
+    margin: 0 0 22px;
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+
+  .form {
+    display: grid;
+    gap: 18px;
+  }
+
+  .form__row {
+    display: grid;
+    gap: 18px;
+  }
+
+  @media (min-width: 640px) {
+    .form__row {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .field {
     display: grid;
     gap: 6px;
-    padding: clamp(28px, 4vw, 44px);
+    min-width: 0;
+  }
+
+  .field label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .req {
+    color: var(--gold-strong);
+  }
+
+  .opt {
+    font-weight: 400;
+    color: var(--muted);
+  }
+
+  .field input,
+  .field textarea {
+    width: 100%;
+    padding: 11px 14px;
+    font: inherit;
+    font-size: 0.95rem;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .field textarea {
+    resize: vertical;
+    min-height: 140px;
+  }
+
+  .field input:focus,
+  .field textarea:focus {
+    outline: none;
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--gold-bright) 35%, transparent);
+  }
+
+  .field [aria-invalid='true'] {
+    border-color: #b3261e;
+  }
+
+  .form__status {
+    padding: 12px 14px;
+    font-size: 0.925rem;
+    line-height: 1.5;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+  }
+
+  .form__status[data-kind='error'] {
+    color: #8c1d18;
+    background: #fdecea;
+    border-color: #f2b8b5;
+  }
+
+  .form__status[data-kind='notice'] {
+    color: var(--gold-deep);
+    background: var(--gold-tint);
+    border-color: var(--gold);
+  }
+
+  :global(:root[data-theme='dark']) .form__status[data-kind='error'] {
+    color: #f6b8b3;
+    background: #3a1a18;
+    border-color: #7a2e29;
+  }
+
+  :global(:root[data-theme='dark']) .form__status[data-kind='notice'] {
+    color: var(--gold-bright);
+  }
+
+  .form__status[data-kind='success'] {
+    color: #1d5a37;
+    background: #e7f4ec;
+    border-color: #9fd3b3;
+  }
+
+  :global(:root[data-theme='dark']) .form__status[data-kind='success'] {
+    color: #a9e0bf;
+    background: #13281c;
+    border-color: #2e5c41;
+  }
+
+  .form__status :global(a) {
+    color: inherit;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    overflow-wrap: anywhere;
+  }
+
+  /* Turnstile stays invisible unless it needs a click. Until then, keep its
+     container out of the grid so it doesn't add an empty row and gap. */
+  .form__turnstile:not([data-interactive]) {
+    position: absolute;
+  }
+
+  .form__submit {
+    justify-self: start;
+    cursor: pointer;
+  }
+
+  .form__submit[aria-disabled='true'] {
+    cursor: progress;
+    opacity: 0.8;
+    transform: none;
+  }
+
+  .form__spinner {
+    display: none;
+    width: 16px;
+    height: 16px;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: form-spin 0.8s linear infinite;
+  }
+
+  .form__submit[aria-disabled='true'] .form__spinner {
+    display: inline-block;
+  }
+
+  @keyframes form-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .form__spinner {
+      animation-duration: 2.4s;
+    }
+  }
+
+  .channels {
+    margin: 0;
+    border-top: 1px solid var(--line);
+    padding: 0;
+    list-style: none;
+  }
+
+  .channels li + li {
+    border-top: 1px solid var(--line);
+  }
+
+  .channel {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
     color: inherit;
     text-decoration: none;
-    border-top: 4px solid var(--turquoise);
   }
 
-  .email:hover {
+  .channel .icon-badge {
+    flex: none;
+    width: 36px;
+    height: 36px;
+  }
+
+  .channel .icon-badge :global(svg) {
+    width: 18px;
+    height: 18px;
+  }
+
+  .channel:hover {
     color: inherit;
   }
 
-  .email .icon-badge {
-    margin-bottom: 14px;
+  .channels__pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
   }
 
-  .email__label {
-    font-size: 0.8rem;
+  .channels__pair .channel {
+    gap: 10px;
+    padding-inline: 14px;
+  }
+
+  .channels__pair .channel + .channel {
+    border-left: 1px solid var(--line);
+  }
+
+  /* Wraps rather than truncating, so a long name like "Mojtaba (Sām) Kazemi" stays readable. */
+  .channels__pair .channel__value {
+    font-size: 0.85rem;
+  }
+
+  .channel__text {
+    display: grid;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .channel__label {
+    font-size: 0.7rem;
     font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--muted);
   }
 
-  .email__address {
-    font-size: clamp(1.05rem, 2.2vw, 1.45rem);
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    color: var(--ink);
-    overflow-wrap: anywhere;
-  }
-
-  .email__cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    margin-top: 10px;
-    font-weight: 600;
-    color: var(--turquoise-strong);
-  }
-
-  .social {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    color: inherit;
-    text-decoration: none;
-  }
-
-  .social:hover {
-    color: inherit;
-  }
-
-  .social > span:nth-child(2) {
-    display: grid;
-    min-width: 0;
-  }
-
-  .social__label {
+  .channel__value {
+    font-size: 0.95rem;
     font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    /* A last resort only: the <wbr> before the @ is the preferred break. */
+    overflow-wrap: break-word;
   }
 
-  .social__handle {
-    font-size: 0.875rem;
-    color: var(--muted);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .social :global(.social__arrow) {
+  .channel :global(.channel__arrow) {
     margin-left: auto;
     flex: none;
-    color: var(--turquoise);
+    color: var(--gold);
   }
 
-  .contact__aside h2 {
-    font-size: 1.3rem;
-    margin-bottom: 18px;
+  .contact__aside {
+    overflow: hidden;
+    padding: 0;
   }
 
-  .contact__loc {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin: 24px 0 20px;
-    padding-top: 20px;
-    border-top: 1px solid var(--line);
-    color: var(--ink-soft);
-    font-weight: 500;
-  }
-
-  .contact__loc :global(svg) {
-    color: var(--turquoise);
-    flex: none;
+  .contact__aside :global(.contact__photo) {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 5 / 4;
+    object-fit: cover;
+    object-position: 50% 0%;
   }
 </style>

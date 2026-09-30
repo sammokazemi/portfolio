@@ -1,0 +1,64 @@
+---
+// Tiled twelve-petal rosettes, the emblem carved throughout Persepolis.
+interface Props {
+  id: string;
+  size?: number;
+  class?: string;
+}
+
+const { id, size = 64, class: className } = Astro.props;
+
+const rosette = (cx: number, cy: number, r: number) => ({
+  cx,
+  cy,
+  r,
+  petals: Array.from({ length: 12 }, (_, i) => i * 30),
+});
+
+const c = size / 2;
+const main = rosette(c, c, size * 0.3);
+const corners = [
+  [0, 0],
+  [size, 0],
+  [0, size],
+  [size, size],
+].map(([x, y]) => rosette(x, y, size * 0.16));
+---
+
+<svg class:list={['rosettes', className]} aria-hidden="true" focusable="false">
+  <defs>
+    <pattern id={id} width={size} height={size} patternUnits="userSpaceOnUse">
+      <g fill="none" stroke="currentColor" stroke-width="1">
+        {
+          [main, ...corners].map((ro) => (
+            <g transform={`translate(${ro.cx} ${ro.cy})`}>
+              <circle r={ro.r} />
+              <circle r={ro.r * 0.2} />
+              {ro.petals.map((a) => (
+                <ellipse
+                  cx="0"
+                  cy={-ro.r * 0.56}
+                  rx={ro.r * 0.14}
+                  ry={ro.r * 0.34}
+                  transform={`rotate(${a})`}
+                />
+              ))}
+            </g>
+          ))
+        }
+      </g>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill={`url(#${id})`} />
+</svg>
+
+<style>
+  .rosettes {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    color: var(--pattern);
+    pointer-events: none;
+  }
+</style>

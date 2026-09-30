@@ -1,85 +1,85 @@
 ---
 import Icon from './Icon.astro';
 import Logo from './Logo.astro';
-import Girih from './Girih.astro';
 import { site, socials, nav } from '../data/site';
 import { url } from '../lib/url';
+import { splitEmail } from '../lib/text';
 
 const year = new Date().getFullYear();
+const explore = nav.slice(0, 3);
+const more = nav.slice(3);
+const profiles = socials.filter((s) => !s.placeholder);
+const emails = [site.email, site.workEmail].map(splitEmail);
 ---
 
 <footer class="footer">
-  <div class="footer__band" aria-hidden="true">
-    <Girih id="footer-girih" size={48} />
-  </div>
+  <div class="footer__band" aria-hidden="true"></div>
 
-  <div class="container footer__grid">
-    <div class="footer__brand">
-      <a href={url('/')} class="footer__logo" aria-label="Sām Kazemi, home"><Logo /></a>
-      <p>{site.tagline}</p>
-      <a class="footer__email" href={`mailto:${site.email}`}>
-        <Icon name="mail" size={18} />
-        {site.email}
-      </a>
-    </div>
-
-    <nav class="footer__col" aria-label="Footer">
-      <h2>Explore</h2>
-      <ul>
-        <li><a href={url('/')}>Home</a></li>
-        {nav.map((item) => <li><a href={url(item.href)}>{item.label}</a></li>)}
-        <li><a href={url('/contact')}>Contact</a></li>
-      </ul>
-    </nav>
-
-    <div class="footer__col">
-      <h2>Featured work</h2>
-      <ul>
-        <li><a href={url('/projects/clearpath')}>ClearPath Virtual Health</a></li>
-        <li><a href={url('/projects/union-workforce')}>Union Workforce Ecosystem</a></li>
-        <li>
-          <a href="https://clearpathvirtualhealth.com/" target="_blank" rel="noopener">
-            clearpathvirtualhealth.com <Icon name="arrow-up-right" size={14} />
-          </a>
-        </li>
-        <li>
-          <a href="https://workforcesystems.net/" target="_blank" rel="noopener">
-            workforcesystems.net <Icon name="arrow-up-right" size={14} />
-          </a>
-        </li>
-      </ul>
-    </div>
-
-    <div class="footer__col">
-      <h2>Connect</h2>
-      <ul class="footer__social">
+  <div class="footer__body">
+    <div class="container footer__grid">
+      <div class="footer__brand">
+        <a href={url('/')} class="footer__logo" aria-label="Sām Kazemi, home"><Logo /></a>
+        <p>{site.tagline}</p>
         {
-          socials.map((s) => (
-            <li>
-              <a
-                href={s.href}
-                target={s.placeholder ? undefined : '_blank'}
-                rel={s.placeholder ? undefined : 'noopener me'}
-                aria-label={s.placeholder ? `${s.label} (link coming soon)` : s.label}
-                data-placeholder={s.placeholder ? 'true' : undefined}
-              >
-                <Icon name={s.icon} size={18} />
-                <span>{s.label}</span>
-              </a>
-            </li>
+          emails.map(([user, domain]) => (
+            <a class="footer__email" href={`mailto:${user}${domain}`}>
+              <Icon name="mail" size={18} />
+              <span>{user}<wbr />{domain}</span>
+            </a>
           ))
         }
-      </ul>
-    </div>
-  </div>
+        <div class="footer__profiles">
+          {
+            profiles.map((s) => (
+              <a href={s.href} target="_blank" rel="noopener me" aria-label={`${s.label} (opens in a new tab)`}>
+                <Icon name={s.icon} size={20} />
+              </a>
+            ))
+          }
+        </div>
+      </div>
 
-  <div class="container footer__bottom">
-    <p>&copy; {year} {site.name}. All rights reserved.</p>
-    <p class="footer__motto">
-      <span class="persian" lang="fa">{site.persianName}</span>
-      <span aria-hidden="true">·</span>
-      Built with Astro in the San Francisco Bay Area
-    </p>
+      <nav class="footer__col" aria-label="Footer">
+        <h2>Explore</h2>
+        <ul>
+          <li><a href={url('/')}>Home</a></li>
+          {explore.map((item) => <li><a href={url(item.href)}>{item.label}</a></li>)}
+        </ul>
+      </nav>
+
+      <nav class="footer__col" aria-label="Footer, more">
+        <h2>More</h2>
+        <ul>
+          {more.map((item) => <li><a href={url(item.href)}>{item.label}</a></li>)}
+          <li><a href={url('/contact')}>Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="footer__col">
+        <h2>Featured work</h2>
+        <ul>
+          <li><a href={url('/projects/clearpath')}>ClearPath Virtual Health</a></li>
+          <li><a href={url('/projects/workforce-systems')}>Workforce Systems</a></li>
+          <li>
+            <a href="https://clearpathvirtualhealth.com/" target="_blank" rel="noopener">
+              clearpathvirtualhealth.com <Icon name="arrow-up-right" size={14} />
+            </a>
+          </li>
+          <li>
+            <a href="https://workforcesystems.net/" target="_blank" rel="noopener">
+              workforcesystems.net <Icon name="arrow-up-right" size={14} />
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container footer__bottom">
+      <p>&copy; {year} {site.name}. All rights reserved.</p>
+      <p class="footer__motto">
+        <span class="old-persian" lang="peo">{site.oldPersianName}</span>
+      </p>
+    </div>
   </div>
 </footer>
 
@@ -87,21 +87,17 @@ const year = new Date().getFullYear();
   .footer {
     position: relative;
     margin-top: 0;
-    background: var(--surface);
-    border-top: 1px solid var(--line);
     color: var(--ink-soft);
     font-size: 0.95rem;
   }
 
   .footer__band {
-    position: relative;
-    height: 44px;
-    overflow: hidden;
-    background: linear-gradient(90deg, var(--lapis-deep), var(--turquoise-strong));
+    height: 1px;
+    background: var(--line);
   }
 
-  .footer__band :global(.girih) {
-    color: rgba(255, 255, 255, 0.18);
+  .footer__body {
+    background: var(--surface);
   }
 
   .footer__grid {
@@ -129,15 +125,45 @@ const year = new Date().getFullYear();
   }
 
   .footer__email {
-    display: inline-flex;
+    display: flex;
+    width: fit-content;
+    margin-top: 8px;
     align-items: center;
     gap: 8px;
     font-weight: 600;
-    word-break: break-all;
+  }
+
+  /* Wraps before the @ (the <wbr>), and mid-word only if a part still can't fit. */
+  .footer__email span {
+    min-width: 0;
+    overflow-wrap: break-word;
   }
 
   .footer__email :global(svg) {
     flex: none;
+  }
+
+  .footer__profiles {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+  }
+
+  .footer__profiles a {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--gold-strong);
+    color: var(--gold-strong);
+    background: var(--surface);
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .footer__profiles a:hover {
+    color: var(--gold);
+    border-color: var(--gold);
   }
 
   .footer__col h2 {
@@ -167,11 +193,7 @@ const year = new Date().getFullYear();
   }
 
   .footer__col a:hover {
-    color: var(--turquoise-strong);
-  }
-
-  .footer__social a :global(svg) {
-    color: var(--turquoise);
+    color: var(--gold-strong);
   }
 
   .footer__bottom {
@@ -196,7 +218,7 @@ const year = new Date().getFullYear();
     gap: 8px;
   }
 
-  .footer__motto .persian {
-    line-height: 1.6;
+  .footer__motto .old-persian {
+    color: var(--ink-soft);
   }
 </style>

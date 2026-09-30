@@ -1,0 +1,31 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "portfolio-contact",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-09-01",
+  // Served at https://portfolio-contact.<your-subdomain>.workers.dev. Preview
+  // URLs are off so no second, unprotected copy of the API is ever reachable.
+  "workers_dev": true,
+  "preview_urls": false,
+  // Logs carry event names and error codes only, never message content.
+  "observability": { "enabled": true },
+  "vars": {
+    "CONTACT_TO": "mokazemi0@gmail.com",
+    // Resend's shared sender works without a domain, but only delivers to the
+    // email address that owns the Resend account. Switch to an address on a
+    // verified domain (e.g. "Portfolio <contact@yourdomain.com>") if you add one.
+    "MAIL_FROM": "Portfolio Contact <onboarding@resend.dev>",
+    "ALLOWED_ORIGINS": "https://sammokazemi.github.io"
+  },
+  // Secrets, set with `npx wrangler secret put <NAME>`:
+  //   RESEND_API_KEY        Resend API key (sending access only)
+  //   TURNSTILE_SECRET_KEY  secret key of the Turnstile widget
+  "ratelimits": [
+    {
+      // Shared by the per-IP and per-sender checks: 5 requests a minute each.
+      "name": "CONTACT_LIMITER",
+      "namespace_id": "1001",
+      "simple": { "limit": 5, "period": 60 }
+    }
+  ]
+}

@@ -30,6 +30,11 @@ jobs:
           # With a custom domain, set SITE_URL to it and BASE_PATH to "/".
           SITE_URL: https://sammokazemi.github.io
           BASE_PATH: /portfolio
+          # Contact form backend (worker/README.md). Public values, set under
+          # Settings → Secrets and variables → Actions → Variables. While unset,
+          # the form asks visitors to email instead.
+          PUBLIC_CONTACT_API_URL: ${{ vars.CONTACT_API_URL }}
+          PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.TURNSTILE_SITE_KEY }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

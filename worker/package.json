@@ -1,0 +1,20 @@
+{
+  "name": "portfolio-contact-worker",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Contact form API for the portfolio: validates messages and emails them to Sām.",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "check": "npm run typecheck && npm test"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260929.1",
+    "typescript": "^6.0.3",
+    "vitest": "^5.0.2",
+    "wrangler": "^4.143.0"
+  }
+}

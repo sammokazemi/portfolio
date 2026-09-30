@@ -1,0 +1,187 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Icon from '../components/Icon.astro';
+import { reviews, socials } from '../data/site';
+
+const linkedin = socials.find((s) => s.icon === 'linkedin');
+const initials = (name: string) =>
+  name
+    .split(' ')
+    .map((part) => part[0])
+    .join('');
+---
+
+<Base
+  title="Reviews"
+  description="Recommendations for Sām Kazemi from teammates, classmates, and mentors."
+>
+  <PageHeader
+    eyebrow="Reviews"
+    title="What people say about working with Sām"
+    lead="Recommendations from the people he has built with: teammates in healthcare, a mentor, and a classmate."
+  />
+
+  <section class="section">
+    <div class="container reviews">
+      {
+        reviews.map((r, i) => (
+          <article class="review card reveal" style={`--delay: ${(i % 2) * 0.06}s`}>
+            <svg class="review__mark" viewBox="0 0 48 36" aria-hidden="true">
+              <path d="M0 36V21C0 9 6 2 18 0l2 5c-6 2-9 6-9 12h8v19H0zm28 0V21C28 9 34 2 46 0l2 5c-6 2-9 6-9 12h8v19H28z" />
+            </svg>
+            <p class="review__highlight">{r.highlight}</p>
+            <blockquote class="review__body">
+              {r.paragraphs.map((p) => (
+                <p>{p}</p>
+              ))}
+            </blockquote>
+            <footer class="review__author">
+              <span class="review__avatar" aria-hidden="true">
+                {initials(r.name)}
+              </span>
+              <span class="review__who">
+                <cite class="review__name">{r.name}</cite>
+                <span class="review__headline">{r.headline}</span>
+                <span class="review__meta">
+                  {r.relationship} · {r.date}
+                </span>
+              </span>
+            </footer>
+          </article>
+        ))
+      }
+
+      {
+        linkedin && (
+          <p class="reviews__source reveal">
+            Recommendations originally posted on{' '}
+            <a href={linkedin.href} target="_blank" rel="noopener">
+              LinkedIn <Icon name="arrow-up-right" size={14} />
+            </a>
+            .
+          </p>
+        )
+      }
+    </div>
+  </section>
+
+</Base>
+
+<style>
+  .reviews {
+    display: grid;
+    gap: 24px;
+  }
+
+  @media (min-width: 960px) {
+    .reviews {
+      grid-template-columns: repeat(2, 1fr);
+      align-items: start;
+    }
+    .review:first-child,
+    .review:last-of-type:nth-of-type(even) {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .review {
+    display: flex;
+    flex-direction: column;
+    border-top: 4px solid var(--gold);
+  }
+
+  .review:nth-child(2) {
+    border-top-color: var(--gold-strong);
+  }
+
+  .review:nth-child(3) {
+    border-top-color: var(--gold-bright);
+  }
+
+  .review__mark {
+    width: 36px;
+    height: 27px;
+    margin-bottom: 18px;
+    fill: var(--gold-bright);
+  }
+
+  .review__highlight {
+    margin: 0 0 18px;
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 2.2vw, 1.5rem);
+    line-height: 1.35;
+    color: var(--ink);
+  }
+
+  .review__body {
+    margin: 0 0 24px;
+  }
+
+  .review__body p {
+    color: var(--ink-soft);
+    font-size: 0.975rem;
+  }
+
+  .review__body p:last-child {
+    margin-bottom: 0;
+  }
+
+  .review__author {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+  }
+
+  .review__avatar {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--gold-tint);
+    color: var(--gold-strong);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  .review__who {
+    display: grid;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .review__name {
+    font-style: normal;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .review__headline {
+    font-size: 0.875rem;
+    color: var(--ink-soft);
+  }
+
+  .review__meta {
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  .reviews__source {
+    grid-column: 1 / -1;
+    margin: 8px 0 0;
+    text-align: center;
+    color: var(--muted);
+  }
+
+  .reviews__source a {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 600;
+  }
+</style>

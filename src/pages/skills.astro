@@ -1,7 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
 import PageHeader from '../components/PageHeader.astro';
-import CtaBand from '../components/CtaBand.astro';
 import Icon from '../components/Icon.astro';
 import { skills } from '../data/site';
 
@@ -27,12 +26,12 @@ const practices = [
 
 <Base
   title="Skills"
-  description="Technical skills of Sām Kazemi: React, JavaScript, TypeScript, Python, AWS, CI/CD, HIPAA, Medicare billing, and more."
+  description="Technical skills of Sām Kazemi: React, JavaScript, TypeScript, Python, AWS, CI/CD, HIPAA, Medicare billing, and AI-assisted engineering with Claude Code and Codex."
 >
   <PageHeader
     eyebrow="Skills"
     title="The tools behind the work"
-    lead="Full-stack JavaScript and React, AWS infrastructure, and deep familiarity with regulated healthcare. Plus two languages I think in."
+    lead="Full-stack JavaScript and React, AWS infrastructure, and deep familiarity with regulated healthcare. Plus the two languages he thinks in."
   />
 
   <section class="section">
@@ -59,11 +58,81 @@ const practices = [
     </div>
   </section>
 
-  <section class="section section--alt">
+  <section class="section section--alt ai">
+    <div class="container ai__grid">
+      <div class="ai__intro reveal">
+        <p class="eyebrow">AI in his workflow</p>
+        <h2>How he builds with AI</h2>
+        <p class="lead">
+          Sām uses AI every day, and treats it the way he treats any engineering tool: with
+          discipline, the right configuration for the job, and a review of everything it produces.
+        </p>
+        <ul class="tag-list" aria-label="AI tools">
+          <li class="tag">Claude Code</li>
+          <li class="tag">Codex</li>
+          <li class="tag">AI agents</li>
+          <li class="tag">Prompt engineering</li>
+        </ul>
+      </div>
+
+      <figure class="ai__quote card reveal" style="--delay: 0.08s">
+        <svg class="ai__mark" viewBox="0 0 48 36" aria-hidden="true">
+          <path d="M0 36V21C0 9 6 2 18 0l2 5c-6 2-9 6-9 12h8v19H0zm28 0V21C28 9 34 2 46 0l2 5c-6 2-9 6-9 12h8v19H28z" />
+        </svg>
+        <blockquote>
+          <p>
+            I use Claude Code and Codex every day as part of my engineering workflow, both to build
+            new features and to maintain and audit production code. I’ve developed a structured
+            approach to prompt engineering built to minimize hallucinations and AI-generated slop:
+            every task gets the right context, the right constraints, and the right token budget. I
+            use stronger models and deeper reasoning when I’m auditing code or reviewing a complex
+            implementation, and lighter, more efficient configurations for straightforward work.
+          </p>
+          <p>
+            I use these tools to organize repositories, write and run tests, produce implementation
+            guides and sitemaps, maintain audit logs, and import or build custom skills that keep
+            engineering guidelines consistent. I’ve also built AI agents that handle specific
+            development tasks autonomously while operating inside clearly defined constraints.
+          </p>
+          <p>
+            A major part of my workflow is quality control. I’m constantly looking for
+            hallucinations, incorrect assumptions, duplicated or unnecessary code, and the other
+            patterns that add up to slop. I review all AI-generated code and test every
+            implementation myself, to catch both the obvious bugs and the “ghost bugs” that basic
+            testing won’t surface. AI is an engineering tool and a collaborator, not an authority.
+            The final responsibility for correctness stays with me.
+          </p>
+          <p class="ai__pivot">
+            In the age of AI, a lot of companies are unsure how to hire. Some still screen with
+            LeetCode, no-AI policies, and no-AI coding challenges. Those can show how an engineer
+            thinks about code, but real work has moved on. Very little production code is written
+            fully by hand anymore, even by senior engineers, so a no-AI coding challenge is a bit
+            like asking a candidate to write in binary: it tests a skill nobody will ever use on the
+            job.
+          </p>
+          <p>
+            It also misses the bigger risk. Engineers hired through no-AI screens still use AI once
+            they start, like every developer does, and without understanding how models behave, the
+            patterns they fall into, and how to prompt them, the result is slop: code scattered with
+            ghost bugs and low-quality patterns. What a team really needs is an engineer who knows
+            how to use AI the right way. I believe that is now the most valuable skill in software,
+            even more than writing code by hand. I stay current on the latest models, tools, and
+            techniques and keep learning new methods every day, and that is the engineer I have
+            made myself into.
+          </p>
+        </blockquote>
+        <figcaption class="ai__cite">
+          <span class="ai__name">Sām Kazemi</span>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section">
     <div class="container">
       <div class="section-head reveal">
-        <p class="eyebrow">How I work</p>
-        <h2>Engineering practices I bring to every team</h2>
+        <p class="eyebrow">How he works</p>
+        <h2>Engineering practices he brings to every team</h2>
       </div>
       <ol class="practices">
         {
@@ -81,10 +150,80 @@ const practices = [
     </div>
   </section>
 
-  <CtaBand />
 </Base>
 
 <style>
+  .ai__grid {
+    display: grid;
+    gap: 40px;
+  }
+
+  @media (min-width: 1000px) {
+    .ai__grid {
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: 64px;
+      align-items: start;
+    }
+    .ai__intro {
+      position: sticky;
+      top: 104px;
+    }
+  }
+
+  .ai__intro .lead {
+    margin-bottom: 24px;
+  }
+
+  .ai__quote {
+    margin: 0;
+    padding: clamp(28px, 4vw, 48px);
+    border-top: 4px solid var(--gold);
+  }
+
+  .ai__mark {
+    width: 44px;
+    height: 33px;
+    margin-bottom: 20px;
+    fill: var(--gold-bright);
+  }
+
+  .ai__quote blockquote {
+    margin: 0;
+  }
+
+  .ai__quote blockquote p {
+    color: var(--ink-soft);
+    font-size: 1.025rem;
+    line-height: 1.75;
+  }
+
+  .ai__quote blockquote p:first-child {
+    font-family: var(--font-display);
+    font-size: clamp(1.15rem, 1.8vw, 1.3rem);
+    line-height: 1.6;
+    color: var(--ink);
+  }
+
+  /* The hiring argument starts here; a rule sets it apart from the workflow. */
+  .ai__pivot {
+    margin-top: 28px;
+    padding-top: 28px;
+    border-top: 1px solid var(--line);
+  }
+
+  .ai__cite {
+    display: grid;
+    gap: 2px;
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+  }
+
+  .ai__name {
+    font-weight: 800;
+    color: var(--ink);
+  }
+
   .skill__head {
     display: flex;
     align-items: center;
@@ -114,12 +253,6 @@ const practices = [
     font-size: 0.925rem;
     font-weight: 500;
     color: var(--ink);
-    transition: border-color 0.2s, background 0.2s;
-  }
-
-  .skill__list li:hover {
-    border-color: var(--turquoise);
-    background: var(--turquoise-tint);
   }
 
   .practices {
@@ -149,7 +282,8 @@ const practices = [
     font-family: var(--font-display);
     font-size: 1.6rem;
     font-style: italic;
-    color: var(--saffron);
+    /* gold-strong, not gold-bright: bright gold on the light theme's ivory is under 2:1. */
+    color: var(--gold-strong);
     line-height: 1.2;
   }
 

@@ -1,0 +1,14 @@
+# Local development settings for `npm run dev`. Copy to .dev.vars (git-ignored).
+# Values here override the "vars" in wrangler.jsonc.
+
+# The Astro dev server.
+ALLOWED_ORIGINS=http://localhost:4321
+
+# Cloudflare's dummy Turnstile secret: accepts the dummy tokens produced by the
+# test site key 1x00000000000000000000AA. Rejected when any origin is public.
+TURNSTILE_SECRET_KEY=1x0000000000000000000000000000000AA
+
+# Print messages to the terminal instead of emailing them. To send real email
+# locally, delete this line and set RESEND_API_KEY below.
+DRY_RUN=true
+# RESEND_API_KEY=re_...

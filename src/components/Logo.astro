@@ -1,18 +1,18 @@
 ---
+import { Image } from 'astro:assets';
 import { site } from '../data/site';
+import logoLight from '../assets/logo/logo-light.png';
+import logoDark from '../assets/logo/logo-dark.png';
 ---
 
 <span class="logo">
-  <svg class="logo__mark" viewBox="0 0 40 40" aria-hidden="true">
-    <g transform="translate(20 20)">
-      <rect x="-10" y="-10" width="20" height="20" rx="2" class="logo__a" />
-      <rect x="-10" y="-10" width="20" height="20" rx="2" class="logo__a" transform="rotate(45)" />
-      <rect x="-4.5" y="-4.5" width="9" height="9" rx="1" class="logo__b" transform="rotate(45)" />
-    </g>
-  </svg>
+  <span class="logo__mark" aria-hidden="true">
+    <Image src={logoLight} alt="" widths={[40, 80, 120]} sizes="40px" class="logo__img logo__img--light" />
+    <Image src={logoDark} alt="" widths={[40, 80, 120]} sizes="40px" class="logo__img logo__img--dark" />
+  </span>
   <span class="logo__text">
     <span class="logo__name">{site.name}</span>
-    <span class="logo__fa persian" lang="fa">{site.persianName}</span>
+    <span class="logo__op old-persian" lang="peo">{site.oldPersianName}</span>
   </span>
 </span>
 
@@ -24,22 +24,35 @@ import { site } from '../data/site';
   }
 
   .logo__mark {
-    width: 36px;
-    height: 36px;
+    position: relative;
+    width: 40px;
+    height: 40px;
     flex: none;
-    transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px var(--line);
+    transition: transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
   }
 
   a:hover .logo__mark {
-    transform: rotate(45deg);
+    transform: scale(1.06);
   }
 
-  .logo__a {
-    fill: var(--turquoise);
+  .logo__mark :global(.logo__img) {
+    display: block;
+    width: 100%;
+    height: 100%;
   }
 
-  .logo__b {
-    fill: var(--saffron);
+  /* One image per theme; the other stays hidden. */
+  .logo__mark :global(.logo__img--dark) {
+    display: none;
+  }
+
+  :global(:root[data-theme='dark']) .logo__mark :global(.logo__img--light) {
+    display: none;
+  }
+  :global(:root[data-theme='dark']) .logo__mark :global(.logo__img--dark) {
+    display: block;
   }
 
   .logo__text {
@@ -54,10 +67,9 @@ import { site } from '../data/site';
     letter-spacing: -0.02em;
   }
 
-  .logo__fa {
+  .logo__op {
+    margin-top: 3px;
     font-size: 0.72rem;
     color: var(--muted);
-    text-align: left;
-    line-height: 1.9;
   }
 </style>

@@ -1,79 +1,53 @@
-/* Palette drawn from Persian tilework: firuzeh (turquoise), lapis lazuli,
-   saffron gold, and pomegranate on warm ivory. Layout and type follow the
-   clean, card-based look of ClearPath Virtual Health. */
+/* Palette and motifs drawn from pre-Islamic Iran: the gold of the Oxus
+   Treasure and Achaemenid craft, and Persepolis rosettes, on
+   warm ivory. Layout and type follow the clean,
+   card-based look of ClearPath Virtual Health. */
 :root {
   --bg: #fbf8f1;
-  --bg-alt: #f4eee2;
+  --bg-alt: #f5eedf;
   --surface: #ffffff;
-  --ink: #13203b;
-  --ink-soft: #3b4660;
-  --muted: #5d6679;
-  --line: #e7dfcf;
-  --turquoise: #0e8a8a;
-  --turquoise-strong: #0a6e6f;
-  --turquoise-tint: #e0f2f0;
-  --lapis: #1f3c88;
-  --lapis-deep: #142a63;
-  --saffron: #d49a2a;
-  --saffron-tint: #fbf0d9;
-  --pomegranate: #a8343f;
-  --on-accent: #ffffff;
-  --pattern: rgba(14, 138, 138, 0.09);
-  --shadow-sm: 0 1px 2px rgba(19, 32, 59, 0.06);
-  --shadow: 0 12px 32px -12px rgba(19, 32, 59, 0.18), 0 2px 6px rgba(19, 32, 59, 0.05);
+  --ink: #1f1a12;
+  --ink-soft: #4a4234;
+  --muted: #6f6555;
+  --line: #e8dcc3;
+  --gold: #c8962b;
+  --gold-strong: #8a5f10;
+  --gold-bright: #e2b24f;
+  --gold-tint: #f6ebd2;
+  --gold-deep: #5a3d0c;
+  --on-accent: #1f1a12;
+  --pattern: rgba(200, 150, 43, 0.14);
+  --shadow-sm: 0 1px 2px rgba(31, 26, 18, 0.06);
+  --shadow: 0 12px 32px -12px rgba(31, 26, 18, 0.18), 0 2px 6px rgba(31, 26, 18, 0.05);
   --radius: 14px;
   --radius-sm: 8px;
   --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --font-display: 'Fraunces', Georgia, serif;
-  --font-persian: 'Noto Nastaliq Urdu', 'Vazirmatn', serif;
+  --font-old-persian: 'Noto Sans Old Persian', serif;
   --max: 1160px;
   --gutter: clamp(16px, 4vw, 32px);
+  /* Polished-gold fill for the patterned blocks; the same in both themes. */
+  --gold-metal: linear-gradient(135deg, #c4892a 0%, #e9b64d 50%, #c4892a 100%);
+  --gold-metal-x: linear-gradient(90deg, #b07a1c, #e9b64d 50%, #b07a1c);
+  --on-gold: #1f1a12;
   color-scheme: light;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) {
-    --bg: #0d1424;
-    --bg-alt: #111a2e;
-    --surface: #152039;
-    --ink: #f3eee4;
-    --ink-soft: #d3cfc6;
-    --muted: #a4abbb;
-    --line: #25314d;
-    --turquoise: #3cc4bd;
-    --turquoise-strong: #5fd6cf;
-    --turquoise-tint: #133a3d;
-    --lapis: #8ea8f0;
-    --lapis-deep: #1b2d5c;
-    --saffron: #e9b64d;
-    --saffron-tint: #3a2f17;
-    --pomegranate: #e0707a;
-    --on-accent: #0d1424;
-    --pattern: rgba(60, 196, 189, 0.08);
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-    --shadow: 0 16px 36px -14px rgba(0, 0, 0, 0.6);
-    color-scheme: dark;
-  }
-}
-
 :root[data-theme='dark'] {
-  --bg: #0d1424;
-  --bg-alt: #111a2e;
-  --surface: #152039;
-  --ink: #f3eee4;
-  --ink-soft: #d3cfc6;
-  --muted: #a4abbb;
-  --line: #25314d;
-  --turquoise: #3cc4bd;
-  --turquoise-strong: #5fd6cf;
-  --turquoise-tint: #133a3d;
-  --lapis: #8ea8f0;
-  --lapis-deep: #1b2d5c;
-  --saffron: #e9b64d;
-  --saffron-tint: #3a2f17;
-  --pomegranate: #e0707a;
-  --on-accent: #0d1424;
-  --pattern: rgba(60, 196, 189, 0.08);
+  --bg: #14110c;
+  --bg-alt: #1b1710;
+  --surface: #221d14;
+  --ink: #f5ecd9;
+  --ink-soft: #ddd2bc;
+  --muted: #b0a48c;
+  --line: #3a3122;
+  --gold: #e2b24f;
+  --gold-strong: #eec46a;
+  --gold-bright: #f0c768;
+  --gold-tint: #3a2e14;
+  --gold-deep: #e2b24f;
+  --on-accent: #14110c;
+  --pattern: rgba(226, 178, 79, 0.08);
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
   --shadow: 0 16px 36px -14px rgba(0, 0, 0, 0.6);
   color-scheme: dark;
@@ -109,17 +83,17 @@ svg {
 }
 
 a {
-  color: var(--turquoise-strong);
+  color: var(--gold-strong);
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
 }
 
 a:hover {
-  color: var(--turquoise);
+  color: var(--gold);
 }
 
 :focus-visible {
-  outline: 2px solid var(--saffron);
+  outline: 2px solid var(--gold-bright);
   outline-offset: 3px;
   border-radius: 4px;
 }
@@ -155,7 +129,7 @@ p {
 }
 
 ::selection {
-  background: var(--saffron-tint);
+  background: var(--gold-tint);
   color: var(--ink);
 }
 
@@ -208,7 +182,7 @@ p {
   align-items: center;
   gap: 8px;
   margin-bottom: 14px;
-  color: var(--turquoise-strong);
+  color: var(--gold-strong);
   font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -219,7 +193,7 @@ p {
   content: '';
   width: 10px;
   height: 10px;
-  background: var(--saffron);
+  background: var(--gold-bright);
   transform: rotate(45deg);
   border-radius: 2px;
 }
@@ -234,29 +208,19 @@ p {
   color: var(--muted);
 }
 
-/* The underlined highlight word, as in ClearPath's hero, drawn as a saffron brushstroke. */
+/* The underlined highlight phrase, as in ClearPath's hero. A background underline wraps with the text. */
 .highlight {
-  position: relative;
-  color: var(--turquoise-strong);
-  white-space: nowrap;
-}
-
-.highlight::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -0.06em;
-  height: 0.14em;
-  background: var(--saffron);
-  border-radius: 999px;
-  transform-origin: left;
+  color: var(--gold-strong);
+  padding-bottom: 0.1em;
+  background: linear-gradient(var(--gold-bright), var(--gold-bright)) left bottom / 100% 0.14em no-repeat;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
   animation: draw 0.9s 0.35s cubic-bezier(0.2, 0.7, 0.2, 1) both;
 }
 
 @keyframes draw {
   from {
-    transform: scaleX(0);
+    background-size: 0% 0.14em;
   }
 }
 
@@ -285,26 +249,26 @@ p {
 }
 
 .btn--primary {
-  background: var(--turquoise);
+  background: var(--gold);
   color: var(--on-accent);
-  box-shadow: 0 8px 20px -10px var(--turquoise);
+  box-shadow: 0 8px 20px -10px var(--gold);
 }
 
 .btn--primary:hover {
-  background: var(--turquoise-strong);
+  background: var(--gold-strong);
   color: var(--on-accent);
   transform: translateY(-1px);
 }
 
 .btn--ghost {
-  border-color: var(--turquoise);
-  color: var(--turquoise-strong);
+  border-color: var(--gold);
+  color: var(--gold-strong);
   background: transparent;
 }
 
 .btn--ghost:hover {
-  background: var(--turquoise-tint);
-  color: var(--turquoise-strong);
+  background: var(--gold-tint);
+  color: var(--gold-strong);
 }
 
 .btn-row {
@@ -330,7 +294,7 @@ p {
 .pill svg {
   width: 14px;
   height: 14px;
-  color: var(--turquoise);
+  color: var(--gold);
 }
 
 .tag-list {
@@ -345,8 +309,8 @@ p {
 .tag {
   padding: 4px 10px;
   border-radius: 6px;
-  background: var(--turquoise-tint);
-  color: var(--turquoise-strong);
+  background: var(--gold-tint);
+  color: var(--gold-strong);
   font-size: 0.8rem;
   font-weight: 600;
 }
@@ -367,7 +331,7 @@ p {
 .card--hover:hover {
   transform: translateY(-3px);
   box-shadow: var(--shadow);
-  border-color: color-mix(in srgb, var(--turquoise) 40%, var(--line));
+  border-color: color-mix(in srgb, var(--gold) 40%, var(--line));
 }
 
 .icon-badge {
@@ -376,8 +340,8 @@ p {
   width: 44px;
   height: 44px;
   border-radius: 10px;
-  background: var(--turquoise-tint);
-  color: var(--turquoise-strong);
+  background: var(--gold-tint);
+  color: var(--gold-strong);
 }
 
 .icon-badge svg {
@@ -429,7 +393,7 @@ p {
   top: 0.55em;
   width: 9px;
   height: 9px;
-  background: var(--turquoise);
+  background: var(--gold);
   transform: rotate(45deg);
   border-radius: 2px;
 }
@@ -455,16 +419,17 @@ p {
 .prose blockquote {
   margin: 1.5em 0;
   padding: 4px 0 4px 20px;
-  border-left: 3px solid var(--saffron);
+  border-left: 3px solid var(--gold-bright);
   font-family: var(--font-display);
   font-size: 1.3rem;
   font-style: italic;
   color: var(--ink);
 }
 
-.persian {
-  font-family: var(--font-persian);
-  direction: rtl;
+.old-persian {
+  font-family: var(--font-old-persian);
+  font-weight: 400;
+  letter-spacing: 0.04em;
   unicode-bidi: isolate;
 }
 
@@ -495,6 +460,15 @@ p {
   .js .reveal {
     opacity: 1;
     transform: none;
+  }
+}
+
+/* Sections that were never scrolled into view would otherwise print blank. */
+@media print {
+  .js .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
   }
 }
 

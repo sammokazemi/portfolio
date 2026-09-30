@@ -1,13 +1,11 @@
 ---
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
-import Girih from '../components/Girih.astro';
 import { url } from '../lib/url';
 ---
 
-<Base title="Page not found">
+<Base title="Page not found" noindex>
   <section class="nf">
-    <Girih id="nf-girih" size={72} />
     <div class="container nf__inner">
       <p class="eyebrow">404</p>
       <h1>This page wandered off</h1>

@@ -1,8 +1,7 @@
 ---
 import Base from './Base.astro';
 import Icon from '../components/Icon.astro';
-import Girih from '../components/Girih.astro';
-import CtaBand from '../components/CtaBand.astro';
+import Rosettes from '../components/Rosettes.astro';
 import { url } from '../lib/url';
 
 interface Props {
@@ -25,16 +24,18 @@ const { name, description, summary, role, org, period, status, live, liveLabel, 
 
 <Base title={name} description={description}>
   <section class={`cs-hero cs-hero--${accent}`}>
-    <Girih id="cs-girih" size={64} />
+    <div class="cs-hero__pattern" aria-hidden="true">
+      <Rosettes id="cs-rosettes" size={72} />
+    </div>
     <div class="container cs-hero__inner">
       <a class="cs-back reveal" href={url('/projects')}>
         <Icon name="arrow-left" size={16} /> All projects
       </a>
-      <p class="eyebrow cs-eyebrow reveal">Case study</p>
+      <p class="eyebrow reveal">Case study</p>
       <h1 class="reveal" style="--delay: 0.05s">{name}</h1>
-      <p class="cs-summary reveal" style="--delay: 0.1s">{summary}</p>
+      <p class="lead cs-summary reveal" style="--delay: 0.1s">{summary}</p>
       <div class="btn-row reveal" style="--delay: 0.15s">
-        <a class="btn cs-live" href={live} target="_blank" rel="noopener">
+        <a class="btn btn--primary" href={live} target="_blank" rel="noopener">
           Visit {liveLabel} <Icon name="arrow-up-right" />
           <span class="visually-hidden">(opens in a new tab)</span>
         </a>
@@ -77,24 +78,55 @@ const { name, description, summary, role, org, period, status, live, liveLabel, 
     </aside>
   </div>
 
-  <CtaBand />
+  <dialog class="zoom" aria-label="Screenshot, full size" data-zoom-dialog>
+    <button type="button" class="zoom__close" data-zoom-close>
+      <Icon name="close" />
+      <span class="visually-hidden">Close</span>
+    </button>
+  </dialog>
 </Base>
+
+<script>
+  // Screenshots are links to their full-size image; with JS they open in a dialog instead.
+  const dialog = document.querySelector<HTMLDialogElement>('[data-zoom-dialog]');
+  // Created here rather than in the markup, so the page never ships an <img> without a src.
+  const full = document.createElement('img');
+  full.className = 'zoom__img';
+  full.alt = '';
+  dialog?.append(full);
+
+  document.querySelectorAll<HTMLAnchorElement>('[data-zoom]').forEach((link) => {
+    link.addEventListener('click', (e) => {
+      // Leave new-tab and new-window clicks to the browser.
+      if (!dialog || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey) return;
+      e.preventDefault();
+      full.src = link.href;
+      full.alt = link.querySelector('img')?.alt ?? '';
+      dialog.showModal();
+    });
+  });
+
+  // Any click closes it: the backdrop, the image, or the close button.
+  dialog?.addEventListener('click', () => dialog.close());
+  dialog?.addEventListener('close', () => full.removeAttribute('src'));
+</script>
 
 <style>
   .cs-hero {
     position: relative;
     overflow: hidden;
     padding: clamp(40px, 7vw, 80px) 0 clamp(96px, 12vw, 136px);
-    background: linear-gradient(135deg, #142a63 0%, #0a6e6f 100%);
-    color: #f3eee4;
+    background:
+      radial-gradient(circle at 85% 20%, var(--gold-tint), transparent 55%),
+      radial-gradient(circle at 10% 110%, var(--gold-tint), transparent 45%);
+    border-bottom: 1px solid var(--line);
   }
 
-  .cs-hero--lapis {
-    background: linear-gradient(135deg, #0f1f4d 0%, #1f3c88 100%);
-  }
-
-  .cs-hero :global(.girih) {
-    color: rgba(255, 255, 255, 0.08);
+  .cs-hero__pattern {
+    position: absolute;
+    inset: 0 0 0 40%;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 60%);
+    mask-image: linear-gradient(90deg, transparent, #000 60%);
   }
 
   .cs-hero__inner {
@@ -107,41 +139,23 @@ const { name, description, summary, role, org, period, status, live, liveLabel, 
     align-items: center;
     gap: 6px;
     margin-bottom: 28px;
-    color: rgba(243, 238, 228, 0.85);
+    color: var(--ink-soft);
     font-size: 0.9rem;
     font-weight: 600;
     text-decoration: none;
   }
 
   .cs-back:hover {
-    color: #fff;
-  }
-
-  .cs-eyebrow {
-    color: #e9b64d;
+    color: var(--gold);
   }
 
   .cs-hero h1 {
-    color: #fff;
     max-width: 16ch;
   }
 
   .cs-summary {
     max-width: 62ch;
     margin: 16px 0 30px;
-    font-size: clamp(1.1rem, 1.8vw, 1.25rem);
-    color: rgba(243, 238, 228, 0.88);
-  }
-
-  .cs-live {
-    background: #d49a2a;
-    color: #13203b;
-  }
-
-  .cs-live:hover {
-    background: #e9b64d;
-    color: #13203b;
-    transform: translateY(-1px);
   }
 
   .cs-facts {
@@ -164,7 +178,7 @@ const { name, description, summary, role, org, period, status, live, liveLabel, 
     font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--turquoise-strong);
+    color: var(--gold-strong);
   }
 
   .cs-facts dd {
@@ -173,23 +187,9 @@ const { name, description, summary, role, org, period, status, live, liveLabel, 
     line-height: 1.4;
   }
 
+  /* Block padding only: the inline padding is the container's gutter. */
   .cs-body {
-    display: grid;
-    gap: 40px;
-    padding-top: clamp(48px, 7vw, 80px);
-  }
-
-  @media (min-width: 1000px) {
-    .cs-body {
-      grid-template-columns: 1fr 300px;
-      gap: 64px;
-      align-items: start;
-    }
-    .cs-aside {
-      position: sticky;
-      top: 104px;
-      order: 2;
-    }
+    padding-block: clamp(48px, 7vw, 80px) clamp(56px, 8vw, 96px);
   }
 
   .cs-aside__title {
@@ -210,7 +210,6 @@ const { name, description, summary, role, org, period, status, live, liveLabel, 
 
   .cs-content :global(p) {
     color: var(--ink-soft);
-    max-width: 68ch;
   }
 
   .cs-content :global(.cs-features) {
@@ -247,7 +246,7 @@ const { name, description, summary, role, org, period, status, live, liveLabel, 
   .cs-content :global(.cs-metrics li) {
     padding: 22px;
     border-radius: var(--radius);
-    background: var(--turquoise-tint);
+    background: var(--gold-tint);
   }
 
   .cs-content :global(.cs-metrics strong) {
@@ -256,7 +255,7 @@ const { name, description, summary, role, org, period, status, live, liveLabel, 
     font-weight: 800;
     letter-spacing: -0.03em;
     line-height: 1.1;
-    color: var(--turquoise-strong);
+    color: var(--gold-strong);
   }
 
   .cs-content :global(.cs-metrics span) {
@@ -292,7 +291,7 @@ const { name, description, summary, role, org, period, status, live, liveLabel, 
     width: 40px;
     height: 40px;
     border-radius: 10px;
-    background: var(--saffron-tint);
+    background: var(--gold-tint);
     color: var(--ink);
     font-weight: 800;
   }
@@ -305,5 +304,198 @@ const { name, description, summary, role, org, period, status, live, liveLabel, 
   .cs-content :global(.cs-flow span) {
     color: var(--ink-soft);
     font-size: 0.975rem;
+  }
+
+  /* Product screenshots: desktop screens, rows of phone screens, and a phone laid over a desktop. */
+  /* Capped so each figure, caption included, fits in one desktop viewport. */
+  .cs-content :global(.cs-shot) {
+    max-width: 960px;
+    margin: 28px auto;
+  }
+
+  .cs-content :global(.cs-shot:has(.cs-phones)) {
+    max-width: 720px;
+  }
+
+  .cs-content :global(.cs-shot:has(.cs-story)) {
+    max-width: 860px;
+  }
+
+  /* Two related desktop screens side by side, using the full column. */
+  .cs-content :global(.cs-shot--wide) {
+    max-width: none;
+  }
+
+  .cs-content :global(.cs-pair) {
+    display: grid;
+    gap: 16px;
+  }
+
+  @media (min-width: 900px) {
+    .cs-content :global(.cs-pair) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .cs-content :global(.cs-shot figcaption) {
+    margin-top: 14px;
+    color: var(--muted);
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  .cs-content :global(.cs-screen) {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--surface);
+    box-shadow: var(--shadow);
+  }
+
+  .cs-content :global(.cs-phones) {
+    display: grid;
+    /* minmax(0, …) so an image's natural width can never stretch a column past the page. */
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(10px, 2.5vw, 20px);
+  }
+
+  .cs-content :global(.cs-phone) {
+    border-radius: clamp(14px, 3vw, 26px);
+  }
+
+  .cs-content :global(.cs-story) {
+    position: relative;
+    padding-bottom: 26%;
+  }
+
+  .cs-content :global(.cs-story__desktop) {
+    width: 84%;
+    margin-left: auto;
+  }
+
+  .cs-content :global(.cs-story__phone) {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 27%;
+    box-shadow: 0 24px 48px -16px rgba(0, 0, 0, 0.45);
+  }
+
+  /* On phones, three screens side by side are too small to read: swipe through them
+     instead, bleeding to the screen edge with the next one peeking in. */
+  @media (max-width: 599px) {
+    .cs-content :global(.cs-phones) {
+      /* Contains the links' absolutely positioned screen-reader text; without it that
+         text escapes the scroller and widens the page, and phones zoom out to fit it. */
+      position: relative;
+      grid-template-columns: none;
+      grid-auto-flow: column;
+      grid-auto-columns: 64%;
+      gap: 14px;
+      margin-inline: calc(-1 * var(--gutter));
+      padding: 4px var(--gutter) 24px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-padding-inline: var(--gutter);
+      scrollbar-width: none;
+    }
+
+    .cs-content :global(.cs-phones::-webkit-scrollbar) {
+      display: none;
+    }
+
+    .cs-content :global(.cs-phones > *) {
+      scroll-snap-align: start;
+    }
+
+    .cs-content :global(.cs-phones + figcaption) {
+      margin-top: 0;
+    }
+
+    /* A bigger phone over the desktop, so both stay legible. */
+    .cs-content :global(.cs-story) {
+      padding-bottom: 61%;
+    }
+
+    .cs-content :global(.cs-story__desktop) {
+      width: 88%;
+    }
+
+    .cs-content :global(.cs-story__phone) {
+      width: 38%;
+    }
+  }
+
+  .cs-content :global(.cs-zoom) {
+    display: block;
+    cursor: zoom-in;
+  }
+
+  /* The link can collapse around an absolutely placed image, so the focus ring goes on the image. */
+  .cs-content :global(.cs-zoom:focus-visible) {
+    outline: none;
+  }
+
+  .cs-content :global(.cs-zoom:focus-visible img) {
+    outline: 3px solid var(--gold);
+    outline-offset: 3px;
+  }
+
+  .zoom {
+    width: 100vw;
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    margin: 0;
+    padding: clamp(12px, 3vw, 40px);
+    border: 0;
+    background: transparent;
+  }
+
+  .zoom[open] {
+    display: grid;
+    place-items: center;
+  }
+
+  .zoom::backdrop {
+    background: rgba(10, 8, 5, 0.9);
+  }
+
+  /* Created by the script, so it has no scoped attribute. */
+  .zoom :global(.zoom__img) {
+    display: block;
+    max-width: 100%;
+    max-height: calc(100dvh - 2 * clamp(12px, 3vw, 40px));
+    width: auto;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.7);
+    cursor: zoom-out;
+  }
+
+  .zoom__close {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    cursor: pointer;
+  }
+
+  .zoom__close:hover {
+    background: rgba(255, 255, 255, 0.22);
+  }
+
+  :global(html:has(.zoom[open])) {
+    overflow: hidden;
   }
 </style>

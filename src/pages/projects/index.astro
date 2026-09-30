@@ -1,10 +1,11 @@
 ---
 import Base from '../../layouts/Base.astro';
 import PageHeader from '../../components/PageHeader.astro';
-import CtaBand from '../../components/CtaBand.astro';
 import Icon from '../../components/Icon.astro';
-import Girih from '../../components/Girih.astro';
+import { Image } from 'astro:assets';
 import { url } from '../../lib/url';
+import clearpathPreview from '../../assets/photos/clearpath-preview.png';
+import wfsPreview from '../../assets/photos/wfs-preview.png';
 
 const projects = [
   {
@@ -15,32 +16,22 @@ const projects = [
     href: '/projects/clearpath',
     live: 'https://clearpathvirtualhealth.com/',
     liveLabel: 'clearpathvirtualhealth.com',
-    icon: 'heart-pulse',
-    accent: 'turquoise',
+    image: clearpathPreview,
+    imageAlt: 'ClearPath Virtual Health patient view: care coordinator, blood pressure trend, care-plan goal, and upcoming virtual visit',
     text: 'A production HIPAA-compliant CCM/RPM platform, architected from the ground up. Four role-based portals, MFA and audit logging, Medicare billing workflows, and AWS infrastructure behind it.',
-    stats: [
-      { value: '4', label: 'role-based portals' },
-      { value: '30+', label: 'components' },
-      { value: '200%+', label: 'recurring revenue' },
-    ],
     tags: ['React', 'AWS', 'HIPAA', 'RBAC', 'CI/CD', 'CPT / ICD-10'],
   },
   {
-    name: 'Union Workforce Ecosystem',
+    name: 'Workforce Systems',
     org: 'Workforce Systems (WFS)',
-    role: 'Lead Engineer',
-    period: 'Apr 2026 – Present',
-    href: '/projects/union-workforce',
+    role: 'Lead Developer',
+    period: 'Jul 2026 – Present',
+    href: '/projects/workforce-systems',
     live: 'https://workforcesystems.net/',
     liveLabel: 'workforcesystems.net',
-    icon: 'users',
-    accent: 'lapis',
+    image: wfsPreview,
+    imageAlt: 'Workforce Systems operations dashboard beside the member app clock-in screen',
     text: 'A five-portal labor workforce platform unifying dispatch, dues, grievances, training, and benefits into one system of record, with a carrier-agnostic health coverage model and a shared design system.',
-    stats: [
-      { value: '5', label: 'portals' },
-      { value: '100+', label: 'screens' },
-      { value: '1', label: 'system of record' },
-    ],
     tags: ['Platform design', 'Design system', 'Node.js tooling', 'Mobile UI'],
   },
 ] as const;
@@ -48,32 +39,27 @@ const projects = [
 
 <Base
   title="Projects"
-  description="Featured projects by Sām Kazemi: ClearPath Virtual Health and the Union Workforce Ecosystem at Workforce Systems."
+  description="Featured projects by Sām Kazemi: ClearPath Virtual Health and the Workforce Systems labor platform."
 >
   <PageHeader
     eyebrow="Projects"
     title="Platforms built for patients and workers"
-    lead="Case studies from the two platforms I lead today: what the problem was, what I built, and what changed because of it."
+    lead="Case studies from the two platforms Sām leads today: what the problem was, what he built, and what changed because of it."
   />
 
   <section class="section">
     <div class="container projects">
       {
-        projects.map((p, i) => (
-          <article class={`project reveal project--${p.accent}`}>
-            <div class="project__visual" aria-hidden="true">
-              <Girih id={`project-girih-${i}`} size={44} />
-              <span class="project__icon">
-                <Icon name={p.icon} size={36} />
-              </span>
-              <ul class="project__stats">
-                {p.stats.map((s) => (
-                  <li>
-                    <strong>{s.value}</strong>
-                    <span>{s.label}</span>
-                  </li>
-                ))}
-              </ul>
+        projects.map((p) => (
+          <article class="project reveal">
+            <div class="project__visual">
+              <Image
+                src={p.image}
+                alt={p.imageAlt}
+                widths={[480, 720, 960]}
+                sizes="(min-width: 900px) 640px, calc(100vw - 32px)"
+                class="project__img"
+              />
             </div>
 
             <div class="project__body">
@@ -102,13 +88,12 @@ const projects = [
       }
 
       <p class="projects__more reveal">
-        More of my code lives on{' '}
+        More of his code lives on{' '}
         <a href="https://github.com/sammokazemi" target="_blank" rel="noopener">GitHub <Icon name="arrow-up-right" size={14} /></a>.
       </p>
     </div>
   </section>
 
-  <CtaBand />
 </Base>
 
 <style>
@@ -130,8 +115,9 @@ const projects = [
     .project {
       grid-template-columns: 0.85fr 1.15fr;
     }
+    /* The WFS screenshot is landscape, so its panel takes the wider column. */
     .project:nth-child(even) {
-      grid-template-columns: 1.15fr 0.85fr;
+      grid-template-columns: 0.85fr 1.15fr;
     }
     .project:nth-child(even) .project__visual {
       order: 2;
@@ -141,56 +127,22 @@ const projects = [
   .project__visual {
     position: relative;
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 40px;
+    align-items: center;
+    justify-content: center;
     min-height: 260px;
-    padding: 32px;
-    background: linear-gradient(135deg, #142a63 0%, #0a6e6f 100%);
-    color: #fff;
+    background: linear-gradient(180deg, #eef7f5, #dcece9);
   }
 
-  .project--lapis .project__visual {
-    background: linear-gradient(135deg, #0f1f4d 0%, #1f3c88 100%);
+  .project:nth-child(even) .project__visual {
+    padding: 16px;
+    background: linear-gradient(180deg, #ffffff, #e6eefa);
   }
 
-  .project__visual :global(.girih) {
-    color: rgba(255, 255, 255, 0.1);
-  }
-
-  .project__icon {
-    position: relative;
-    display: grid;
-    place-items: center;
-    width: 72px;
-    height: 72px;
-    border-radius: 18px;
-    background: rgba(255, 255, 255, 0.12);
-    color: #e9b64d;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-  }
-
-  .project__stats {
-    position: relative;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .project__stats strong {
+  .project__visual :global(.project__img) {
     display: block;
-    font-size: clamp(1.5rem, 3vw, 2rem);
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    line-height: 1.1;
-  }
-
-  .project__stats span {
-    font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.78);
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
   }
 
   .project__body {
@@ -199,7 +151,7 @@ const projects = [
 
   .project__meta {
     margin-bottom: 8px;
-    color: var(--turquoise-strong);
+    color: var(--gold-strong);
     font-size: 0.85rem;
     font-weight: 600;
   }

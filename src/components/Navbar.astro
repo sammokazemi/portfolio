@@ -31,11 +31,11 @@ const path = Astro.url.pathname;
     </nav>
 
     <div class="nav__actions">
+      <a href={url('/contact')} class="btn btn--primary nav__cta">Get in touch</a>
       <button class="nav__icon-btn" type="button" data-theme-toggle aria-label="Toggle dark mode">
         <Icon name="moon" class="icon-moon" />
         <Icon name="sun" class="icon-sun" />
       </button>
-      <a href={url('/contact')} class="btn btn--primary nav__cta">Get in touch</a>
       <button
         class="nav__icon-btn nav__toggle"
         type="button"
@@ -76,7 +76,6 @@ const path = Astro.url.pathname;
   const header = document.querySelector<HTMLElement>('[data-nav]');
   const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
   const menu = document.getElementById('mobile-menu');
-  const themeBtn = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
 
   const setMenu = (open: boolean) => {
     if (!toggle || !menu || !header) return;
@@ -97,23 +96,17 @@ const path = Astro.url.pathname;
   window.matchMedia('(min-width: 1080px)').addEventListener('change', (e) => {
     if (e.matches) setMenu(false);
   });
+  // Back/forward navigation can restore this page exactly as it was left, with the
+  // menu open and scrolling locked after a menu link was followed. Start closed.
+  window.addEventListener('pageshow', (e) => {
+    if (e.persisted) setMenu(false);
+  });
 
   const onScroll = () => header?.classList.toggle('is-scrolled', window.scrollY > 8);
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
 
-  themeBtn?.addEventListener('click', () => {
-    const root = document.documentElement;
-    const current =
-      root.dataset.theme ?? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    const next = current === 'dark' ? 'light' : 'dark';
-    root.dataset.theme = next;
-    try {
-      localStorage.setItem('theme', next);
-    } catch {
-      // Storage can be unavailable (private mode); the choice then lasts for this page only.
-    }
-  });
+  // The theme toggle button is handled by the theme script in Base.astro.
 </script>
 
 <style>
@@ -176,21 +169,14 @@ const path = Astro.url.pathname;
     background: var(--bg-alt);
   }
 
-  .nav__links a[aria-current='page'] {
-    color: var(--turquoise-strong);
-    font-weight: 600;
+  /* Light mode: a fainter hover highlight than the default. */
+  :global(:root:not([data-theme='dark'])) .nav__links a:hover {
+    background: color-mix(in srgb, var(--bg-alt) 45%, transparent);
   }
 
-  .nav__links a[aria-current='page']::after {
-    content: '';
-    position: absolute;
-    left: 50%;
-    bottom: 0;
-    width: 6px;
-    height: 6px;
-    background: var(--saffron);
-    border-radius: 1px;
-    transform: translateX(-50%) rotate(45deg);
+  .nav__links a[aria-current='page'] {
+    color: var(--gold-strong);
+    font-weight: 600;
   }
 
   .nav__actions {
@@ -213,8 +199,8 @@ const path = Astro.url.pathname;
   }
 
   .nav__icon-btn:hover {
-    border-color: var(--turquoise);
-    color: var(--turquoise-strong);
+    border-color: var(--gold);
+    color: var(--gold-strong);
   }
 
   /* Icon renders its own <svg>, outside this component's style scope. */
@@ -229,18 +215,11 @@ const path = Astro.url.pathname;
   :global(:root[data-theme='dark']) .nav__icon-btn :global(.icon-moon) {
     display: none;
   }
-  @media (prefers-color-scheme: dark) {
-    :global(:root:not([data-theme='light'])) .nav__icon-btn :global(.icon-sun) {
-      display: block;
-    }
-    :global(:root:not([data-theme='light'])) .nav__icon-btn :global(.icon-moon) {
-      display: none;
-    }
-  }
 
   .nav.is-open .nav__icon-btn :global(.icon-open) {
     display: none;
   }
+
   .nav.is-open .nav__icon-btn :global(.icon-close) {
     display: block;
   }
@@ -280,7 +259,7 @@ const path = Astro.url.pathname;
   }
 
   .nav__mobile a[aria-current='page'] {
-    color: var(--turquoise-strong);
+    color: var(--gold-strong);
   }
 
   .nav__mobile .btn {

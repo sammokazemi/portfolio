@@ -1,0 +1,194 @@
+---
+// A git-style timeline: one lane per thing Sām was doing, so work that ran in
+// parallel with school branches off the main line instead of stacking in a
+// single column. Each row draws its own slice of every lane, so the graph stays
+// continuous no matter how the text wraps.
+
+export type JourneyEvent = {
+  when: string;
+  what: string;
+  /** Lane the event sits on. Lane 0 is the main line. */
+  lane: number;
+  /**
+   * start: the main line begins here.
+   * branch: a new lane splits off lane 0 here.
+   * end: the lane stops here.
+   * now: lanes still running today (`lanes`) get an open node.
+   */
+  kind?: 'start' | 'branch' | 'end' | 'now';
+  lanes?: number[];
+};
+
+interface Props {
+  events: JourneyEvent[];
+  class?: string;
+  style?: string;
+}
+
+const { events, class: className, style } = Astro.props;
+
+const LANE_GAP = 22;
+const X0 = 10;
+// Branch curves start this far above the row, in the previous row's spacing.
+const BRANCH_LEAD = 20;
+const NODE_Y = 10;
+const x = (lane: number) => X0 + lane * LANE_GAP;
+const laneCount = Math.max(...events.map((e) => Math.max(e.lane, ...(e.lanes ?? [0])))) + 1;
+const graphWidth = x(laneCount - 1) + X0;
+
+type Row = JourneyEvent & {
+  through: number[];
+  endingHere: number[];
+  nodes: { lane: number; open: boolean }[];
+};
+
+const active = new Set<number>();
+const rows: Row[] = events.map((e) => {
+  const before = [...active];
+  let through = before;
+  let endingHere: number[] = [];
+  let nodes = [{ lane: e.lane, open: false }];
+
+  if (e.kind === 'start' || e.kind === 'branch') active.add(e.lane);
+  if (e.kind === 'end') {
+    active.delete(e.lane);
+    through = before.filter((l) => l !== e.lane);
+    endingHere = [e.lane];
+  }
+  if (e.kind === 'now') {
+    endingHere = e.lanes ?? [];
+    through = [];
+    nodes = endingHere.map((lane) => ({ lane, open: true }));
+  }
+  return { ...e, through, endingHere, nodes };
+});
+---
+
+<ol class:list={['jg', className]} style={style} aria-label="Timeline">
+  {
+    rows.map((r) => (
+      <li class="jg__row" style={`--graph-w: ${graphWidth}px`}>
+        <svg class="jg__graph" width={graphWidth} aria-hidden="true" focusable="false">
+          {r.through.map((lane) => (
+            <line class={`jg__lane jg__lane--${lane}`} x1={x(lane)} x2={x(lane)} y1="0" y2="100%" />
+          ))}
+          {r.kind === 'start' && (
+            <line class="jg__lane jg__lane--0" x1={x(0)} x2={x(0)} y1={NODE_Y} y2="100%" />
+          )}
+          {r.kind === 'branch' && (
+            <>
+              <path
+                class={`jg__lane jg__lane--${r.lane}`}
+                d={`M${x(0)} ${-BRANCH_LEAD} C ${x(0)} ${NODE_Y - 6}, ${x(r.lane)} ${-BRANCH_LEAD + 8}, ${x(r.lane)} ${NODE_Y}`}
+              />
+              <line class={`jg__lane jg__lane--${r.lane}`} x1={x(r.lane)} x2={x(r.lane)} y1={NODE_Y} y2="100%" />
+            </>
+          )}
+          {r.endingHere.map((lane) => (
+            <line class={`jg__lane jg__lane--${lane}`} x1={x(lane)} x2={x(lane)} y1="0" y2={NODE_Y} />
+          ))}
+          {r.nodes.map((n) => (
+            <circle
+              class:list={['jg__node', `jg__node--${n.lane}`, { 'jg__node--open': n.open }]}
+              cx={x(n.lane)}
+              cy={NODE_Y}
+              r="6"
+            />
+          ))}
+        </svg>
+        <span class="jg__when">{r.when}</span>
+        <span class="jg__what">{r.what}</span>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .jg {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .jg__row {
+    position: relative;
+    display: grid;
+    gap: 2px;
+    padding: 0 0 22px calc(var(--graph-w) + 14px);
+  }
+
+  .jg__row:last-child {
+    padding-bottom: 0;
+  }
+
+  .jg__graph {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .jg__lane {
+    fill: none;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+  }
+
+  .jg__lane--0 {
+    stroke: var(--gold-strong);
+  }
+  .jg__lane--1 {
+    stroke: var(--gold);
+  }
+  .jg__lane--2 {
+    stroke: var(--gold-bright);
+  }
+  .jg__lane--3 {
+    stroke: #b07a1c;
+  }
+
+  .jg__node {
+    stroke: var(--bg-alt);
+    stroke-width: 2.5;
+  }
+
+  .jg__node--0 {
+    fill: var(--gold-strong);
+  }
+  .jg__node--1 {
+    fill: var(--gold);
+  }
+  .jg__node--2 {
+    fill: var(--gold-bright);
+  }
+  .jg__node--3 {
+    fill: #b07a1c;
+  }
+
+  .jg__node--open {
+    fill: var(--bg-alt);
+    stroke-width: 2.5;
+  }
+  .jg__node--open.jg__node--1 {
+    stroke: var(--gold);
+  }
+  .jg__node--open.jg__node--3 {
+    stroke: #b07a1c;
+  }
+
+  .jg__when {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    line-height: 20px;
+    text-transform: uppercase;
+    color: var(--gold-strong);
+  }
+
+  .jg__what {
+    font-weight: 600;
+    color: var(--ink);
+  }
+</style>

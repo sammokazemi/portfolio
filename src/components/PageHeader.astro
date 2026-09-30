@@ -1,5 +1,5 @@
 ---
-import Girih from './Girih.astro';
+import Rosettes from './Rosettes.astro';
 
 interface Props {
   eyebrow: string;
@@ -12,7 +12,7 @@ const { eyebrow, title, lead } = Astro.props;
 
 <section class="page-header">
   <div class="page-header__pattern" aria-hidden="true">
-    <Girih id="page-header-girih" size={72} />
+    <Rosettes id="page-header-rosettes" size={72} />
   </div>
   <div class="container page-header__inner">
     <p class="eyebrow reveal">{eyebrow}</p>
@@ -28,8 +28,8 @@ const { eyebrow, title, lead } = Astro.props;
     overflow: hidden;
     padding: clamp(56px, 9vw, 104px) 0 clamp(40px, 6vw, 64px);
     background:
-      radial-gradient(circle at 85% 20%, var(--turquoise-tint), transparent 55%),
-      radial-gradient(circle at 10% 110%, var(--saffron-tint), transparent 45%);
+      radial-gradient(circle at 85% 20%, var(--gold-tint), transparent 55%),
+      radial-gradient(circle at 10% 110%, var(--gold-tint), transparent 45%);
     border-bottom: 1px solid var(--line);
   }
 

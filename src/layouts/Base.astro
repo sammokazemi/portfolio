@@ -8,12 +8,14 @@ import { url } from '../lib/url';
 interface Props {
   title?: string;
   description?: string;
+  /** Keep the page out of search results (and give it no canonical URL), e.g. the 404 page. */
+  noindex?: boolean;
 }
 
-const { title, description = site.description } = Astro.props;
+const { title, description = site.description, noindex = false } = Astro.props;
 const fullTitle = title ? `${title} · ${site.name}` : `${site.name} · ${site.title}`;
 const canonical = new URL(Astro.url.pathname, Astro.site);
-const persianText = encodeURIComponent(`${site.persianName}سامکاظمیفارسی`);
+const oldPersianText = encodeURIComponent(site.oldPersianName);
 ---
 
 <!doctype html>
@@ -23,17 +25,22 @@ const persianText = encodeURIComponent(`${site.persianName}سامکاظمیفا�
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
-    <link rel="icon" type="image/svg+xml" href={url('/favicon.svg')} />
+    {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
+    <link rel="icon" type="image/png" sizes="32x32" href={url('/favicon-32.png')} />
+    <link rel="icon" type="image/png" sizes="192x192" href={url('/favicon-192.png')} />
+    <link rel="apple-touch-icon" href={url('/apple-touch-icon.png')} />
     <link rel="sitemap" href={url('/sitemap-index.xml')} />
-    <meta name="theme-color" content="#fbf8f1" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#0d1424" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#fbf8f1" />
 
     <meta property="og:type" content="website" />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content={new URL(url('/og/sam-kazemi.jpg'), Astro.site)} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Portrait of Sām Kazemi" />
+    <meta name="twitter:card" content="summary_large_image" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -43,15 +50,75 @@ const persianText = encodeURIComponent(`${site.persianName}سامکاظمیفا�
     />
     <link
       rel="stylesheet"
-      href={`https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@600&display=swap&text=${persianText}`}
+      href={`https://fonts.googleapis.com/css2?family=Noto+Sans+Old+Persian&display=swap&text=${oldPersianText}`}
     />
 
     <script is:inline>
       document.documentElement.classList.add('js');
-      try {
-        const t = localStorage.getItem('theme');
-        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
-      } catch (e) {}
+
+      // Theme: light during the day, dark at night, by the visitor's local clock.
+      // It's chosen once when a visit starts and then held for that visit (moving
+      // between pages in the same tab), so it never flips while someone is on the
+      // site. A pick from the navbar toggle also carries into new visits until the
+      // next day/night switch. Runs in <head> so the page never flashes.
+      (function () {
+        var DAY_START = 7; // 7am
+        var NIGHT_START = 19; // 7pm
+        var root = document.documentElement;
+        var meta = document.querySelector('meta[name="theme-color"]');
+
+        function valid(theme) {
+          return theme === 'light' || theme === 'dark';
+        }
+
+        function clock(now) {
+          var h = now.getHours();
+          var theme = h >= DAY_START && h < NIGHT_START ? 'light' : 'dark';
+          var next = new Date(now);
+          next.setHours(theme === 'light' ? NIGHT_START : DAY_START, 0, 0, 0);
+          if (next <= now) next.setDate(next.getDate() + 1);
+          return { theme: theme, next: next.getTime() };
+        }
+
+        function set(theme) {
+          root.dataset.theme = theme;
+          if (meta) meta.content = theme === 'dark' ? '#14110c' : '#fbf8f1';
+          try {
+            sessionStorage.setItem('theme', theme);
+          } catch (e) {}
+        }
+
+        var now = new Date();
+        var theme = clock(now).theme;
+        try {
+          var picked = JSON.parse(localStorage.getItem('theme'));
+          if (picked && picked.until > now.getTime() && valid(picked.theme)) theme = picked.theme;
+        } catch (e) {}
+        try {
+          var visit = sessionStorage.getItem('theme');
+          if (valid(visit)) theme = visit;
+        } catch (e) {}
+        set(theme);
+
+        // Back/forward navigation can restore this page as it was left; if the theme
+        // was switched on another page since, pick that up instead of the stale one.
+        window.addEventListener('pageshow', function (e) {
+          if (!e.persisted) return;
+          try {
+            var current = sessionStorage.getItem('theme');
+            if (valid(current) && current !== root.dataset.theme) set(current);
+          } catch (err) {}
+        });
+
+        document.addEventListener('click', function (e) {
+          if (!(e.target instanceof Element) || !e.target.closest('[data-theme-toggle]')) return;
+          var next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+          try {
+            localStorage.setItem('theme', JSON.stringify({ theme: next, until: clock(new Date()).next }));
+          } catch (e) {}
+          set(next);
+        });
+      })();
     </script>
   </head>
   <body>

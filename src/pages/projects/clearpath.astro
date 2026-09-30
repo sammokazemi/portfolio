@@ -1,12 +1,68 @@
 ---
 import CaseStudy from '../../layouts/CaseStudy.astro';
 import Icon from '../../components/Icon.astro';
+import Screenshot from '../../components/Screenshot.astro';
+import ccmReports from '../../assets/projects/clearpath/doctor-ccm-reports.png';
+import patientDashboard from '../../assets/projects/clearpath/patient-dashboard.png';
+import patientProfile from '../../assets/projects/clearpath/doctor-patient-profile.png';
+import healthPlan from '../../assets/projects/clearpath/doctor-health-plan.png';
+import messages from '../../assets/projects/clearpath/doctor-messages.png';
+import encounterNotes from '../../assets/projects/clearpath/vcc-encounter-notes.png';
+import billingCodes from '../../assets/projects/clearpath/vcc-billing-codes.png';
+import mobileHome from '../../assets/projects/clearpath/mobile-home.png';
+import mobileCarePlan from '../../assets/projects/clearpath/mobile-care-plan.png';
+import mobileMedications from '../../assets/projects/clearpath/mobile-medications.png';
+import mobileGoals from '../../assets/projects/clearpath/mobile-goals.png';
+import mobileMetrics from '../../assets/projects/clearpath/mobile-health-metrics.png';
+import mobileGlucose from '../../assets/projects/clearpath/mobile-glucose-trend.png';
+
+const desktopSizes = '(min-width: 1000px) 960px, calc(100vw - 32px)';
+const pairSizes = '(min-width: 900px) 580px, calc(100vw - 32px)';
+const phoneSizes = '(min-width: 760px) 230px, (min-width: 600px) 30vw, 64vw';
+const widths = [800, 1200, 1600, 2200];
+
+const appDayScreens = [
+  { src: mobileHome, alt: 'Patient app home screen greeting the patient, with their care plan, tonight’s appointment with their care coordinator and a Join Call button, health metrics, and goal counts' },
+  { src: mobileCarePlan, alt: 'My Care Plan screen opening with emergency guidance, then what changed in the latest review, when to contact the care team, and who is on it' },
+  { src: mobileMedications, alt: 'My Medications screen for today, grouped into morning, evening, and bedtime, with each dose checked off as taken except the bedtime one' },
+];
+
+const appProgressScreens = [
+  { src: mobileGoals, alt: 'My Doctor’s Health Plan screen with overall progress and each goal labeled In Progress, Completed, or Not Satisfied beside its colored dot' },
+  { src: mobileMetrics, alt: 'Health Metrics screen with a three-month range selected and category filters, showing BMI, weight, body fat, and blood glucose cards with trend lines' },
+  { src: mobileGlucose, alt: 'Blood Glucose Trend screen with latest, average, and range values, a 7.5 percent improvement over three months, a line chart, and the list of readings' },
+];
+
+const appRules = [
+  'Health metrics went from 5 to 15, grouped into the web’s four categories. Each one declares which direction is better, so a change is only called an improvement when it is one. Sleep has a healthy range rather than a maximum, so it is never labeled better or worse.',
+  'Color is never the only cue: every change also carries an arrow and a label, and units come straight from the API, never converted on the device.',
+  'The doctor’s health plan and the patient’s personal goals stay separate features on separate endpoints, and each loads and fails on its own, so one outage can’t blank the other.',
+  'The care plan comes from a patient-safe projection the server builds. Its contents never reach a log, console, or crash report, and a malformed plan still renders what it can instead of an error where the emergency guidance belongs.',
+];
 
 const portals = [
-  { name: 'Patient', text: 'A view-only portal where patients follow their care plan, goals, and progress between visits.' },
-  { name: 'Virtual Care Coordinator (VCC)', text: 'The daily workspace for care coordinators running monthly CCM outreach, documentation, and follow-up.' },
-  { name: 'Doctor', text: 'Physician oversight of their patient panel, encounter review, and sign-off on monthly billing reports.' },
-  { name: 'Admin', text: 'Organization-level management of users, roles, and operations across the platform.' },
+  { name: 'Virtual Care Coordinator (VCC)', text: 'The primary operational portal: encounter documentation, monthly CCM reporting, quality and population-health tracking, scheduling, patient assignments, and consent workflows.' },
+  { name: 'Doctor', text: 'Oversight and sign-off: reviewing CCM summaries and care-plan updates from coordinators, managing prescriptions, and handling escalations.' },
+  { name: 'Patient', text: 'A view-only portal where patients follow their own care plan, prescriptions, health metrics, and personal goals between visits.' },
+  { name: 'Admin', text: 'Internal staff tooling on its own API: account management, analytics, cross-portal CCM oversight, and audit logs.' },
+];
+
+const ccmMonth = [
+  { name: 'Consent', text: 'Patients enroll in CCM by consenting in the app, or through a secure link sent by email.' },
+  { name: 'Document encounters', text: 'Coordinators log each patient contact through the month. The note adapts to how the contact went: a full clinical note, an onboarding intake, or a short record of an outreach attempt.' },
+  { name: 'Submit for review', text: 'At month’s end the coordinator submits a summary, which moves from In Progress to Pending Review.' },
+  { name: 'Physician sign-off', text: 'The doctor approves the report or returns it as Needs Revision. Approved reports and encounters export to PDF.' },
+];
+
+const safeguards = [
+  'PHI never appears in URLs, query strings, or client-side logs. Every log goes through a logger that redacts it.',
+  'Anything sensitive held in browser storage is purged on logout and on session timeout.',
+  'Multi-factor authentication is mandatory for clinicians, and every portal warns before timing out an idle session.',
+  'An expired token is refreshed and the request retried once; if that fails, the user is signed out cleanly.',
+  'Role checks in the interface exist for usability only. The API is the security boundary, and the frontend is built on that assumption.',
+  'Care-team chat is text-only between coordinators and doctors, and is designed so no PHI travels over the websocket.',
+  'Content Security Policy headers, encryption in transit and at rest, and audit logging for sensitive actions.',
+  'An AWS audit trail across every region, with tamper-evident log digests and seven-year retention: a year past HIPAA’s six-year documentation requirement. Every read of PHI storage is logged, while the public website bucket logs only writes, which keeps the cost negligible without losing the record that matters.',
 ];
 ---
 
@@ -26,14 +82,22 @@ const portals = [
     'React Router',
     'Tailwind CSS',
     'Material UI',
-    'REST APIs (JWT)',
+    'Lucide React',
+    'Flutter',
+    'Dart',
+    'REST APIs (bearer tokens)',
+    'Laravel Echo + Pusher',
     'RBAC',
     'MFA',
+    'jsPDF',
+    'Jest',
+    'React Testing Library',
+    'ESLint',
+    'GitHub Actions',
     'AWS S3',
     'AWS CloudFront',
     'AWS ECS Fargate',
-    'CI/CD',
-    'PDF export',
+    'AWS CloudTrail',
     'HIPAA',
     'CPT / ICD-10',
   ]}
@@ -55,22 +119,22 @@ const portals = [
   </section>
 
   <section class="reveal">
-    <p class="eyebrow">My role</p>
+    <p class="eyebrow">His role</p>
     <h2>Architected from the ground up</h2>
     <p>
-      I architected and built ClearPath from the ground up and lead its ongoing development: designing
+      Sām architected and built ClearPath from the ground up and leads its ongoing development: designing
       scalable features, improving clinical workflows with the care team, and managing a distributed
-      engineering team. I own the frontend across all four portals and its integration with the
-      platform’s secure APIs, and I work across the AWS infrastructure and delivery pipeline.
+      engineering team. He owns the React frontend across all four portals and its integration with the
+      platform’s Laravel API, and works across the AWS infrastructure and delivery pipeline.
     </p>
   </section>
 
   <section class="reveal">
-    <p class="eyebrow">What I built</p>
+    <p class="eyebrow">What he built</p>
     <h2>Four portals, one platform</h2>
     <p>
       ClearPath spans 30+ components across four role-based portals, each scoped to exactly what that
-      role needs.
+      role needs. Each role signs in with its own token and downloads only its own portal.
     </p>
     <ul class="cs-flow">
       {
@@ -85,13 +149,41 @@ const portals = [
       }
     </ul>
 
+    <figure class="cs-shot">
+      <Screenshot
+        src={ccmReports}
+        alt="Doctor portal CCM Reports page for September 2026: counts of total, ready-to-sign, signed, and needs-revision reports, with each patient's report ready to sign or send back"
+        widths={widths}
+        sizes={desktopSizes}
+        class="cs-screen"
+      />
+      <figcaption>
+        The doctor portal’s monthly review: every coordinator-submitted CCM report, signed one at a
+        time or all at once. Every name and reading in these screenshots is synthetic sample data.
+      </figcaption>
+    </figure>
+
+    <figure class="cs-shot">
+      <Screenshot
+        src={patientDashboard}
+        alt="Patient portal dashboard greeting the patient, with their care team, today's appointment with their care coordinator, and their health metrics"
+        widths={widths}
+        sizes={desktopSizes}
+        class="cs-screen"
+      />
+      <figcaption>
+        The patient portal: a read-only view of the patient’s care team, appointments, health
+        metrics, goals, and medications.
+      </figcaption>
+    </figure>
+
     <div class="cs-features">
       <div class="card">
         <span class="icon-badge"><Icon name="lock" /></span>
         <h3>Security and compliance</h3>
         <p>
           HIPAA-compliant session management, multi-factor authentication, and audit logging, with
-          JWT-authenticated REST APIs and role-based access control at every boundary.
+          token-authenticated REST APIs and role-based access control at every boundary.
         </p>
       </div>
       <div class="card">
@@ -104,18 +196,220 @@ const portals = [
       </div>
       <div class="card">
         <span class="icon-badge"><Icon name="users" /></span>
-        <h3>Patient engagement and care coordination</h3>
+        <h3>Care coordination in real time</h3>
         <p>
-          End-to-end workflows that keep patients connected to their care team between visits, from
-          outreach and scheduling to follow-up.
+          Patient records, care plans, and medication lists stay in sync across portals as they
+          change, with full medication history kept for compliance.
         </p>
       </div>
       <div class="card">
-        <span class="icon-badge"><Icon name="cloud" /></span>
-        <h3>Cloud and delivery</h3>
+        <span class="icon-badge"><Icon name="message-square" /></span>
+        <h3>Care-team messaging</h3>
         <p>
-          AWS infrastructure on S3, CloudFront, and ECS Fargate, shipped through automated CI/CD
-          pipelines.
+          Live chat between coordinators and doctors, with @-mentions that link a conversation to
+          the patient it is about.
+        </p>
+      </div>
+      <div class="card">
+        <span class="icon-badge"><Icon name="heart-pulse" /></span>
+        <h3>Shared health plans and metrics</h3>
+        <p>
+          A goal checklist doctors and coordinators build together, with red, yellow, and green status
+          that never relies on color alone. Patient goals can track a health metric from baseline to
+          target.
+        </p>
+      </div>
+      <div class="card">
+        <span class="icon-badge"><Icon name="search" /></span>
+        <h3>Fast, keyboard-first interface</h3>
+        <p>
+          A Ctrl/Cmd + K search across patients, notes, and appointments, accessible notifications
+          and dialogs, and route-level code splitting to keep each portal light.
+        </p>
+      </div>
+    </div>
+
+    <figure class="cs-shot cs-shot--wide">
+      <div class="cs-pair">
+        <Screenshot
+          src={patientProfile}
+          alt="Doctor's view of a patient profile with health metric cards for BMI, weight, body fat, blood glucose, and blood pressure, each with a trend chart, above the weekly encounter details"
+          widths={[600, 900, 1200, 1600]}
+          sizes={pairSizes}
+          class="cs-screen"
+        />
+        <Screenshot
+          src={healthPlan}
+          alt="Doctor's Health Plan checklist with goals marked done, in progress, or not done, above the patient's personal goals with progress toward a tracked metric"
+          widths={[600, 900, 1200, 1600]}
+          sizes={pairSizes}
+          class="cs-screen"
+        />
+      </div>
+      <figcaption>
+        One shared chart component shows a patient’s metrics in every portal. The Doctor’s Health
+        Plan pairs every red, yellow, or green status with a text label, and personal goals track a
+        metric from baseline to target.
+      </figcaption>
+    </figure>
+
+    <figure class="cs-shot">
+      <Screenshot
+        src={messages}
+        alt="Messages page with a conversation list and a thread between the doctor and a care coordinator about a patient, whose name is an @-mention link"
+        widths={widths}
+        sizes={desktopSizes}
+        class="cs-screen"
+      />
+      <figcaption>
+        Care-team messaging between a doctor and a coordinator. The @-mention links the conversation
+        to the patient’s record.
+      </figcaption>
+    </figure>
+  </section>
+
+  <section class="reveal">
+    <p class="eyebrow">The mobile app</p>
+    <h2>The patient portal, on iOS and Android</h2>
+    <p>
+      Patients can also follow their care from a Flutter app for iOS and Android. Sām brought the
+      team’s app to parity with the web patient portal, taking every field, value set, and endpoint
+      from the web implementation rather than inventing any, so the two can’t drift apart. He also
+      added the patient’s care plan.
+    </p>
+    <figure class="cs-shot">
+      <div class="cs-phones">
+        {appDayScreens.map((s) => <Screenshot src={s.src} alt={s.alt} widths={[300, 500, 780]} sizes={phoneSizes} class="cs-screen cs-phone" />)}
+      </div>
+      <figcaption>
+        The same patient as the web screenshots, on the evening of their monthly check-in: the home
+        screen with the call’s join link, the care plan with emergency guidance first, and today’s
+        medications, checked off as they’re taken.
+      </figcaption>
+    </figure>
+    <ul class="check-list">
+      {appRules.map((r) => <li>{r}</li>)}
+    </ul>
+    <figure class="cs-shot">
+      <div class="cs-phones">
+        {appProgressScreens.map((s) => <Screenshot src={s.src} alt={s.alt} widths={[300, 500, 780]} sizes={phoneSizes} class="cs-screen cs-phone" />)}
+      </div>
+      <figcaption>
+        The doctor’s health plan with a text label beside every colored status, health metrics
+        grouped by category, and three months of blood glucose readings.
+      </figcaption>
+    </figure>
+  </section>
+
+  <section class="reveal">
+    <p class="eyebrow">The core workflow</p>
+    <h2>A month of chronic care, start to finish</h2>
+    <p>
+      CCM is billed monthly, and the whole month has to hold up on paper. ClearPath models it as a
+      clear lifecycle that coordinators and doctors move through together.
+    </p>
+    <ul class="cs-flow">
+      {
+        ccmMonth.map((s) => (
+          <li>
+            <div>
+              <strong>{s.name}</strong>
+              <span>{s.text}</span>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+    <figure class="cs-shot">
+      <Screenshot
+        src={encounterNotes}
+        alt="Coordinator's encounter note for a CCM call: contact outcome set to CCM Encounter, call start and end times totaling 34 minutes, consent confirmed, and vitals with trend sparklines"
+        widths={widths}
+        sizes={desktopSizes}
+        class="cs-screen"
+      />
+      <figcaption>
+        A coordinator documenting a CCM call. The contact outcome decides which form appears, and
+        every vital shows its trend beside the field.
+      </figcaption>
+    </figure>
+    <p>
+      The rules are enforced, not suggested. Complex CCM can’t be approved without the documentation
+      it requires, including medical decision-making (MDM), and that gate is never relaxed. Billing
+      codes mirror the server’s calculation and can be overridden by hand, but the interface never
+      invents or silently corrects a code. Health-metric units come straight from the API and are
+      never converted in the browser.
+    </p>
+    <figure class="cs-shot">
+      <Screenshot
+        src={billingCodes}
+        alt="Billing Codes (CPT) card with 99490 checked automatically for a 34-minute standard CCM call, and the remaining codes available as manual overrides"
+        widths={widths}
+        sizes={desktopSizes}
+        class="cs-screen"
+      />
+      <figcaption>
+        Billing codes follow the documented time: 34 minutes of standard CCM checks 99490 only,
+        because 99439 needs 40. Any code can still be toggled by hand.
+      </figcaption>
+    </figure>
+  </section>
+
+  <section class="reveal">
+    <p class="eyebrow">Security</p>
+    <h2>Designed around protected health information</h2>
+    <p>
+      ClearPath handles PHI, so the frontend treats every piece of it as something to minimize. A few
+      of the rules the codebase is built on:
+    </p>
+    <ul class="check-list">
+      {safeguards.map((s) => <li>{s}</li>)}
+    </ul>
+  </section>
+
+  <section class="reveal">
+    <p class="eyebrow">Delivery</p>
+    <h2>Releases that don’t break anyone</h2>
+    <p>
+      The React frontend is served from S3 and CloudFront, in front of a Laravel API on ECS Fargate
+      and PostgreSQL on RDS. Every push runs a dependency audit, a zero-warning lint, and the test
+      suite, and nothing is released until that passes. The release process encodes a few hard-won
+      lessons.
+    </p>
+    <div class="cs-features">
+      <div class="card">
+        <span class="icon-badge"><Icon name="cloud" /></span>
+        <h3>Caching that matches the files</h3>
+        <p>
+          Content-hashed bundles are cached for a year, files with stable names stay revalidatable,
+          and the HTML is never cached, so a new favicon or sitemap reaches returning visitors instead
+          of hiding in their browser cache.
+        </p>
+      </div>
+      <div class="card">
+        <span class="icon-badge"><Icon name="rocket" /></span>
+        <h3>No broken open tabs</h3>
+        <p>
+          Old bundles survive a release, because a tab that is already open still asks for them. A
+          pruning script removes an asset only once it is both gone from the live build and more than
+          30 days old, dry-runs by default, and refuses to run against a build that isn’t live.
+        </p>
+      </div>
+      <div class="card">
+        <span class="icon-badge"><Icon name="lock" /></span>
+        <h3>No source maps, ever</h3>
+        <p>
+          On a public origin, a source map would publish the complete client source of a PHI
+          platform. The build inspects its own output and fails if one survives, rather than trusting
+          a config flag.
+        </p>
+      </div>
+      <div class="card">
+        <span class="icon-badge"><Icon name="check-circle" /></span>
+        <h3>Verified, not assumed</h3>
+        <p>
+          After every release, the bundle served from production is checked against the build that
+          was just uploaded, so a stale cache or a bad upload can’t pass silently.
         </p>
       </div>
     </div>
@@ -133,13 +427,18 @@ const portals = [
   </section>
 
   <section class="reveal">
-    <p class="eyebrow">What I learned</p>
+    <p class="eyebrow">What he learned</p>
     <h2>In healthcare, correctness is the feature</h2>
     <p>
       A billing code, a timestamp, or a permission check that is slightly wrong is not a cosmetic
-      bug. It affects patient care and Medicare compliance. Building ClearPath taught me to design for
+      bug. It affects patient care and Medicare compliance. Building ClearPath taught him to design for
       that: strict role boundaries, defensive handling of every piece of data, and a delivery process
       where nothing ships without passing its checks.
+    </p>
+    <p>
+      It also taught him where to spend testing effort. ClearPath’s tests concentrate where a
+      regression costs the most: authentication and routing, session timeout, the API and security
+      layer, CCM and billing logic, and PHI handling.
     </p>
   </section>
 </CaseStudy>

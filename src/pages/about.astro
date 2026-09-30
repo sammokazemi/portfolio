@@ -1,30 +1,32 @@
 ---
 import Base from '../layouts/Base.astro';
 import PageHeader from '../components/PageHeader.astro';
-import CtaBand from '../components/CtaBand.astro';
 import Icon from '../components/Icon.astro';
+import { Image } from 'astro:assets';
 import { site } from '../data/site';
+import muralPhoto from '../assets/photos/about-mural.jpg';
+import relief from '../assets/photos/persepolis-relief.jpg';
 
 const values = [
   {
     icon: 'target',
     title: 'Discipline',
-    text: 'Nothing about this path was handed to me. Consistency, not luck, is what carried me from community college to leading engineering teams.',
+    text: 'Nothing about his path was handed to him. Consistency, not luck, carried him from community college to leading engineering teams.',
   },
   {
     icon: 'compass',
     title: 'Identity',
-    text: 'Knowing where I come from keeps me grounded. My heritage is not a side note to my career. It is the foundation under it.',
+    text: 'Knowing where he comes from keeps him grounded. His heritage is not a side note to his career. It is the foundation under it.',
   },
   {
     icon: 'users',
     title: 'Service',
-    text: 'I build for patients, workers, and communities, and I measure my work by whether it makes their lives easier.',
+    text: 'He builds for patients, workers, and communities, and measures his work by whether it makes their lives easier.',
   },
   {
     icon: 'book-open',
     title: 'Education',
-    text: 'Education changed my life. I want to open that same door for others as a mentor, educator, and community leader.',
+    text: 'Education changed his life. He wants to open that same door for others as a mentor, educator, and community leader.',
   },
 ] as const;
 ---
@@ -34,7 +36,7 @@ const values = [
   description="Sām Kazemi's story: from Antioch, California to Lead Software Engineer, and why he reclaimed his name and his Iranian heritage."
 >
   <PageHeader
-    eyebrow="About me"
+    eyebrow="About"
     title="An engineer shaped by where he comes from"
     lead="Lead Software Engineer, SFSU computer science graduate, and a proud Iranian-American committed to advancing his community through education, cultural awareness, and advocacy."
   />
@@ -43,9 +45,19 @@ const values = [
     <div class="container about">
       <aside class="about__aside reveal">
         <div class="name-card card">
-          <p class="name-card__fa persian" lang="fa">{site.persianName}</p>
+          <Image
+            src={muralPhoto}
+            alt="Sām Kazemi in front of a Woman, Life, Freedom mural with Persian poetry and a red poppy"
+            widths={[340, 680]}
+            sizes="(min-width: 960px) 340px, calc(100vw - 32px)"
+            class="name-card__photo"
+          />
+          <p class="name-card__op old-persian" lang="peo">{site.oldPersianName}</p>
           <p class="name-card__en">{site.name}</p>
-          <p class="name-card__note">Pronounced “Saam,” not short for Samuel.</p>
+          <p class="name-card__note">
+            Pronounced “Saam,” not short for Samuel. Above, his name in Old Persian cuneiform, the
+            script of the Achaemenid inscriptions at Persepolis and Bisotun.
+          </p>
           <dl class="facts">
             <div>
               <dt><Icon name="map-pin" size={16} /> Roots</dt>
@@ -57,11 +69,15 @@ const values = [
             </div>
             <div>
               <dt><Icon name="briefcase" size={16} /> Now</dt>
-              <dd>Lead Software Engineer, MedManage Solutions · Lead Engineer, Workforce Systems</dd>
+              <dd>Lead Software Engineer, MedManage Solutions · Lead Developer, Workforce Systems</dd>
             </div>
             <div>
               <dt><Icon name="languages" size={16} /> Languages</dt>
               <dd>English, Persian</dd>
+            </div>
+            <div>
+              <dt><Icon name="heart-pulse" size={16} /> Outside work</dt>
+              <dd>Weightlifting, fitness, martial arts, music</dd>
             </div>
           </dl>
         </div>
@@ -69,73 +85,112 @@ const values = [
 
       <div class="prose">
         <div class="reveal">
-          <h2>Where I come from</h2>
+          <h2>Where he comes from</h2>
           <p>
-            I was born and raised in Antioch, California. Growing up, I watched gang violence take a
-            real toll on friends and family, close enough to see how quickly a life can narrow when
-            the options run out. That experience taught me early that nobody was going to hand me a
-            way out. I would have to build one.
+            Sām was born and raised in Antioch, California, to Iranian immigrant parents. There were
+            stretches when his family struggled to make ends meet, and he lost an uncle he was close
+            to. Those years showed him how much it takes to hold a family together.
           </p>
           <p>
-            I decided education would be that way out. I started at Los Medanos College in Pittsburg,
-            made the Honor Roll while completing my lower-division computer science coursework, and
-            transferred to San Francisco State University. In August 2026 I graduated with a B.S. in
-            Computer Science, a 3.53 GPA, a place on the Dean’s List, and a minor in Persian Studies.
+            In the neighborhoods around him, he watched gang violence take a real toll on friends and
+            on the wider community, close enough to see how quickly a life can narrow when the options
+            run out. That experience taught him early that nobody was going to hand him a way out. He
+            would have to build one.
+          </p>
+          <p>
+            He decided education would be that way out. He started at Los Medanos College in
+            Pittsburg, made the Honor Roll while completing his lower-division computer science
+            coursework, and transferred to San Francisco State University. In August 2026 he
+            graduated with a B.S. in
+            Computer Science, a 3.53 GPA, Honor Roll and Dean’s List recognition, and a minor in Persian Studies.
           </p>
         </div>
 
         <div class="reveal">
           <h2>Why computer science</h2>
           <p>
-            I didn’t grow up around engineers. What changed my direction was watching a close friend
-            build a successful career in software. It showed me, up close, what the field could make
-            possible: financial stability, real opportunity, and the chance to break the cycle of
-            poverty for yourself and your family. The more I learned about computing, the more I
-            understood its reach, and I committed to it completely.
+            Sām didn’t grow up around engineers. What changed his direction was watching a close
+            friend build a successful career in software. It showed him, up close, what the field
+            could make possible: financial stability, real opportunity, and the chance to break the
+            cycle of poverty for himself and his family. The more he learned about computing, the
+            more he understood its reach, and he committed to it completely.
+          </p>
+        </div>
+
+        <div class="reveal">
+          <h2>Why healthcare</h2>
+          <p>
+            Sām’s passion for health started in the gym. Years of weightlifting and fitness showed
+            him how much strength and well-being shape a person’s life. While studying computer
+            science, he discovered the other side of that passion: the enormous potential of
+            technology in healthcare, and how new advances in computer science can help keep people
+            healthy and even save lives. That realization drew him to the medical field.
           </p>
           <p>
-            That commitment turned into responsibility quickly. As Lead Software Engineer at
-            MedManage Solutions, I architected <strong>ClearPath Virtual Health</strong> from the
+            That passion turned into responsibility quickly. As Lead Software Engineer at
+            MedManage Solutions, he architected <strong>ClearPath Virtual Health</strong> from the
             ground up: a HIPAA-compliant platform that helps care teams support patients living with
-            chronic conditions. I lead its development, from scalable features and clinical
-            workflows to a distributed engineering team. I’m also Lead Engineer at{' '}
-            <strong>Workforce Systems</strong>, a startup building software for labor unions, where I
-            design the platform and help secure contracts with the unions we serve.
+            chronic conditions. He leads its development, from scalable features and clinical
+            workflows to a distributed engineering team. He is also Lead Developer at{' '}
+            <strong>Workforce Systems</strong>, a startup building software for labor unions, where
+            he designs the platform and helps secure contracts with the unions it serves.
           </p>
         </div>
 
         <div class="reveal">
           <h2>Why Sām</h2>
           <p>
-            I was born Mojtaba Kazemi. As I studied Iranian history, I learned where that name came
-            from and came to understand it as a slave name, one imposed on my people rather than
-            drawn from our own culture. I chose to reclaim a name that is ours.
+            Sām was born Mojtaba Kazemi. As he studied Iranian history, he learned where that name
+            came from and came to understand it as a slave name, one imposed on his people rather
+            than drawn from their own culture. He chose to reclaim a name that is theirs.
           </p>
           <blockquote>
             Sām is a name from Iran’s own epic tradition, carried by a hero of Ferdowsi’s{' '}
             <em>Shāhnāmeh</em>.
           </blockquote>
           <p>
-            Sām (<span class="persian" lang="fa">سام</span>) is not a shortened Samuel. It is a
-            Persian name with its own history, and carrying it is a daily reminder of who I am and
-            who I answer to. You will still see “Mojtaba (Sām) Kazemi” on some official records.
+            Sām (<span class="old-persian" lang="peo">{site.oldPersianFirst}</span>) is not a shortened Samuel. It is a
+            Persian name with its own history, and carrying it is a daily reminder of who he is and
+            who he answers to. “Mojtaba (Sām) Kazemi” still appears on some official records.
           </p>
         </div>
 
         <div class="reveal">
           <h2>Heritage and community</h2>
           <p>
-            My minor in Persian Studies was not a side interest. My long-term goal is to be an
+            His minor in Persian Studies was not a side interest. His long-term goal is to be an
             Iranocentric scholar, educator, and community leader: someone who helps Iranians,
             especially in the diaspora, know their history, language, and culture, and who advocates
             for them.
           </p>
+          <figure class="relief">
+            <Image
+              src={relief}
+              alt="Stone relief at Persepolis of Persian and Median nobles in procession, framed by bands of rosettes"
+              widths={[680, 780]}
+              sizes="(min-width: 960px) 680px, calc(100vw - 32px)"
+            />
+            <figcaption>
+              Persian and Median nobles in procession at Persepolis, carved under the Achaemenid
+              kings in the 6th–5th century BCE. The rosettes framing them are the motif used across
+              this site.
+            </figcaption>
+          </figure>
           <p>
-            I bring the same discipline to that mission that I bring to engineering. As a mentor in
-            the MESA Program at San Francisco State, I help other students navigate academic and
-            career decisions. I know firsthand how much one person showing you what’s possible can
-            change your trajectory. My aim is to be that person for others, and to build success
-            that is grounded in identity and values.
+            He brings the same discipline to that mission that he brings to engineering. As a mentor
+            in the MESA Program at San Francisco State, he helped other students navigate academic
+            and career decisions. He knows firsthand how much one person showing you what’s possible
+            can change your trajectory. His aim is to be that person for others, and to build
+            success that is grounded in identity and values.
+          </p>
+        </div>
+
+        <div class="reveal">
+          <h2>Outside of work</h2>
+          <p>
+            Away from the keyboard, Sām’s biggest passions are weightlifting, fitness, martial arts,
+            and music. Training keeps him disciplined and clear-headed, and it is where his interest
+            in health began. Music is how he recharges.
           </p>
         </div>
       </div>
@@ -145,7 +200,7 @@ const values = [
   <section class="section section--alt">
     <div class="container">
       <div class="section-head section-head--center reveal">
-        <p class="eyebrow">What I stand on</p>
+        <p class="eyebrow">What he stands on</p>
         <h2>The values behind the work</h2>
       </div>
       <div class="grid grid--4">
@@ -164,7 +219,6 @@ const values = [
     </div>
   </section>
 
-  <CtaBand />
 </Base>
 
 <style>
@@ -195,15 +249,43 @@ const values = [
 
   .name-card {
     overflow: hidden;
-    border-top: 4px solid var(--saffron);
+    border-top: 4px solid var(--gold-bright);
   }
 
-  .name-card__fa {
-    margin: 0;
-    font-size: 3rem;
-    line-height: 1.9;
-    color: var(--turquoise-strong);
-    text-align: left;
+  .name-card :global(.name-card__photo) {
+    display: block;
+    width: calc(100% + 2 * clamp(22px, 3vw, 32px));
+    max-width: none;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    margin: calc(-1 * clamp(22px, 3vw, 32px)) calc(-1 * clamp(22px, 3vw, 32px)) 20px;
+  }
+
+  .relief {
+    margin: 28px 0;
+  }
+
+  .relief :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+
+  .relief figcaption {
+    margin-top: 12px;
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+
+  .name-card__op {
+    margin: 0 0 14px;
+    font-size: 1.9rem;
+    line-height: 1.3;
+    color: var(--gold-strong);
+    overflow-wrap: anywhere;
   }
 
   .name-card__en {
@@ -235,7 +317,7 @@ const values = [
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--turquoise-strong);
+    color: var(--gold-strong);
   }
 
   .facts dd {
