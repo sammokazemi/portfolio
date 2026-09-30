@@ -15,7 +15,7 @@ Persepolis; and the name Sām written in Old Persian cuneiform.
 | --- | --- |
 | `/` | Hero, impact metrics, featured work, story teaser |
 | `/about` | Personal story: Antioch, education, the name Sām, heritage |
-| `/projects` | Project overview, plus case studies at `/projects/clearpath` and `/projects/workforce-systems` |
+| `/projects` | Project overview, with a case study for each project at `/projects/<slug>` |
 | `/skills` | Skills by category and engineering practices |
 | `/reviews` | Recommendations from teammates, classmates, and mentors |
 | `/contact` | Contact form, email, and social links |
