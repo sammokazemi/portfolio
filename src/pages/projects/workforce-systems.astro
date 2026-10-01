@@ -2,6 +2,7 @@
 import Screenshot from '../../components/Screenshot.astro';
 import CaseStudy from '../../layouts/CaseStudy.astro';
 import Icon from '../../components/Icon.astro';
+import { url } from '../../lib/url';
 import unionHall from '../../assets/projects/wfs/union-hall.png';
 import contractorCompliance from '../../assets/projects/wfs/contractor-compliance.png';
 import appMap from '../../assets/projects/wfs/app-map.png';
@@ -157,7 +158,8 @@ const coverageRules = [
     </figure>
     <p>
       Alongside the platform, the project includes the union’s own public website for members,
-      contractors, and the community, with its health and welfare information.
+      contractors, and the community, with its health and welfare information. It has{' '}
+      <a href={url('/projects/labor-union-website')}>its own case study</a>.
     </p>
   </section>
 

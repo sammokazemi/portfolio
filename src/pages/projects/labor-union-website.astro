@@ -1,0 +1,308 @@
+---
+import Screenshot from '../../components/Screenshot.astro';
+import CaseStudy from '../../layouts/CaseStudy.astro';
+import Icon from '../../components/Icon.astro';
+import { url } from '../../lib/url';
+import home from '../../assets/projects/union-website/home.png';
+import homeSurfaces from '../../assets/projects/union-website/home-surfaces.png';
+import membersApp from '../../assets/projects/union-website/members-app.png';
+import contractors from '../../assets/projects/union-website/contractors.png';
+import healthWelfare from '../../assets/projects/union-website/health-welfare.png';
+import contact from '../../assets/projects/union-website/contact.png';
+import signin from '../../assets/projects/union-website/signin.png';
+import phoneHome from '../../assets/projects/union-website/phone-home.png';
+import phoneMenu from '../../assets/projects/union-website/phone-menu.png';
+import phoneHealth from '../../assets/projects/union-website/phone-health.png';
+
+const desktopSizes = '(min-width: 1000px) 960px, calc(100vw - 32px)';
+const pairSizes = '(min-width: 1000px) 470px, (min-width: 900px) 45vw, calc(100vw - 32px)';
+const phoneSizes = '(min-width: 760px) 230px, (min-width: 600px) 30vw, 64vw';
+
+const pages = [
+  { name: 'Home', text: 'Who the local is, and a slide for each part of the platform behind the site.' },
+  { name: 'Members', text: 'The member app, what it shows, and how members organize together.' },
+  { name: 'Contractors', text: 'What the contractor portal does, and where its view of the shared record stops.' },
+  { name: 'Health & Welfare', text: 'How hours worked become health coverage, and what to do after an injury on the job.' },
+  { name: 'About, Our Team, and Resources', text: 'The local’s affiliations, its elected officers, and a directory of training funds, safety agencies, and voter registration in English and Spanish.' },
+  { name: 'Contact and Sign in', text: 'The hall’s details with a short written-enquiry form, and the website’s own sign-in.' },
+];
+
+const phoneScreens = [
+  { src: phoneHome, alt: 'The home page on a phone, with the welcome headline and the button to download the members app' },
+  { src: phoneMenu, alt: 'The mobile navigation menu open, with five pages and the sign-in and contact buttons' },
+  { src: phoneHealth, alt: 'The Health and Welfare page on a phone, listing the four steps from hours worked to coverage' },
+];
+---
+
+<CaseStudy
+  name="Labor Union Website"
+  description="Case study: the public website Sām Kazemi designed and built for a labor union local at Workforce Systems, one front door for its members, contractors, and community."
+  summary="A nine-page public website for a union local: one front door for its members, its contractors, and the community, built on the same design system as the workforce platform behind it."
+  role="Lead Developer: design and front end"
+  org="Workforce Systems (WFS)"
+  period="Aug 2026 – Present"
+  status="Built; launch planned"
+  accent="lapis"
+  stack={[
+    'HTML5 / CSS',
+    'Tailwind CSS',
+    'JavaScript',
+    'Responsive design',
+    'Accessible UI',
+    'Design systems',
+    'Information architecture',
+  ]}
+>
+  <section class="reveal">
+    <p class="eyebrow">The challenge</p>
+    <h2>One front door for three audiences</h2>
+    <p>
+      A union local’s website is read by very different people. Members want to know where they stand
+      and how to get to work. Contractors who hire through the hall want to know how to ask for a
+      crew. Neighbors and future members want to know who the local is and how to reach it. Each of
+      them needs an answer in a page or two, and many will be reading on a phone.
+    </p>
+    <p>
+      The site is also the public face of the{' '}
+      <a href={url('/projects/workforce-systems')}>Union Workforce Ecosystem</a>, the platform
+      Workforce Systems is building for the same union. Sām designed and built it as part of that
+      contract, so a visitor who signs in steps from the website into the platform without feeling
+      like they changed products.
+    </p>
+    <figure class="cs-shot">
+      <Screenshot
+        src={home}
+        alt="The website home page: a welcome headline over a photo of a construction crew, with buttons to download the members app or learn more"
+        widths={[800, 1200, 1600, 2200]}
+        sizes={desktopSizes}
+        class="cs-screen"
+      />
+      <figcaption>
+        The home page. The union’s name, logo, address, phone numbers, and officers are replaced
+        with placeholders in every screen on this page.
+      </figcaption>
+    </figure>
+  </section>
+
+  <section class="reveal">
+    <p class="eyebrow">The site</p>
+    <h2>Nine pages, one question each</h2>
+    <p>
+      Every page answers one reader’s question, and no answer is more than a click from the top
+      bar or the footer.
+    </p>
+    <ul class="cs-flow">
+      {
+        pages.map((p) => (
+          <li>
+            <div>
+              <strong>{p.name}</strong>
+              <span>{p.text}</span>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="reveal">
+    <p class="eyebrow">Members and contractors</p>
+    <h2>Each side of the hall gets its own page</h2>
+    <p>
+      The members page explains the app in terms of what a member looks up: book position, dispatch
+      ticket, card wallet, hours, dues, and coverage. Beside the copy is the member app itself, the
+      actual prototype screen running inside a phone frame rather than a picture of one, so the site
+      and the app can’t drift apart.
+    </p>
+    <figure class="cs-shot">
+      <Screenshot
+        src={membersApp}
+        alt="The members page: six things the member app shows, the app store buttons, and the member app’s home screen in a phone frame"
+        widths={[800, 1200, 1600, 2200]}
+        sizes={desktopSizes}
+        class="cs-screen"
+      />
+      <figcaption>
+        The members page, with the member app’s live home screen beside the copy.
+      </figcaption>
+    </figure>
+    <p>
+      The contractors page does the same for the contractor portal, then spells out where the
+      contractor’s view of the shared record stops. A contractor sees the members referred to them
+      and the cards those members hold, but never the referral lists, another contractor’s business,
+      or what a member’s health coverage was used for.
+    </p>
+    <figure class="cs-shot">
+      <Screenshot
+        src={contractors}
+        alt="The contractors page: eight things the contractor portal does, from requesting workers to certifying payroll"
+        widths={[800, 1200, 1600, 2200]}
+        sizes={desktopSizes}
+        class="cs-screen"
+      />
+      <figcaption>
+        The contractors page: requesting workers, tracking a request, compliance, and certified
+        payroll in one place.
+      </figcaption>
+    </figure>
+  </section>
+
+  <section class="reveal">
+    <p class="eyebrow">Health and welfare</p>
+    <h2>Benefits explained in plain language</h2>
+    <p>
+      Union health coverage is earned through hours worked, and that is rarely explained well. The
+      Health &amp; Welfare page walks through it in four steps: you work the hours, the contractor
+      pays the trust, your hours build an eligibility bank, and a monthly run checks the bank
+      against the plan minimum. It then covers other plans a member can connect, and what to do
+      after an injury on the job.
+    </p>
+    <figure class="cs-shot">
+      <Screenshot
+        src={healthWelfare}
+        alt="The Health and Welfare page: Hours in, coverage out, with four numbered steps from working the hours to the monthly eligibility run"
+        widths={[800, 1200, 1600, 2200]}
+        sizes={desktopSizes}
+        class="cs-screen"
+      />
+      <figcaption>
+        How coverage is earned, in four steps, with no figures a visitor would have to sign in to
+        see.
+      </figcaption>
+    </figure>
+  </section>
+
+  <section class="reveal">
+    <p class="eyebrow">On a phone</p>
+    <h2>Built for the phone in a vest</h2>
+    <p>
+      Members are likely to open the site on a jobsite, so every page collapses to a single column below
+      desktop width. The menu folds into a full-width panel with large tap targets, and it closes on
+      a link tap, on Escape, or when the window grows back to desktop size. The home page carousel
+      takes a thumb swipe.
+    </p>
+    <figure class="cs-shot">
+      <div class="cs-phones">
+        {phoneScreens.map((s) => <Screenshot src={s.src} alt={s.alt} widths={[300, 500, 700]} sizes={phoneSizes} class="cs-screen cs-phone" />)}
+      </div>
+      <figcaption>
+        The home page, the mobile menu, and the Health &amp; Welfare steps on a phone.
+      </figcaption>
+    </figure>
+  </section>
+
+  <section class="reveal">
+    <p class="eyebrow">Getting in touch</p>
+    <h2>A person reads it, not a queue</h2>
+    <p>
+      The contact page leads with what most people actually need: the hall’s address, phone, office
+      hours, and dispatch window. The written-enquiry form asks for four things, says exactly which
+      ones are still missing, promises the details are used only to reply, and confirms with a
+      reference number. The website has its own sign-in, which tells members up front that a code
+      goes to the phone the hall has on file.
+    </p>
+    <figure class="cs-shot cs-shot--wide">
+      <div class="cs-pair">
+        <Screenshot
+          src={contact}
+          alt="The contact page: cards for the hall address, phone, fax, office hours, dispatch window, and membership meeting, above the start of a contact form"
+          widths={[600, 900, 1400]}
+          sizes={pairSizes}
+          class="cs-screen"
+        />
+        <Screenshot
+          src={signin}
+          alt="The website sign-in page: a member number or email and password form beside a photo of two workers reviewing a clipboard"
+          widths={[600, 900, 1400]}
+          sizes={pairSizes}
+          class="cs-screen"
+        />
+      </div>
+      <figcaption>The contact page and the website’s sign-in.</figcaption>
+    </figure>
+  </section>
+
+  <section class="reveal">
+    <p class="eyebrow">Engineering highlights</p>
+    <h2>Small rules that keep the site honest</h2>
+    <div class="cs-features">
+      <div class="card">
+        <span class="icon-badge"><Icon name="layers" /></span>
+        <h3>The platform’s design system</h3>
+        <p>
+          The site uses the same treatment as the platform’s shared sign-in: the same typefaces,
+          color tokens, icon set, and corner radii. One raised panel per page at most, and everything
+          else is separated by a single hairline.
+        </p>
+      </div>
+      <div class="card">
+        <span class="icon-badge"><Icon name="compass" /></span>
+        <h3>Navigation from one table</h3>
+        <p>
+          Each page builds its top bar and footer from a single page map, so a page can’t be called
+          one thing in the menu and another in the footer. A page that hasn’t shipped yet shows as a
+          disabled “not published yet” entry instead of a link to a 404.
+        </p>
+      </div>
+      <div class="card">
+        <span class="icon-badge"><Icon name="check-circle" /></span>
+        <h3>Copy that can’t overclaim</h3>
+        <p>
+          A visitor who hasn’t signed in has no local to read numbers from, so the public pages carry
+          none. A self-check on every page warns in the console if the copy ever states a rate, a
+          percentage, or an hour total.
+        </p>
+      </div>
+      <div class="card">
+        <span class="icon-badge"><Icon name="target" /></span>
+        <h3>A carousel that gets out of the way</h3>
+        <p>
+          The home page slider advances on its own, but pauses on hover, keyboard focus, a swipe, or
+          when the tab is in the background. Arrow keys and dots pick a slide, screen readers hear it
+          as a carousel, and reduced-motion settings turn the movement off.
+        </p>
+      </div>
+      <div class="card">
+        <span class="icon-badge"><Icon name="users" /></span>
+        <h3>Accessible by default</h3>
+        <p>
+          Visible focus rings, a skip link past the navigation, labeled form fields with the right
+          autocomplete hints, decorative icons hidden from screen readers, and 44-pixel rows in the
+          mobile menu.
+        </p>
+      </div>
+      <div class="card">
+        <span class="icon-badge"><Icon name="file-text" /></span>
+        <h3>Self-contained pages</h3>
+        <p>
+          Like the platform’s prototype, every page is one HTML file with no build step, so any page
+          can be opened, reviewed with union staff, or sent on its own.
+        </p>
+      </div>
+    </div>
+    <figure class="cs-shot">
+      <Screenshot
+        src={homeSurfaces}
+        alt="The home page carousel on its Contractor Portal slide, with a photo of a worker holding a floor plan, above the About Us band"
+        widths={[800, 1200, 1600, 2200]}
+        sizes={desktopSizes}
+        class="cs-screen"
+      />
+      <figcaption>
+        The home page carousel: one slide for each part of the platform, with the photo changing
+        alongside the copy.
+      </figcaption>
+    </figure>
+  </section>
+
+  <section class="reveal">
+    <p class="eyebrow">What’s next</p>
+    <h2>From prototype to launch</h2>
+    <p>
+      In the production build the site moves to Next.js on AWS Amplify, alongside the union
+      operations and contractor portals. Its sign-in gets wired to the platform’s Cognito sign-in so
+      it hands members straight into their accounts, and the legal pages (privacy, HIPAA, terms, and
+      accessibility) go live once counsel supplies the text.
+    </p>
+  </section>
+</CaseStudy>

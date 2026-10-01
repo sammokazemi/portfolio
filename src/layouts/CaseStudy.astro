@@ -12,8 +12,9 @@ interface Props {
   org: string;
   period: string;
   status: string;
-  live: string;
-  liveLabel: string;
+  /** Omitted when the project has no public URL that can be shared. */
+  live?: string;
+  liveLabel?: string;
   stack: string[];
   accent?: 'turquoise' | 'lapis';
 }
@@ -34,12 +35,16 @@ const { name, description, summary, role, org, period, status, live, liveLabel, 
       <p class="eyebrow reveal">Case study</p>
       <h1 class="reveal" style="--delay: 0.05s">{name}</h1>
       <p class="lead cs-summary reveal" style="--delay: 0.1s">{summary}</p>
-      <div class="btn-row reveal" style="--delay: 0.15s">
-        <a class="btn btn--primary" href={live} target="_blank" rel="noopener">
-          Visit {liveLabel} <Icon name="arrow-up-right" />
-          <span class="visually-hidden">(opens in a new tab)</span>
-        </a>
-      </div>
+      {
+        live && (
+          <div class="btn-row reveal" style="--delay: 0.15s">
+            <a class="btn btn--primary" href={live} target="_blank" rel="noopener">
+              Visit {liveLabel} <Icon name="arrow-up-right" />
+              <span class="visually-hidden">(opens in a new tab)</span>
+            </a>
+          </div>
+        )
+      }
     </div>
   </section>
 
