@@ -4,10 +4,9 @@ Personal portfolio of Sām Kazemi (𐎿𐎠𐎶𐏐𐎣𐎠𐏀𐎡𐎷𐎡), Le
 [Astro](https://astro.build) as a fully static site: no client framework, a few
 small scripts for the menu, theme toggle, and scroll reveals.
 
-The design follows the clean, card-based look of
-[ClearPath Virtual Health](https://clearpathvirtualhealth.com/), with a pre-Islamic
-Iranian palette and motifs: lapis, green, and gold; the twelve-petal rosettes of
-Persepolis; and the name Sām written in Old Persian cuneiform.
+The design is clean and card-based, with a gold palette and motifs drawn from
+ancient Iran: the twelve-petal rosettes of Persepolis and the name Sām written in
+Old Persian cuneiform.
 
 ## Pages
 
