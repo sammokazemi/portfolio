@@ -1,8 +1,41 @@
 # Sām Kazemi · Portfolio
 
-Personal portfolio of Sām Kazemi (𐎿𐎠𐎶𐏐𐎣𐎠𐏀𐎡𐎷𐎡), Lead Software Engineer. Built with
-[Astro](https://astro.build) as a fully static site: no client framework, a few
-small scripts for the menu, theme toggle, and scroll reveals.
+**Live site: [sammokazemi.github.io/portfolio](https://sammokazemi.github.io/portfolio/)**
+
+Sām Kazemi (𐎿𐎠𐎶𐏐𐎣𐎠𐏀𐎡𐎷𐎡) is a Lead Software Engineer who builds health-tech and
+labor-tech platforms. He architected ClearPath Virtual Health, a production
+HIPAA-compliant chronic care platform, and leads development at Workforce Systems.
+This repository is the source for his portfolio.
+
+## At a glance
+
+- **Lead Software Engineer, MedManage Solutions.** Architected and built
+  [ClearPath Virtual Health](https://clearpathvirtualhealth.com/) from the ground up:
+  four role-based portals with MFA, secure sessions, and audit logging, on React and
+  AWS (S3, CloudFront, ECS Fargate) with CI/CD.
+- **Lead Developer, Workforce Systems.** Designing and building a five-portal
+  workforce platform for a labor union, plus the union's public website.
+- **Impact:** 35% faster deployments, 40% less administrative overhead, and 200%+
+  growth in recurring revenue from patient engagement systems.
+- **Education:** B.S. in Computer Science, San Francisco State University (2026).
+
+## Case studies
+
+| Project | What it is |
+| --- | --- |
+| [ClearPath Virtual Health](https://sammokazemi.github.io/portfolio/projects/clearpath/) | HIPAA-compliant CCM/RPM platform with Medicare billing workflows |
+| [Union Workforce Ecosystem](https://sammokazemi.github.io/portfolio/projects/workforce-systems/) | Five portals on one system of record: dispatch, dues, training, benefits |
+| [Labor Union Website](https://sammokazemi.github.io/portfolio/projects/labor-union-website/) | Nine-page responsive public site for a union local |
+
+The [resume](https://sammokazemi.github.io/portfolio/resume/) is on the site as a
+printable page and a PDF.
+
+## About this site
+
+Built with [Astro](https://astro.build) as a fully static site: no client framework,
+just a few small scripts for the menu, theme toggle, and scroll reveals. Images are
+served as responsive WebP, the site has light and dark themes, and the contact form
+runs through a Cloudflare Worker with spam protection.
 
 The design is clean and card-based, with a gold palette and motifs drawn from
 ancient Iran: the twelve-petal rosettes of Persepolis and the name Sām written in
