@@ -15,6 +15,8 @@
   --gold-bright: #e2b24f;
   --gold-tint: #f6ebd2;
   --gold-deep: #5a3d0c;
+  /* A gold button brightens on hover in light mode and deepens in dark mode. */
+  --gold-hover: #e2b24f;
   --on-accent: #1f1a12;
   --pattern: rgba(200, 150, 43, 0.14);
   --shadow-sm: 0 1px 2px rgba(31, 26, 18, 0.06);
@@ -46,6 +48,7 @@
   --gold-bright: #f0c768;
   --gold-tint: #3a2e14;
   --gold-deep: #e2b24f;
+  --gold-hover: #c8962b;
   --on-accent: #14110c;
   --pattern: rgba(226, 178, 79, 0.08);
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
@@ -255,7 +258,7 @@ p {
 }
 
 .btn--primary:hover {
-  background: var(--gold-strong);
+  background: var(--gold-hover);
   color: var(--on-accent);
   transform: translateY(-1px);
 }
