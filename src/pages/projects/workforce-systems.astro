@@ -3,51 +3,48 @@ import Screenshot from '../../components/Screenshot.astro';
 import CaseStudy from '../../layouts/CaseStudy.astro';
 import Icon from '../../components/Icon.astro';
 import { url } from '../../lib/url';
+import unionDashboard from '../../assets/projects/wfs/union-dashboard.png';
 import unionHall from '../../assets/projects/wfs/union-hall.png';
+import contractorRequest from '../../assets/projects/wfs/contractor-request.png';
 import contractorCompliance from '../../assets/projects/wfs/contractor-compliance.png';
-import appMap from '../../assets/projects/wfs/app-map.png';
+import memberPortal from '../../assets/projects/wfs/member-portal.png';
+import memberPortalWallet from '../../assets/projects/wfs/member-portal-wallet.png';
+import healthConnect from '../../assets/projects/wfs/health-connect.png';
+import healthCoverage from '../../assets/projects/wfs/health-coverage.png';
 import memberHome from '../../assets/projects/wfs/member-home.png';
 import memberTicket from '../../assets/projects/wfs/member-ticket.png';
 import memberWallet from '../../assets/projects/wfs/member-wallet.png';
-import memberCredential from '../../assets/projects/wfs/member-credential.png';
-import healthCarrier from '../../assets/projects/wfs/health-carrier.png';
-import healthConnect from '../../assets/projects/wfs/health-connect.png';
-import healthCoverage from '../../assets/projects/wfs/health-coverage.png';
+import appMap from '../../assets/projects/wfs/app-map.png';
 
 const desktopSizes = '(min-width: 1000px) 960px, calc(100vw - 32px)';
+const pairSizes = '(min-width: 1000px) 470px, (min-width: 900px) 45vw, calc(100vw - 32px)';
 const phoneSizes = '(min-width: 760px) 230px, (min-width: 600px) 30vw, 64vw';
 
-const memberScreens = [
+const phoneScreens = [
   { src: memberHome, alt: 'Member app home screen on the morning of a dispatch, with a clock-in button and the week’s hours' },
   { src: memberTicket, alt: 'Member app dispatch ticket showing the jobsite, gate, shift, foreman, and pay' },
   { src: memberWallet, alt: 'Member app wallet with the member’s union card and a warning that a certification lapses soon' },
 ];
 
-const healthScreens = [
-  { src: healthCarrier, alt: 'Choosing an insurance carrier from a searchable list' },
-  { src: healthConnect, alt: 'Authorizing a read-only carrier connection, listing exactly what is requested and what is not' },
-  { src: healthCoverage, alt: 'Coverage record pending verification, with each value labeled by the carrier field it came from' },
-];
-
-const portals = [
-  { name: 'Access', text: 'One sign-in shared by every role, which routes each person to the right portal.' },
-  { name: 'Member app', text: 'Mobile-only, for rank-and-file laborers: dispatch, dues, training, benefits, and digital credentials. A laborer has no desk, so the phone is the whole product.' },
-  { name: 'Contractor portal', text: 'For coordinators, payroll clerks, and foremen. It is a website because contractors will click a link but won’t install an app, and it is responsive because the office sits at a desk while the foreman is on a jobsite with a phone.' },
-  { name: 'Union operations', text: 'The desktop workspace for business agents, dispatchers, and officers, and the system of record behind everything else.' },
-  { name: 'Health & wellness', text: 'Insurance connection, injury reporting, and return to work, built into the member app with no separate login.' },
+const surfaces = [
+  { name: 'Union operations · 30 screens', text: 'The desktop workspace for business agents, dispatchers, and officers: dispatch, membership, dues, grievances, training, and reporting. It is the system of record behind everything else.' },
+  { name: 'Contractor portal · 15 screens', text: 'For coordinators, payroll clerks, and foremen. Contractors will click a link but won’t install an app, so it lives on the web, and it is responsive because the foreman is on a jobsite with a phone.' },
+  { name: 'Member portal · 37 screens', text: 'Everything a member can do on a desktop: dispatch, dues, pension, credentials, training, and health coverage, with no separate login for health.' },
+  { name: 'Member app', text: 'A laborer has no desk, so the phone is where most members will live. The app is built in Flutter as its own project, on the same API.' },
+  { name: 'Sign-in and the public website', text: 'Members, union staff, and contractors each sign in from the union’s public website, which has its own case study.' },
 ];
 
 const spine = [
-  { name: 'Request workers', text: 'A contractor asks the hall for workers from the contractor portal, or the labor forecast turns expected demand into requests.' },
+  { name: 'Request workers', text: 'A contractor asks the hall for workers from the contractor portal, naming the classification, the certifications the work needs, and the start.' },
   { name: 'Work the request', text: 'Dispatchers work it at the dispatch window and turn it into a call.' },
-  { name: 'Dispatch', text: 'The member gets a dispatch ticket in the app and joins the contractor’s crew roster.' },
-  { name: 'Clock in', text: 'Clock-ins on the member’s phone feed the contractor’s certified payroll.' },
+  { name: 'Dispatch', text: 'The member gets a dispatch ticket and joins the contractor’s crew roster.' },
+  { name: 'Clock in', text: 'Clock-ins from the member’s phone feed the contractor’s certified payroll.' },
   { name: 'Post the hours', text: 'Certified hours post to the union’s ledger and to the member’s own assignment history.' },
   { name: 'Back on the books', text: 'When the job releases, the member signs back onto the out-of-work list, and the cycle starts again.' },
 ];
 
 const coverageRules = [
-  'No credential ever touches the app. Members authorize on the carrier’s own site through OAuth, and there is no carrier sign-in form anywhere, not even a mock one, because a page that looks like a carrier sign-in is a phishing page regardless of intent.',
+  'No credential ever touches the platform. Members authorize on the carrier’s own site through OAuth, and there is no carrier sign-in form anywhere, not even a mock one, because a page that looks like a carrier sign-in is a phishing page regardless of intent.',
   'Carrier fields are normalized into one standard model, and the mapping is shown. The coverage record names both the standard field and the carrier field it came from, so no other screen has to know which carrier it is reading.',
   'The union’s own benefit trust is one source among many. Its eligibility still comes from the member’s hour bank, so revoking a carrier connection never touches it.',
 ];
@@ -55,9 +52,9 @@ const coverageRules = [
 
 <CaseStudy
   name="Union Workforce Ecosystem"
-  description="Case study: the Union Workforce Ecosystem, a five-portal labor platform Sām Kazemi is building for a union as Lead Developer at Workforce Systems."
-  summary="A five-portal labor workforce platform that unifies dispatch, dues, grievances, training, and benefits into one system of record for union members, contractors, and staff."
-  role="Lead Developer: platform design and delivery"
+  description="Case study: the Union Workforce Ecosystem, a workforce platform for a laborers’ union that Sām Kazemi leads as Lead Developer at Workforce Systems, built in Next.js and TypeScript on a Laravel API."
+  summary="A workforce platform for a laborers’ union: one Next.js app for union staff, contractors, and members, on a Laravel API, unifying dispatch, dues, grievances, training, and benefits into one system of record."
+  role="Lead Developer: platform design and front end"
   org="Workforce Systems (WFS)"
   period="Jul 2026 – Present"
   status="In development under contract"
@@ -65,15 +62,18 @@ const coverageRules = [
   liveLabel="workforcesystems.net"
   accent="lapis"
   stack={[
-    'Platform architecture',
-    'Design systems',
-    'HTML5 / CSS',
+    'Next.js (App Router)',
+    'React',
+    'TypeScript',
     'Tailwind CSS',
-    'JavaScript',
-    'Node.js tooling',
+    'Laravel REST API',
+    'Sanctum token auth',
+    'MySQL',
+    'Playwright',
+    'GitHub Actions CI',
+    'AWS Amplify',
     'OAuth 2.0',
-    'Responsive and mobile UI',
-    'Astro',
+    'Design systems',
   ]}
 >
   <section class="reveal">
@@ -87,7 +87,7 @@ const coverageRules = [
     </p>
     <p>
       Workforce Systems is a company that builds digital infrastructure platforms, primarily for
-      unions. His job as Lead Developer is to design the platform, build it, and work with union
+      unions. As its Lead Developer, Sām designs the platform, builds it, and works with union
       leadership to turn their day-to-day operations into a product, including helping secure the
       contracts that put it to work.
     </p>
@@ -96,6 +96,19 @@ const coverageRules = [
       It is not membership software with a portal bolted on. It is one system that follows a worker
       from recruitment through retirement.
     </p>
+    <figure class="cs-shot">
+      <Screenshot
+        src={unionDashboard}
+        alt="Union operations executive dashboard: membership counts, open dispatch calls, dues collected, grievances, and the items that need an officer"
+        widths={[800, 1200, 1600, 2200]}
+        sizes={desktopSizes}
+        class="cs-screen"
+      />
+      <figcaption>
+        Union operations on a Friday morning: who is working, which calls won’t fill, dues
+        collected, and what needs an officer. Names and places in every screen are placeholders.
+      </figcaption>
+    </figure>
   </section>
 
   <section class="reveal">
@@ -120,69 +133,68 @@ const coverageRules = [
       <div class="card">
         <span class="icon-badge"><Icon name="users" /></span>
         <h3>Member experience</h3>
-        <p>A consumer-grade mobile app with self-service, benefits, and digital credentials.</p>
+        <p>Self-service on the web and on a phone, with benefits and digital credentials.</p>
       </div>
     </div>
   </section>
 
   <section class="reveal">
-    <p class="eyebrow">The platform</p>
-    <h2>Five portals, one system of record</h2>
+    <p class="eyebrow">The product</p>
+    <h2>One app, three portals, one system of record</h2>
     <p>
-      Sām designed and prototyped a platform where union operations hold the data, and every other
-      surface is a view onto it. A contractor’s request for workers becomes a call at the hall, which
-      becomes a dispatch in a member’s pocket, with no re-keying in between. Each portal’s form factor
-      follows from who uses it and where they are.
+      The platform is a single Next.js application written in strict TypeScript. Union operations
+      holds the data, and every other surface is a view onto it: a contractor’s request for workers
+      becomes a call at the hall, which becomes a dispatch on a member’s phone, with no re-keying in
+      between. Each surface’s form follows from who uses it and where they are.
     </p>
     <ul class="cs-flow">
       {
-        portals.map((p) => (
+        surfaces.map((s) => (
           <li>
             <div>
-              <strong>{p.name}</strong>
-              <span>{p.text}</span>
+              <strong>{s.name}</strong>
+              <span>{s.text}</span>
             </div>
           </li>
         ))
       }
     </ul>
+    <p>
+      The public side is the{' '}
+      <a href={url('/projects/labor-union-website')}>labor union website</a>, which lives in the
+      same app and is where every account type signs in.
+    </p>
     <figure class="cs-shot">
-      <div class="cs-phones">
-        {memberScreens.map((s) => <Screenshot src={s.src} alt={s.alt} widths={[300, 500, 700]} sizes={phoneSizes} class="cs-screen cs-phone" />)}
-      </div>
+      <Screenshot
+        src={memberPortal}
+        alt="Member portal home on the morning of a dispatch: the jobsite, report time, and foreman, a clock-in button, the week’s hours, pension progress, and dues"
+        widths={[800, 1200, 1600, 2200]}
+        sizes={desktopSizes}
+        class="cs-screen"
+      />
       <figcaption>
-        The member app: home on the morning of a dispatch, the dispatch ticket, and the wallet
-        holding the member’s union card and credentials. Names and places in every screen are
-        placeholders.
+        The member portal on the morning of a dispatch: the job, the week’s hours, pension progress,
+        dues, and the certification that needs attention.
       </figcaption>
     </figure>
-    <p>
-      Alongside the platform, the project includes the union’s own public website for members,
-      contractors, and the community, with its health and welfare information. It has{' '}
-      <a href={url('/projects/labor-union-website')}>its own case study</a>.
-    </p>
+    <figure class="cs-shot">
+      <div class="cs-phones">
+        {phoneScreens.map((s) => <Screenshot src={s.src} alt={s.alt} widths={[300, 500, 700]} sizes={phoneSizes} class="cs-screen cs-phone" />)}
+      </div>
+      <figcaption>
+        The member app on a phone, as designed in the prototype: home on the morning of a dispatch,
+        the dispatch ticket, and the wallet holding the member’s union card.
+      </figcaption>
+    </figure>
   </section>
 
   <section class="reveal">
     <p class="eyebrow">The core workflow</p>
     <h2>From a contractor’s request to a member’s hours</h2>
     <p>
-      Dispatch is the spine the whole platform hangs on. Every step below exists in the prototype as a
-      link or a designed data flow between portals, and it is the first phase of the production build.
+      Dispatch is the spine the whole platform hangs on, and it is the first workflow the backend
+      takes on. Each step below is a screen in one portal that hands off to a screen in another.
     </p>
-    <figure class="cs-shot">
-      <Screenshot
-        src={unionHall}
-        alt="Union operations dispatch hall showing the out-of-work referral lists, with registered and signed counts for each list"
-        widths={[800, 1200, 1600, 2200]}
-        sizes={desktopSizes}
-        class="cs-screen"
-      />
-      <figcaption>
-        Union operations, the desktop system of record: the dispatch hall’s out-of-work lists,
-        where requests become calls.
-      </figcaption>
-    </figure>
     <ul class="cs-flow">
       {
         spine.map((s) => (
@@ -195,6 +207,28 @@ const coverageRules = [
         ))
       }
     </ul>
+    <figure class="cs-shot cs-shot--wide">
+      <div class="cs-pair">
+        <Screenshot
+          src={contractorRequest}
+          alt="Contractor portal new dispatch request: site, classification, number of workers, start date, required certifications, and what the hall will receive"
+          widths={[600, 900, 1400]}
+          sizes={pairSizes}
+          class="cs-screen"
+        />
+        <Screenshot
+          src={unionHall}
+          alt="Union operations dispatch hall showing the out-of-work referral lists, with registered and signed counts for each list"
+          widths={[600, 900, 1400]}
+          sizes={pairSizes}
+          class="cs-screen"
+        />
+      </div>
+      <figcaption>
+        Both ends of a call: the contractor’s request, which warns that a confined-space requirement
+        will thin the list, and the hall’s out-of-work lists that fill it.
+      </figcaption>
+    </figure>
   </section>
 
   <section class="reveal">
@@ -206,13 +240,26 @@ const coverageRules = [
       photographs their insurance card for the benefit trust office to verify by hand. Every source
       resolves to one of three states: connected, pending verification, or action required.
     </p>
-    <figure class="cs-shot">
-      <div class="cs-phones">
-        {healthScreens.map((s) => <Screenshot src={s.src} alt={s.alt} widths={[300, 500, 700]} sizes={phoneSizes} class="cs-screen cs-phone" />)}
+    <figure class="cs-shot cs-shot--wide">
+      <div class="cs-pair">
+        <Screenshot
+          src={healthConnect}
+          alt="Authorizing a read-only carrier connection, listing exactly what is requested and what is not, with the terms of the authorization"
+          widths={[600, 900, 1400]}
+          sizes={pairSizes}
+          class="cs-screen"
+        />
+        <Screenshot
+          src={healthCoverage}
+          alt="Coverage record pending verification, with each value labeled by the carrier field it came from and a connection log"
+          widths={[600, 900, 1400]}
+          sizes={pairSizes}
+          class="cs-screen"
+        />
       </div>
       <figcaption>
-        Connecting coverage: pick a carrier, authorize a read-only connection on the carrier’s own
-        site, then read a coverage record that names the carrier field behind every value.
+        Authorizing a read-only connection on the carrier’s own site, then a coverage record that
+        names the carrier field behind every value.
       </figcaption>
     </figure>
     <ul class="check-list">
@@ -221,131 +268,131 @@ const coverageRules = [
   </section>
 
   <section class="reveal">
-    <p class="eyebrow">The prototype</p>
-    <h2>One story, on a phone and a desktop</h2>
+    <p class="eyebrow">One scenario</p>
+    <h2>The same story from both sides</h2>
     <p>
       Every screen shows the same member on the same morning, and the screens cross-reference
       constantly. A laborer is dispatched to a waterfront job, but a hazardous-waste safety
       certification lapses the day after that job releases, which blocks them from the one open call
-      they could take next. The member app shows the problem. The contractor portal shows the same
-      card as the contractor’s only compliance exception, and explains why the call they placed won’t
-      fill.
+      they could take next. The member’s wallet shows the problem. The contractor portal shows the
+      same card as the contractor’s only compliance exception, and explains why the call they placed
+      won’t fill.
     </p>
-    <figure class="cs-shot">
-      <div class="cs-story">
+    <figure class="cs-shot cs-shot--wide">
+      <div class="cs-pair">
         <Screenshot
           src={contractorCompliance}
           alt="Contractor portal compliance matrix with one laborer’s HAZWOPER 40 certification flagged as lapsing"
-          widths={[800, 1200, 1800]}
-          sizes="(min-width: 900px) 720px, 84vw"
-          class="cs-screen cs-story__desktop"
+          widths={[600, 900, 1400]}
+          sizes={pairSizes}
+          class="cs-screen"
         />
         <Screenshot
-          src={memberCredential}
-          alt="Member app credential screen warning that the same HAZWOPER 40 card lapses in 22 days"
-          widths={[300, 450, 600]}
-          sizes="(min-width: 900px) 235px, (min-width: 600px) 27vw, 38vw"
-          class="cs-screen cs-phone cs-story__phone"
+          src={memberPortalWallet}
+          alt="Member portal credential wallet warning that the same HAZWOPER 40 card lapses in 22 days, with a renewal session to reserve"
+          widths={[600, 900, 1400]}
+          sizes={pairSizes}
+          class="cs-screen"
         />
       </div>
       <figcaption>
-        The same lapsing certification from both sides: on the member’s phone, and as the one
-        exception in the contractor’s compliance matrix.
+        One lapsing certification: the exception in the contractor’s compliance matrix, and the
+        warning in the member’s wallet with a renewal seat to reserve.
       </figcaption>
     </figure>
-    <p>
-      Setting a phone next to a desktop and having them tell one story is the point. It proves the
-      portals really are views onto one system of record.
-    </p>
   </section>
 
   <section class="reveal">
     <p class="eyebrow">Engineering highlights</p>
-    <h2>Consistency at scale</h2>
+    <h2>Built to swap fixtures for real data</h2>
     <div class="cs-features">
       <div class="card">
         <span class="icon-badge"><Icon name="layers" /></span>
-        <h3>A design system per surface</h3>
+        <h3>Prototype first, then product</h3>
         <p>
-          The desktop portals, the mobile app, and the shared sign-in each have their own visual
-          system, and they never mix. Color carries meaning, never decoration: on the desktop, each hue
-          owns one domain, from ledger green for money to credential amber for certifications.
-        </p>
-      </div>
-      <div class="card">
-        <span class="icon-badge"><Icon name="check-circle" /></span>
-        <h3>Derived numbers, not typed ones</h3>
-        <p>
-          Totals, counts, and rates are computed in the page from the underlying rows, so a roster and
-          the dashboard that sums it can’t disagree. That rule, backed by a cross-screen consistency
-          audit, has repeatedly caught errors before they shipped.
-        </p>
-      </div>
-      <div class="card">
-        <span class="icon-badge"><Icon name="code" /></span>
-        <h3>Generated shells</h3>
-        <p>
-          Node.js generators rebuild each desktop portal’s shared chrome across every screen, which
-          prevents drift as the product grows. They are idempotent, and adding a screen is a single
-          edit that turns on its navigation link portal-wide.
+          The platform started as an 85-screen static prototype. Every desktop screen was then
+          ported into the Next.js app with the same Tailwind tokens, so the product matches the
+          prototype screen for screen.
         </p>
       </div>
       <div class="card">
         <span class="icon-badge"><Icon name="compass" /></span>
-        <h3>A map that checks itself</h3>
+        <h3>One door to data</h3>
         <p>
-          An interactive application map shows every screen, route, and data flow, all derived from
-          three tables so it can’t contradict itself. Routes are harvested from each screen’s rendered
-          page, and the map flags any connection the design implies but nothing wires.
+          Screens never read data directly. Each one awaits a typed function in a single data-access
+          layer, and a lint rule fails any screen that imports the sample data itself. When an
+          endpoint lands, one function body changes and no screen does.
+        </p>
+      </div>
+      <div class="card">
+        <span class="icon-badge"><Icon name="lock" /></span>
+        <h3>Sign-in that fails closed</h3>
+        <p>
+          Members, union staff, and contractors are separate account types on the API. Tokens live
+          in httpOnly cookies the browser never reads, every portal re-checks its token with the API,
+          and sign-out refuses a request from another site.
+        </p>
+      </div>
+      <div class="card">
+        <span class="icon-badge"><Icon name="shield" /></span>
+        <h3>A backend that refuses the wrong token</h3>
+        <p>
+          On the team’s Laravel API, Sām added contractor accounts with middleware that rejects
+          member and admin tokens, fixed a password-reset email that linked to a page that didn’t
+          exist, and covered both with feature tests.
+        </p>
+      </div>
+      <div class="card">
+        <span class="icon-badge"><Icon name="check-circle" /></span>
+        <h3>Every screen tested</h3>
+        <p>
+          Playwright opens every route and fails on any console error, then runs the key flows:
+          signing in as each account type, resetting a password, paying dues, clocking in, payroll,
+          exports, and filing a grievance. CI runs type checks, lint, the build, and the tests on
+          every push.
         </p>
       </div>
       <div class="card">
         <span class="icon-badge"><Icon name="file-text" /></span>
-        <h3>Self-contained screens</h3>
+        <h3>Two design systems, one stylesheet</h3>
         <p>
-          Every screen is one HTML file with no build step, so any screen can be opened, reviewed, or
-          shared on its own. A link checker verifies that every reference between screens still
-          resolves.
-        </p>
-      </div>
-      <div class="card">
-        <span class="icon-badge"><Icon name="rocket" /></span>
-        <h3>From prototype to contract</h3>
-        <p>
-          Working directly with union leadership so the product reflects how a hall actually runs,
-          and helping win the contracts that fund it.
+          The portals and the public website each have their own visual system, scoped so they can’t
+          bleed into each other. Fonts are self-hosted rather than loaded from Google, which matters
+          for a platform that handles health data.
         </p>
       </div>
     </div>
+    <p>
+      Two rules from the prototype carried into the product. Totals, counts, and rates are computed
+      from the rows they summarize, so a roster and the dashboard that sums it can’t disagree. And
+      the prototype’s interactive application map, which derives every screen, route, and data flow
+      from three tables, remains the map of what connects to what.
+    </p>
     <figure class="cs-shot">
       <Screenshot
         src={appMap}
-        alt="Application map blueprint connecting the public website, sign-in, five portals, and outside parties, with the planned production platform below"
+        alt="Application map blueprint connecting the public website, sign-in, the portals, and outside parties, with the planned production platform below"
         widths={[800, 1200, 1600, 2200]}
         sizes={desktopSizes}
         class="cs-screen"
       />
       <figcaption>
-        The application map’s blueprint: every portal, route, and data flow, derived from the same
-        tables, with the planned production platform along the bottom.
+        The prototype’s application map: every portal, route, and data flow, derived from the same
+        tables.
       </figcaption>
     </figure>
   </section>
 
   <section class="reveal">
     <p class="eyebrow">What’s next</p>
-    <h2>From prototype to production</h2>
+    <h2>From sign-in to the whole record</h2>
     <p>
-      The production build is planned in detail: a React Native member app, Next.js web portals, a
-      NestJS API on ECS Fargate, PostgreSQL on RDS, Cognito for sign-in, and document intake powered by
-      Claude on Amazon Bedrock, all on AWS under a single business associate agreement. Delivery runs
-      against written goalposts with acceptance criteria.
-    </p>
-    <p>
-      A companion backend map lists every endpoint the screens need, grouped into modules, along with
-      the domain events, scheduled jobs, and integrations behind them. A check script fails if any
-      screen has no endpoint or any data flow has no event to carry it, so the prototype and the build
-      plan can’t drift apart.
+      Sign-in, sign-out, and password reset run against the Laravel API today, and every other
+      screen reads typed sample data through the same layer that will call the API. A companion
+      backend map lists every endpoint the screens need, grouped into modules, so the build works
+      down a written list. Next come the dispatch endpoints the rest of the platform hangs on, then
+      the remaining modules on that map, a second sign-in factor, and launch on AWS Amplify, chosen
+      to keep health data under one business associate agreement.
     </p>
   </section>
 
