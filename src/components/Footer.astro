@@ -76,6 +76,14 @@ const emails = [site.email, site.workEmail].map(splitEmail);
 
     <div class="container footer__bottom">
       <p>&copy; {year} {site.name}. All rights reserved.</p>
+      <a
+        class="footer__source"
+        href="https://github.com/sammokazemi/portfolio"
+        target="_blank"
+        rel="noopener"
+      >
+        Source <Icon name="arrow-up-right" size={14} />
+      </a>
       <p class="footer__motto">
         <span class="old-persian" lang="peo">{site.oldPersianName}</span>
       </p>
@@ -210,6 +218,20 @@ const emails = [site.email, site.workEmail].map(splitEmail);
 
   .footer__bottom p {
     margin: 0;
+  }
+
+  .footer__source {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  .footer__source:hover {
+    color: var(--gold-strong);
+    text-decoration: underline;
   }
 
   .footer__motto {
