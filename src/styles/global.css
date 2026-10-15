@@ -128,7 +128,9 @@ h3 {
 }
 
 p {
-  margin: 0 0 1em;
+  /* A variable so "Relaxed line spacing" can widen it without overriding
+     components that set their own paragraph margins. */
+  margin: 0 0 var(--paragraph-gap, 1em);
 }
 
 ::selection {
@@ -449,25 +451,118 @@ p {
   transform: none;
 }
 
+/* Theme switch: a slow, even crossfade between the old and new page. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.5s;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Reduced motion. With JS, the settings panel decides (data-motion on <html>,
+   defaulting to the device setting); without JS, the device setting alone. */
+:root[data-motion='reduce'] {
+  scroll-behavior: auto;
+}
+
+:root[data-motion='reduce'] *,
+:root[data-motion='reduce'] *::before,
+:root[data-motion='reduce'] *::after {
+  animation-duration: 0.01ms !important;
+  animation-delay: 0s !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  transition-delay: 0s !important;
+}
+
+:root[data-motion='reduce'] .reveal {
+  opacity: 1;
+  transform: none;
+}
+
+/* Hover lifts and zooms stay put too. */
+:root[data-motion='reduce'] :is(.btn, .card--hover, .logo__mark):hover,
+:root[data-motion='reduce'] a:hover .logo__mark {
+  transform: none !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  html {
+  :root:not([data-motion]) {
     scroll-behavior: auto;
   }
-  *,
-  *::before,
-  *::after {
+  :root:not([data-motion]) *,
+  :root:not([data-motion]) *::before,
+  :root:not([data-motion]) *::after {
     animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-  .js .reveal {
-    opacity: 1;
-    transform: none;
-  }
+}
+
+/* Text size: scales everything set in rem. */
+:root[data-text-size='sm'] {
+  font-size: 93.75%;
+}
+
+:root[data-text-size='lg'] {
+  font-size: 112.5%;
+}
+
+:root[data-text-size='xl'] {
+  font-size: 125%;
+}
+
+/* High contrast: darker text, stronger borders and focus rings. */
+:root[data-contrast='more'] {
+  --ink: #0d0a05;
+  --ink-soft: #1f1a12;
+  --muted: #3b3326;
+  --line: #9c875f;
+  --gold-strong: #6a4606;
+  --gold-deep: #3f2a05;
+}
+
+:root[data-contrast='more'][data-theme='dark'] {
+  --ink: #fffaf0;
+  --ink-soft: #f8f0df;
+  --muted: #e2d8c3;
+  --line: #85724f;
+  --gold-strong: #f7d688;
+  --gold-deep: #f7d688;
+}
+
+:root[data-contrast='more'] :focus-visible {
+  outline-width: 3px;
+}
+
+/* Readable font: Atkinson Hyperlegible everywhere, headings included. */
+:root[data-font='readable'] {
+  --font-sans: 'Atkinson Hyperlegible', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-display: var(--font-sans);
+}
+
+/* Relaxed line spacing. */
+:root[data-spacing='relaxed'] body,
+:root[data-spacing='relaxed'] :is(p, li, dd, figcaption, blockquote, .lead) {
+  line-height: 1.9;
+}
+
+:root[data-spacing='relaxed'] {
+  --paragraph-gap: 1.25em;
+}
+
+/* Shorter lines on the long-reading pages. */
+:root[data-measure='short'] :is(.cs-content, .prose) :is(p, blockquote, figcaption, ul:not([class]), ol:not([class])) {
+  max-width: 60ch;
 }
 
 /* Sections that were never scrolled into view would otherwise print blank. */
 @media print {
+  /* An open settings panel or menu shouldn't end up on paper. */
+  #settings-panel,
+  #mobile-menu {
+    display: none !important;
+  }
   .js .reveal {
     opacity: 1 !important;
     transform: none !important;

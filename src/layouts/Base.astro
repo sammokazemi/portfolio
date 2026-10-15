@@ -2,6 +2,10 @@
 import '../styles/global.css';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
+import Settings from '../components/Settings.astro';
+// Self-hosted for the "Readable font" setting; browsers only download it once it's switched on.
+import '@fontsource/atkinson-hyperlegible/400.css';
+import '@fontsource/atkinson-hyperlegible/700.css';
 import { site } from '../data/site';
 import { url } from '../lib/url';
 
@@ -58,11 +62,16 @@ const oldPersianText = encodeURIComponent(site.oldPersianName);
     <script is:inline>
       document.documentElement.classList.add('js');
 
-      // Theme: light during the day, dark at night, by the visitor's local clock.
-      // It's chosen once when a visit starts and then held for that visit (moving
-      // between pages in the same tab), so it never flips while someone is on the
-      // site. A pick from the navbar toggle also carries into new visits until the
-      // next day/night switch. Runs in <head> so the page never flashes.
+      // Theme has three modes, picked in the settings panel and saved in
+      // localStorage under "theme":
+      //   - light / dark: always that theme.
+      //   - auto (the default, nothing saved): light during the day, dark at night,
+      //     by the visitor's local clock. It's chosen once when a visit starts and
+      //     held for that visit (sessionStorage), so it never flips mid-browse.
+      // Runs in <head> so the page never flashes.
+      //
+      // The other settings (text size, motion, contrast, font, spacing, line length)
+      // live in localStorage under "prefs" and become data-* attributes on <html>.
       (function () {
         var DAY_START = 7; // 7am
         var NIGHT_START = 19; // 7pm
@@ -73,59 +82,135 @@ const oldPersianText = encodeURIComponent(site.oldPersianName);
           return theme === 'light' || theme === 'dark';
         }
 
-        function clock(now) {
-          var h = now.getHours();
-          var theme = h >= DAY_START && h < NIGHT_START ? 'light' : 'dark';
-          var next = new Date(now);
-          next.setHours(theme === 'light' ? NIGHT_START : DAY_START, 0, 0, 0);
-          if (next <= now) next.setDate(next.getDate() + 1);
-          return { theme: theme, next: next.getTime() };
+        function clockTheme() {
+          var h = new Date().getHours();
+          return h >= DAY_START && h < NIGHT_START ? 'light' : 'dark';
+        }
+
+        // Kept in memory too, so a pick still works when storage is blocked.
+        var mode = 'auto';
+        function readMode() {
+          try {
+            var saved = localStorage.getItem('theme');
+            if (valid(saved)) return saved;
+            // Anything else (including the old {theme, until} format) means auto.
+            if (saved !== null) localStorage.removeItem('theme');
+            return 'auto';
+          } catch (e) {
+            return mode;
+          }
+        }
+
+        function autoTheme() {
+          var theme = null;
+          try {
+            theme = sessionStorage.getItem('theme');
+          } catch (e) {}
+          if (!valid(theme)) {
+            theme = clockTheme();
+            try {
+              sessionStorage.setItem('theme', theme);
+            } catch (e) {}
+          }
+          return theme;
         }
 
         function set(theme) {
           root.dataset.theme = theme;
           if (meta) meta.content = theme === 'dark' ? '#14110c' : '#fbf8f1';
-          try {
-            sessionStorage.setItem('theme', theme);
-          } catch (e) {}
         }
 
-        var now = new Date();
-        var theme = clock(now).theme;
-        try {
-          var picked = JSON.parse(localStorage.getItem('theme'));
-          if (picked && picked.until > now.getTime() && valid(picked.theme)) theme = picked.theme;
-        } catch (e) {}
-        try {
-          var visit = sessionStorage.getItem('theme');
-          if (valid(visit)) theme = visit;
-        } catch (e) {}
-        set(theme);
+        function resolve() {
+          return mode === 'auto' ? autoTheme() : mode;
+        }
 
-        // Back/forward navigation can restore this page as it was left; if the theme
-        // was switched on another page since, pick that up instead of the stale one.
+        mode = readMode();
+        set(resolve());
+
+        // Allowed values per setting; anything else means the default.
+        var PREFS = {
+          textSize: ['sm', 'lg', 'xl'],
+          motion: ['reduce', 'full'],
+          contrast: ['more'],
+          font: ['readable'],
+          spacing: ['relaxed'],
+          measure: ['short'],
+        };
+        var reduceQuery = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
+
+        function applyPrefs() {
+          var saved = null;
+          try {
+            saved = JSON.parse(localStorage.getItem('prefs'));
+          } catch (e) {}
+          if (!saved || typeof saved !== 'object') saved = {};
+          for (var key in PREFS) {
+            if (PREFS[key].indexOf(saved[key]) !== -1) root.dataset[key] = saved[key];
+            else delete root.dataset[key];
+          }
+          // Without a choice in the panel, motion follows the device setting.
+          if (!root.dataset.motion) root.dataset.motion = reduceQuery && reduceQuery.matches ? 'reduce' : 'full';
+        }
+        applyPrefs();
+        if (reduceQuery && reduceQuery.addEventListener) reduceQuery.addEventListener('change', applyPrefs);
+
+        // Back/forward navigation can restore this page as it was left; if the
+        // settings were changed on another page since, pick those up instead.
         window.addEventListener('pageshow', function (e) {
           if (!e.persisted) return;
-          try {
-            var current = sessionStorage.getItem('theme');
-            if (valid(current) && current !== root.dataset.theme) set(current);
-          } catch (err) {}
+          mode = readMode();
+          set(resolve());
+          applyPrefs();
         });
 
-        document.addEventListener('click', function (e) {
-          if (!(e.target instanceof Element) || !e.target.closest('[data-theme-toggle]')) return;
-          var next = root.dataset.theme === 'dark' ? 'light' : 'dark';
-          try {
-            localStorage.setItem('theme', JSON.stringify({ theme: next, until: clock(new Date()).next }));
-          } catch (e) {}
-          set(next);
-        });
+        // Switching themes from the panel crossfades the whole page (see the
+        // ::view-transition rules in global.css) instead of snapping. Browsers
+        // without view transitions, and reduced motion, switch instantly.
+        function fadeTo(theme) {
+          if (theme === root.dataset.theme || !document.startViewTransition || root.dataset.motion === 'reduce') {
+            set(theme);
+            return;
+          }
+          var transition = document.startViewTransition(function () {
+            set(theme);
+          });
+          // A transition cut short by a quicker switch rejects these promises; the
+          // theme is still applied, so there's nothing to report.
+          function ignore() {}
+          transition.ready.catch(ignore);
+          transition.finished.catch(ignore);
+          transition.updateCallbackDone.catch(ignore);
+        }
+
+        // Used by the settings panel (Settings.astro).
+        window.siteSettings = {
+          themeMode: function () {
+            return mode;
+          },
+          /** 'light', 'dark', or 'auto'. */
+          setThemeMode: function (next) {
+            if (next !== 'auto' && !valid(next)) return;
+            mode = next;
+            try {
+              if (next === 'auto') {
+                localStorage.removeItem('theme');
+                // Re-check the clock now rather than reuse this visit's earlier pick.
+                sessionStorage.removeItem('theme');
+              } else {
+                localStorage.setItem('theme', next);
+              }
+            } catch (e) {}
+            fadeTo(resolve());
+          },
+          applyPrefs: applyPrefs,
+        };
       })();
     </script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
     <Navbar />
+    <Settings />
     <main id="main">
       <slot />
     </main>

@@ -32,9 +32,15 @@ const path = Astro.url.pathname;
 
     <div class="nav__actions">
       <a href={url('/contact')} class="btn btn--primary nav__cta">Get in touch</a>
-      <button class="nav__icon-btn" type="button" data-theme-toggle aria-label="Toggle dark mode">
-        <Icon name="moon" class="icon-moon" />
-        <Icon name="sun" class="icon-sun" />
+      <button
+        class="nav__icon-btn nav__settings"
+        type="button"
+        aria-expanded="false"
+        aria-controls="settings-panel"
+        aria-label="Settings"
+        data-settings-toggle
+      >
+        <Icon name="settings" />
       </button>
       <button
         class="nav__icon-btn nav__toggle"
@@ -49,55 +55,71 @@ const path = Astro.url.pathname;
       </button>
     </div>
   </div>
-
-  <nav class="nav__mobile" id="mobile-menu" aria-label="Mobile" hidden>
-    <ul class="container">
-      {
-        nav.map((item) => (
-          <li>
-            <a
-              href={url(item.href)}
-              aria-current={isActive(path, url(item.href)) ? 'page' : undefined}
-            >
-              {item.label}
-              <Icon name="arrow-right" size={18} />
-            </a>
-          </li>
-        ))
-      }
-      <li>
-        <a href={url('/contact')} class="btn btn--primary">Get in touch</a>
-      </li>
-    </ul>
-  </nav>
 </header>
+
+<!-- Outside the header on purpose: the header's backdrop-filter would make it the
+     menu's containing block, and the off-screen menu would then widen the page on phones. -->
+<nav class="nav__mobile" id="mobile-menu" aria-label="Mobile">
+  <ul>
+    {
+      nav.map((item) => (
+        <li>
+          <a href={url(item.href)} aria-current={isActive(path, url(item.href)) ? 'page' : undefined}>
+            {item.label}
+            <Icon name="arrow-right" size={18} />
+          </a>
+        </li>
+      ))
+    }
+    <li>
+      <a href={url('/contact')} class="btn btn--primary">Get in touch</a>
+    </li>
+  </ul>
+</nav>
 
 <script>
   const header = document.querySelector<HTMLElement>('[data-nav]');
   const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
   const menu = document.getElementById('mobile-menu');
 
-  const setMenu = (open: boolean) => {
+  const isOpen = () => toggle?.getAttribute('aria-expanded') === 'true';
+
+  // The menu slides in from the right like the settings panel (Settings.astro).
+  const setMenu = (open: boolean, returnFocus = false) => {
     if (!toggle || !menu || !header) return;
     toggle.setAttribute('aria-expanded', String(open));
     toggle.querySelector('.visually-hidden')!.textContent = open ? 'Close menu' : 'Open menu';
-    menu.hidden = !open;
+    menu.toggleAttribute('data-open', open);
     header.classList.toggle('is-open', open);
-    document.body.style.overflow = open ? 'hidden' : '';
-  };
-
-  toggle?.addEventListener('click', () => setMenu(toggle.getAttribute('aria-expanded') !== 'true'));
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && toggle?.getAttribute('aria-expanded') === 'true') {
-      setMenu(false);
+    if (open) {
+      // Only one panel at a time: close settings if it's open.
+      const settings = document.querySelector<HTMLButtonElement>('[data-settings-toggle]');
+      if (settings?.getAttribute('aria-expanded') === 'true') settings.click();
+      menu.querySelector('a')?.focus();
+    } else if (returnFocus) {
       toggle.focus();
     }
+  };
+
+  toggle?.addEventListener('click', () => setMenu(!isOpen()));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && isOpen()) setMenu(false, !!menu?.contains(document.activeElement));
+  });
+  // A click anywhere outside the menu closes it (the toggle handles its own clicks).
+  document.addEventListener('pointerdown', (e) => {
+    const target = e.target as Node;
+    if (isOpen() && !menu?.contains(target) && !toggle?.contains(target)) setMenu(false);
+  });
+  // So does tabbing out of it, so keyboard focus never lands on a link hidden under it.
+  menu?.addEventListener('focusout', (e) => {
+    const next = e.relatedTarget as Node | null;
+    if (next && !menu.contains(next) && !toggle?.contains(next)) setMenu(false);
   });
   window.matchMedia('(min-width: 1080px)').addEventListener('change', (e) => {
     if (e.matches) setMenu(false);
   });
   // Back/forward navigation can restore this page exactly as it was left, with the
-  // menu open and scrolling locked after a menu link was followed. Start closed.
+  // menu open after a menu link was followed. Start closed.
   window.addEventListener('pageshow', (e) => {
     if (e.persisted) setMenu(false);
   });
@@ -106,7 +128,7 @@ const path = Astro.url.pathname;
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
 
-  // The theme toggle button is handled by the theme script in Base.astro.
+  // The settings button is handled by Settings.astro.
 </script>
 
 <style>
@@ -203,16 +225,13 @@ const path = Astro.url.pathname;
     color: var(--gold-strong);
   }
 
-  /* Icon renders its own <svg>, outside this component's style scope. */
-  .nav__icon-btn :global(.icon-sun),
-  .nav__icon-btn :global(.icon-close) {
-    display: none;
+  .nav__settings[aria-expanded='true'] {
+    border-color: var(--gold);
+    color: var(--gold-strong);
   }
 
-  :global(:root[data-theme='dark']) .nav__icon-btn :global(.icon-sun) {
-    display: block;
-  }
-  :global(:root[data-theme='dark']) .nav__icon-btn :global(.icon-moon) {
+  /* Icon renders its own <svg>, outside this component's style scope. */
+  .nav__icon-btn :global(.icon-close) {
     display: none;
   }
 
@@ -230,19 +249,45 @@ const path = Astro.url.pathname;
     padding: 9px 18px;
   }
 
+  /* Same place and slide as the settings panel (Settings.astro), but sized for
+     thumbs: it fills a phone's width, grows up to 440px on tablets, and its rows
+     scale with the screen so every link is an easy tap. */
   .nav__mobile {
-    height: calc(100dvh - 72px);
+    position: fixed;
+    top: 80px;
+    right: 16px;
+    z-index: 60;
+    width: min(440px, calc(100vw - 32px));
+    max-height: calc(100dvh - 96px);
     overflow-y: auto;
-    border-top: 1px solid var(--line);
-    background: var(--bg);
+    overscroll-behavior: contain;
+    padding: 6px clamp(18px, 5vw, 28px) clamp(18px, 5vw, 28px);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    visibility: hidden;
+    opacity: 0;
+    transform: translateX(calc(100% + 24px));
+    transition:
+      transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1),
+      opacity 0.3s,
+      visibility 0s 0.3s;
+  }
+
+  .nav__mobile[data-open] {
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+    transition:
+      transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1),
+      opacity 0.3s;
   }
 
   .nav__mobile ul {
     display: grid;
-    gap: 2px;
-    margin: 0 auto;
-    padding-top: 12px;
-    padding-bottom: 32px;
+    margin: 0;
+    padding: 0;
     list-style: none;
   }
 
@@ -250,12 +295,22 @@ const path = Astro.url.pathname;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 16px 4px;
+    min-height: 60px;
+    padding: clamp(14px, 4vw, 20px) 4px;
     border-bottom: 1px solid var(--line);
     color: var(--ink);
-    font-size: 1.15rem;
+    font-size: clamp(1.15rem, 1rem + 1.2vw, 1.35rem);
     font-weight: 600;
     text-decoration: none;
+  }
+
+  .nav__mobile a:not(.btn) :global(svg) {
+    width: 22px;
+    height: 22px;
+  }
+
+  .nav__mobile a:not(.btn):hover {
+    color: var(--gold-strong);
   }
 
   .nav__mobile a[aria-current='page'] {
@@ -264,7 +319,9 @@ const path = Astro.url.pathname;
 
   .nav__mobile .btn {
     width: 100%;
-    margin-top: 20px;
+    min-height: 56px;
+    margin-top: clamp(18px, 5vw, 24px);
+    font-size: clamp(1.05rem, 0.95rem + 0.8vw, 1.2rem);
   }
 
   @media (min-width: 640px) {

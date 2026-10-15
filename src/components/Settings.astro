@@ -1,0 +1,570 @@
+---
+import Icon from './Icon.astro';
+
+// On/off settings. Each one sets data-<name>="<on>" on <html>; global.css does the rest.
+const switches = [
+  { name: 'motion', on: 'reduce', label: 'Reduce motion', hint: 'Turns off scroll and hover animations.' },
+  { name: 'contrast', on: 'more', label: 'High contrast', hint: 'Darker text and stronger borders.' },
+  { name: 'font', on: 'readable', label: 'Readable font', hint: 'Switches to Atkinson Hyperlegible.' },
+  { name: 'spacing', on: 'relaxed', label: 'Relaxed line spacing', hint: 'More room between lines of text.' },
+  { name: 'measure', on: 'short', label: 'Shorter lines', hint: 'Narrows paragraphs in case studies and About.' },
+];
+
+const themes = [
+  { value: 'auto', label: 'Auto', icon: 'clock' },
+  { value: 'light', label: 'Light', icon: 'sun' },
+  { value: 'dark', label: 'Dark', icon: 'moon' },
+] as const;
+
+const sizes = [
+  { value: 'sm', label: 'Small', preview: '0.8rem' },
+  { value: 'md', label: 'Default', preview: '0.95rem' },
+  { value: 'lg', label: 'Large', preview: '1.15rem' },
+  { value: 'xl', label: 'Extra large', preview: '1.35rem' },
+];
+---
+
+<div class="settings" id="settings-panel" role="dialog" aria-labelledby="settings-title" data-settings>
+  <div class="settings__head">
+    <h2 class="settings__title" id="settings-title">Settings</h2>
+    <button type="button" class="settings__close" data-settings-close>
+      <Icon name="close" size={18} />
+      <span class="visually-hidden">Close settings</span>
+    </button>
+  </div>
+
+  <fieldset class="settings__group">
+    <legend>Theme</legend>
+    <div class="seg seg--3">
+      {
+        themes.map((t) => (
+          <label>
+            <input type="radio" name="theme" value={t.value} />
+            <span>
+              <Icon name={t.icon} size={16} /> {t.label}
+            </span>
+          </label>
+        ))
+      }
+    </div>
+  </fieldset>
+
+  <fieldset class="settings__group">
+    <legend>Text size</legend>
+    <div class="seg seg--4">
+      {
+        sizes.map((s) => (
+          <label>
+            <input type="radio" name="textSize" value={s.value} />
+            <span class="seg__a" style={`--size: ${s.preview}`} aria-hidden="true">
+              A
+            </span>
+            <span class="visually-hidden">{s.label}</span>
+          </label>
+        ))
+      }
+    </div>
+  </fieldset>
+
+  <ul class="settings__switches">
+    {
+      switches.map((s) => (
+        <li>
+          <label class="switch">
+            <span class="switch__text">
+              <span class="switch__label">{s.label}</span>
+              <span class="switch__hint">{s.hint}</span>
+            </span>
+            <input type="checkbox" role="switch" name={s.name} data-on={s.on} />
+          </label>
+        </li>
+      ))
+    }
+  </ul>
+
+  <div class="settings__foot">
+    <button type="button" class="settings__reset" data-settings-reset>Reset to defaults</button>
+    <p class="settings__note">Saved in this browser only.</p>
+  </div>
+</div>
+
+<script>
+  interface SiteSettings {
+    themeMode(): string;
+    setThemeMode(mode: string): void;
+    applyPrefs(): void;
+  }
+
+  declare global {
+    interface Window {
+      siteSettings?: SiteSettings;
+    }
+  }
+
+  const KEY = 'prefs';
+  const root = document.documentElement;
+  const panel = document.querySelector<HTMLElement>('[data-settings]');
+  const toggle = document.querySelector<HTMLButtonElement>('[data-settings-toggle]');
+  const api = window.siteSettings;
+
+  const read = (): Record<string, string> => {
+    try {
+      const saved = JSON.parse(localStorage.getItem(KEY) ?? 'null');
+      return saved && typeof saved === 'object' ? saved : {};
+    } catch {
+      return {};
+    }
+  };
+
+  const save = (prefs: Record<string, string>) => {
+    try {
+      localStorage.setItem(KEY, JSON.stringify(prefs));
+    } catch {
+      // Private windows and blocked storage: the choice still applies to this page.
+    }
+  };
+
+  if (panel && toggle && api) {
+    const inputs = [...panel.querySelectorAll<HTMLInputElement>('input')];
+
+    /** Shows what's actually applied, which may come from another tab or the device. */
+    const sync = () => {
+      for (const input of inputs) {
+        if (input.name === 'theme') input.checked = input.value === api.themeMode();
+        else if (input.name === 'textSize') input.checked = input.value === (root.dataset.textSize ?? 'md');
+        else input.checked = root.dataset[input.name] === input.dataset.on;
+      }
+    };
+
+    const isOpen = () => panel.hasAttribute('data-open');
+
+    const setOpen = (open: boolean, returnFocus = false) => {
+      if (open === isOpen()) return;
+      panel.toggleAttribute('data-open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+      if (open) {
+        sync();
+        // Only one panel at a time: close the mobile menu if it's open.
+        const menu = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+        if (menu?.getAttribute('aria-expanded') === 'true') menu.click();
+        panel.querySelector<HTMLInputElement>('input[name="theme"]:checked')?.focus();
+      } else if (returnFocus) {
+        toggle.focus();
+      }
+    };
+
+    toggle.addEventListener('click', () => setOpen(!isOpen()));
+    panel.querySelector('[data-settings-close]')?.addEventListener('click', () => setOpen(false, true));
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen()) setOpen(false, panel.contains(document.activeElement));
+    });
+
+    // A click anywhere outside the panel closes it (the toggle handles its own clicks).
+    document.addEventListener('pointerdown', (e) => {
+      const target = e.target as Node;
+      if (isOpen() && !panel.contains(target) && !toggle.contains(target)) setOpen(false);
+    });
+
+    // So does tabbing out of it, so keyboard focus never lands on a link hidden under it.
+    // (No relatedTarget means focus left the window, e.g. switching apps: stay open.)
+    panel.addEventListener('focusout', (e) => {
+      const next = e.relatedTarget as Node | null;
+      if (next && !panel.contains(next) && !toggle.contains(next)) setOpen(false);
+    });
+
+    panel.addEventListener('change', (e) => {
+      const input = e.target as HTMLInputElement;
+      if (input.name === 'theme') {
+        api.setThemeMode(input.value);
+        return;
+      }
+      const prefs = read();
+      if (input.name === 'textSize') {
+        if (input.value === 'md') delete prefs.textSize;
+        else prefs.textSize = input.value;
+      } else if (input.checked) {
+        prefs[input.name] = input.dataset.on!;
+      } else if (input.name === 'motion') {
+        // Saved explicitly, so motion stays on even if the device asks for less.
+        prefs.motion = 'full';
+      } else {
+        delete prefs[input.name];
+      }
+      save(prefs);
+      api.applyPrefs();
+    });
+
+    panel.querySelector('[data-settings-reset]')?.addEventListener('click', () => {
+      try {
+        localStorage.removeItem(KEY);
+      } catch {
+        // Nothing saved to clear.
+      }
+      api.applyPrefs();
+      api.setThemeMode('auto');
+      sync();
+    });
+
+    // Keep the switches right if the device's motion setting changes while open.
+    window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', sync);
+
+    // Back/forward navigation can restore the page with the panel still open.
+    window.addEventListener('pageshow', (e) => {
+      if (e.persisted) setOpen(false);
+    });
+  }
+</script>
+
+<style>
+  .settings {
+    position: fixed;
+    top: 80px;
+    right: 16px;
+    z-index: 60;
+    width: min(340px, calc(100vw - 32px));
+    max-height: calc(100dvh - 96px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 18px 20px 20px;
+    background: var(--surface);
+    color: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    visibility: hidden;
+    opacity: 0;
+    /* Docked to the screen's right edge at every size, and starts just past it. */
+    transform: translateX(calc(100% + 24px));
+    transition:
+      transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1),
+      opacity 0.3s,
+      visibility 0s 0.3s;
+  }
+
+  .settings[data-open] {
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+    transition:
+      transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1),
+      opacity 0.3s;
+  }
+
+  .settings__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+
+  .settings__title {
+    margin: 0;
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
+  }
+
+  .settings__close {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    margin-right: -8px;
+    padding: 0;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--ink-soft);
+    cursor: pointer;
+  }
+
+  .settings__close:hover {
+    background: var(--bg-alt);
+    color: var(--ink);
+  }
+
+  .settings__group {
+    margin: 0 0 16px;
+    padding: 0;
+    border: 0;
+    min-width: 0;
+  }
+
+  .settings__group legend {
+    margin-bottom: 8px;
+    padding: 0;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* Segmented control: radios styled as one row of buttons. */
+  .seg {
+    display: grid;
+    gap: 4px;
+    padding: 4px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--bg-alt);
+  }
+
+  .seg--3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .seg--4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .seg label {
+    position: relative;
+    display: block;
+    cursor: pointer;
+  }
+
+  .seg input {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .seg input + span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 38px;
+    padding: 6px 8px;
+    border-radius: 7px;
+    color: var(--ink-soft);
+    /* The text size buttons set --size to preview each size. */
+    font-size: var(--size, 0.875rem);
+    font-weight: 600;
+    line-height: 1;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  }
+
+  .seg label:hover input:not(:checked) + span {
+    color: var(--ink);
+  }
+
+  .seg input:checked + span {
+    background: var(--surface);
+    color: var(--gold-strong);
+    box-shadow: var(--shadow-sm), 0 0 0 1px var(--line);
+  }
+
+  .seg input:focus-visible + span {
+    outline: 2px solid var(--gold-bright);
+    outline-offset: 1px;
+  }
+
+  .seg__a {
+    font-family: var(--font-display);
+  }
+
+  .settings__switches {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--line);
+  }
+
+  .settings__switches li {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .switch {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 0;
+    cursor: pointer;
+  }
+
+  .switch__text {
+    display: grid;
+    gap: 2px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .switch__label {
+    font-size: 0.925rem;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .switch__hint {
+    font-size: 0.8rem;
+    line-height: 1.4;
+    color: var(--muted);
+  }
+
+  .switch input {
+    position: relative;
+    flex: none;
+    width: 42px;
+    height: 24px;
+    margin: 0;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--bg-alt);
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+  }
+
+  .switch input::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    /* Muted while off so the knob stands out from the track in both themes. */
+    background: var(--muted);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  .switch input:checked {
+    background: var(--gold);
+    border-color: var(--gold);
+  }
+
+  .switch input:checked::before {
+    background: var(--surface);
+    transform: translateX(18px);
+  }
+
+  .switch input:focus-visible {
+    outline: 2px solid var(--gold-bright);
+    outline-offset: 2px;
+  }
+
+  .settings__foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px 12px;
+    margin-top: 14px;
+  }
+
+  .settings__reset {
+    padding: 8px 12px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--ink);
+    font: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .settings__reset:hover {
+    border-color: var(--gold);
+    color: var(--gold-strong);
+  }
+
+  .settings__note {
+    margin: 0;
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  /* Phones and tablets (where the hamburger menu shows): sized for thumbs, like
+     the menu. It fills a phone's width, grows up to 440px on tablets, and the
+     text, buttons, and switches scale with the screen. */
+  @media (max-width: 1079px) {
+    .settings {
+      width: min(440px, calc(100vw - 32px));
+      padding: clamp(18px, 5vw, 26px) clamp(18px, 5vw, 28px);
+    }
+
+    .settings__head {
+      margin-bottom: 18px;
+    }
+
+    .settings__title {
+      font-size: clamp(1.2rem, 1.05rem + 1vw, 1.35rem);
+    }
+
+    .settings__close {
+      width: 44px;
+      height: 44px;
+      margin-right: -10px;
+    }
+
+    .settings__close :global(svg) {
+      width: 22px;
+      height: 22px;
+    }
+
+    .settings__group {
+      margin-bottom: 20px;
+    }
+
+    .settings__group legend {
+      font-size: 0.8rem;
+    }
+
+    .seg input + span {
+      min-height: 50px;
+      font-size: var(--size, clamp(0.95rem, 0.85rem + 0.6vw, 1.05rem));
+    }
+
+    .seg input + span :global(svg) {
+      width: 18px;
+      height: 18px;
+    }
+
+    .switch {
+      gap: 16px;
+      padding: clamp(14px, 4vw, 18px) 0;
+    }
+
+    .switch__label {
+      font-size: clamp(1.02rem, 0.92rem + 0.7vw, 1.12rem);
+    }
+
+    .switch__hint {
+      font-size: 0.875rem;
+    }
+
+    .switch input {
+      width: 52px;
+      height: 30px;
+    }
+
+    .switch input::before {
+      width: 24px;
+      height: 24px;
+    }
+
+    .switch input:checked::before {
+      transform: translateX(22px);
+    }
+
+    .settings__foot {
+      margin-top: 18px;
+    }
+
+    .settings__reset {
+      min-height: 46px;
+      padding: 10px 18px;
+      font-size: 0.95rem;
+    }
+
+    .settings__note {
+      font-size: 0.8rem;
+    }
+  }
+</style>
