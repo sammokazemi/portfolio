@@ -56,7 +56,7 @@ export const skills = [
   {
     group: 'Languages & Frameworks',
     icon: 'code',
-    items: ['JavaScript', 'TypeScript', 'React', 'Python', 'Node.js', 'Express', 'Flask', 'HTML5 / CSS', 'SQL', 'PostgreSQL', 'Java', 'C++'],
+    items: ['JavaScript', 'TypeScript', 'React', 'Astro', 'Python', 'Node.js', 'Express', 'Flask', 'HTML5 / CSS', 'SQL', 'PostgreSQL', 'Java', 'C++'],
   },
   {
     group: 'Cloud & DevOps',
