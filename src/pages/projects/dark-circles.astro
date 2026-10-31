@@ -1,0 +1,358 @@
+---
+import Screenshot from '../../components/Screenshot.astro';
+import CaseStudy from '../../layouts/CaseStudy.astro';
+import Icon from '../../components/Icon.astro';
+import cover from '../../assets/projects/dark-circles/cover.png';
+import coverCircle from '../../assets/projects/dark-circles/cover-circle.png';
+import statement from '../../assets/projects/dark-circles/statement.png';
+import references from '../../assets/projects/dark-circles/references.png';
+import extracurriculars from '../../assets/projects/dark-circles/extracurriculars.png';
+import recommend from '../../assets/projects/dark-circles/recommend.png';
+import signature from '../../assets/projects/dark-circles/signature.png';
+import notFound from '../../assets/projects/dark-circles/not-found.png';
+import phoneCircle from '../../assets/projects/dark-circles/phone-circle.png';
+import phoneTrailer from '../../assets/projects/dark-circles/phone-trailer.png';
+import phoneReferences from '../../assets/projects/dark-circles/phone-references.png';
+
+const desktopSizes = '(min-width: 1000px) 960px, calc(100vw - 32px)';
+const pairSizes = '(min-width: 1000px) 470px, (min-width: 900px) 45vw, calc(100vw - 32px)';
+const phoneSizes = '(min-width: 760px) 230px, (min-width: 600px) 30vw, 64vw';
+
+const parts = [
+  { name: 'Cover page', text: 'The title, Roya’s applicant fields, and the three things to do: watch the trailer, donate, follow.' },
+  { name: 'Section 1 · Personal statement', text: 'The premise, written as her admissions essay and corrected in marker, with the trailer clipped on as Attachment A.' },
+  { name: 'Section 2 · References', text: 'The cast and crew as ID cards paper-clipped to the file, each flipping over to a bio.' },
+  { name: 'Section 3 · Extracurriculars', text: 'Clips from the show’s TikTok and Instagram, its social accounts, and the fundraiser video from YouTube.' },
+  { name: 'Section 4 · Letters of recommendation', text: 'The four donation tiers, from a name in the end credits to an Executive Producer credit.' },
+  { name: 'Signature', text: 'The footer: the certification, Roya’s signature at 3:12 a.m., the social links, and the credits.' },
+];
+
+const phoneScreens = [
+  { src: phoneCircle, alt: 'The cover page on a phone, with a finger held on the title revealing a dark circle and a word in Farsi underneath' },
+  { src: phoneTrailer, alt: 'The trailer on a phone: a vertical video of Roya in a white attachment frame, with a round play button and sound toggle' },
+  { src: phoneReferences, alt: 'The references section on a phone: two columns of cast ID cards, one flipped over to show the character’s bio' },
+];
+---
+
+<CaseStudy
+  name="Dark Circles"
+  description="Case study: the website Sām Kazemi designed and built in Astro for Dark Circles, a 30-episode vertical dark comedy created by Awni Abdi-Bahri with Violent Delights Productions."
+  summary="The website for Dark Circles, a 30-episode vertical dark comedy: the lead character’s flawless medical-school application, with her unfiltered inner voice scrawled in the margins and a dark circle that cuts through the paper to show it."
+  role="Website Developer"
+  org="Violent Delights Productions"
+  period="Oct 2026 – Present"
+  status="Built; launch planned"
+  stack={[
+    'Astro',
+    'TypeScript',
+    'Modern CSS (@property, masks)',
+    'Pointer Events',
+    'HTML5 video',
+    'ffmpeg',
+    'Self-hosted fonts',
+    'Responsive design',
+    'Accessible UI',
+    'Design systems',
+  ]}
+>
+  <section class="reveal">
+    <p class="eyebrow">The challenge</p>
+    <h2>A pitch that has to sound like the show</h2>
+    <p>
+      Dark Circles follows Roya Delshad, an Iranian-American woman juggling medical school, her
+      family’s expectations, and a secret acting career, while the audience hears every unfiltered
+      thought in her head. It is a 30-episode vertical series created by Awni Abdi-Bahri with
+      Violent Delights Productions, and it is independently funded.
+    </p>
+    <p>
+      So the site has three jobs, in order: get people to watch the trailer, get them to donate, and
+      get them to follow. It also has to read like the show. A crowdfunding template with a hero
+      video and three feature cards would have done the first three jobs and failed the last one.
+    </p>
+    <figure class="cs-shot">
+      <Screenshot
+        src={cover}
+        alt="The Dark Circles cover page: an application form with Roya’s name and grades, a paper-clipped headshot, the title with Circles ringed in red marker, and buttons to watch the trailer or donate"
+        widths={[800, 1200, 1600, 2200]}
+        sizes={desktopSizes}
+        class="cs-screen"
+      />
+      <figcaption>The cover page: Roya’s application, with her inner voice already in the margins.</figcaption>
+    </figure>
+  </section>
+
+  <section class="reveal">
+    <p class="eyebrow">The concept</p>
+    <h2>Perfect on paper, spiraling in private</h2>
+    <p>
+      Sām mocked up three directions as working pages: Roya’s flawless medical-school application
+      with Inner Roya scrawling over it, one sleepless night on her phone where scrolling moves the
+      clock toward sunrise, and the key art come alive in neon bulbs and a letterboard. The
+      application won, because its layout is the show’s tagline: perfect on paper, spiraling in
+      private.
+    </p>
+    <p>
+      Every section has two layers. The official one is the application: paper, a serif, and
+      monospaced form labels, formal and dry. The private one is Inner Roya: red marker, rotated,
+      lowercase or all caps, and sometimes Farsi. The jokes live in the gap between them, and red
+      belongs to her alone, so anything red on the page is something she wrote.
+    </p>
+    <p>
+      Before a page was built, the direction was written down as a design system: color tokens with
+      checked contrast ratios, a type scale across four typefaces, a spacing scale, components,
+      motion rules, the voice, and a list of hard bans. Everything on the site follows it, and
+      anything it doesn’t cover gets added there first.
+    </p>
+    <figure class="cs-shot">
+      <Screenshot
+        src={statement}
+        alt="The personal statement: a struck-through opening line corrected in red marker, the premise and Roya’s current circumstances, and the trailer in a white attachment frame"
+        widths={[800, 1200, 1600, 2200]}
+        sizes={desktopSizes}
+        class="cs-screen"
+      />
+      <figcaption>
+        The personal statement, corrected in marker, with the trailer clipped on as Attachment A.
+      </figcaption>
+    </figure>
+  </section>
+
+  <section class="reveal">
+    <p class="eyebrow">The signature interaction</p>
+    <h2>A dark circle through the paper</h2>
+    <p>
+      Under the cover page sits a second, ink-dark layer of Inner Roya’s notes. Moving the mouse cuts
+      a soft-edged circle through the paper that follows the pointer, so the visitor reads what she
+      is really thinking, a few words at a time. On a phone, pressing and holding opens the circle
+      under the finger, and vertical swipes still scroll the page.
+    </p>
+    <p>
+      The hole is a CSS mask: a radial gradient centered on the pointer, whose radius is a
+      registered custom property so it can grow and shrink with a transition instead of snapping. On
+      a first visit, the circle drifts across the title once to teach the gesture, and never again
+      that session. The buttons sit above both layers, so the circle can’t hide them, and the ink
+      layer is decoration hidden from screen readers: everything that matters is also on the paper.
+      With reduced motion turned on, the peek and the marker animations are skipped, and the circle
+      still follows the pointer.
+    </p>
+    <figure class="cs-shot">
+      <Screenshot
+        src={coverCircle}
+        alt="The cover page with a dark circle cut through the paper over the title, showing a word in Farsi written in marker on the ink layer underneath"
+        widths={[800, 1200, 1600, 2200]}
+        sizes={desktopSizes}
+        class="cs-screen"
+      />
+      <figcaption>The same cover with the circle open over the title, and Inner Roya’s Farsi underneath.</figcaption>
+    </figure>
+  </section>
+
+  <section class="reveal">
+    <p class="eyebrow">The application</p>
+    <h2>One page, filed in order</h2>
+    <p>
+      The site is a single page laid out like the application itself, with the primary actions in
+      the order the show needs them.
+    </p>
+    <ul class="cs-flow">
+      {
+        parts.map((p) => (
+          <li>
+            <div>
+              <strong>{p.name}</strong>
+              <span>{p.text}</span>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="reveal">
+    <p class="eyebrow">Video</p>
+    <h2>Video without the platforms’ players</h2>
+    <p>
+      The trailer came in as a 121 MB file. Sām re-encoded it with ffmpeg into an 8.1 MB version
+      for desktops and a 4.1 MB one for phones, chosen by screen width, and both start playing
+      before they finish downloading. Its poster is a real frame from the trailer, and the player is
+      the site’s own: the play button is literally a dark circle, and play, pause, and sound are
+      labeled buttons. “Watch the trailer” on the cover glides down to it, stops if the visitor
+      scrolls, and lands focus on the play button.
+    </p>
+    <p>
+      None of the platforms’ embed scripts load. Clips are the show’s own files, listed in one data
+      file and shown as vertical tiles that preview silently on hover and toggle on tap, each linking
+      back to its original post. The YouTube fundraiser video is a thumbnail until it’s clicked, and
+      only then loads YouTube’s privacy-enhanced player.
+    </p>
+    <figure class="cs-shot">
+      <Screenshot
+        src={extracurriculars}
+        alt="The extracurriculars section: a vertical teaser clip with a caption, the show’s Instagram, TikTok, and YouTube accounts, and the fundraiser video as a click-to-load thumbnail"
+        widths={[800, 1200, 1600, 2200]}
+        sizes={desktopSizes}
+        class="cs-screen"
+      />
+      <figcaption>Extracurriculars: the teaser clip, the show’s accounts, and the fundraiser video.</figcaption>
+    </figure>
+  </section>
+
+  <section class="reveal">
+    <p class="eyebrow">Cast and crew</p>
+    <h2>References that flip</h2>
+    <p>
+      The cast and crew appear as their ID cards, paper-clipped to the file at slightly different
+      angles. Hovering for half a second, clicking, or tapping flips a card to the bio on its back.
+      Each card is a real button that reports whether it’s flipped, with the bio linked as its
+      description, so keyboard and screen-reader users get the same story. The back of the card
+      resizes its own type with container queries, so a bio still fits a card half a phone wide.
+    </p>
+    <figure class="cs-shot">
+      <Screenshot
+        src={references}
+        alt="The references section: cast ID cards paper-clipped in a grid, with the middle card flipped to show the character’s bio"
+        widths={[800, 1200, 1600, 2200]}
+        sizes={desktopSizes}
+        class="cs-screen"
+      />
+      <figcaption>The references, one card flipped to its bio.</figcaption>
+    </figure>
+  </section>
+
+  <section class="reveal">
+    <p class="eyebrow">Donations</p>
+    <h2>Every donation is a letter of recommendation</h2>
+    <p>
+      The four donation tiers are laid out as checkboxes on the form, from Roya’s Inner Circle at
+      $100 to The Dark Circle at $5,000 and up. Payment happens on the fiscal sponsor’s donation
+      page, so the site never handles a card, and the note under the button names the sponsor and
+      its tax ID, so donors know the gift is tax-deductible.
+    </p>
+    <figure class="cs-shot">
+      <Screenshot
+        src={recommend}
+        alt="The letters of recommendation section: a sign-and-donate button and four donation tiers with checkboxes, prices, and perks"
+        widths={[800, 1200, 1600, 2200]}
+        sizes={desktopSizes}
+        class="cs-screen"
+      />
+      <figcaption>Four tiers, from a name in the end credits to an Executive Producer credit.</figcaption>
+    </figure>
+  </section>
+
+  <section class="reveal">
+    <p class="eyebrow">Voice</p>
+    <h2>The voice reaches every surface</h2>
+    <p>
+      The official layer is written like an admissions form, and Inner Roya is short, specific, and
+      unfiltered. The design system holds both to that, down to buttons, alt text, and a list of
+      banned marketing phrases. The footer is the application’s signature block, and the 404 page
+      is a status update: this page didn’t get in either.
+    </p>
+    <figure class="cs-shot cs-shot--wide">
+      <div class="cs-pair">
+        <Screenshot
+          src={signature}
+          alt="The footer as a signature block: a certification line with (mostly) in marker, Roya’s signature, the date 3:12 a.m., and the social links"
+          widths={[600, 900, 1400]}
+          sizes={pairSizes}
+          class="cs-screen"
+        />
+        <Screenshot
+          src={notFound}
+          alt="The 404 page: This page didn’t get in either, with get in struck through in red and a marker note, it applied though, it applied so hard"
+          widths={[600, 900, 1400]}
+          sizes={pairSizes}
+          class="cs-screen"
+        />
+      </div>
+      <figcaption>The signature block at the end of the page, and the 404.</figcaption>
+    </figure>
+  </section>
+
+  <section class="reveal">
+    <p class="eyebrow">On a phone</p>
+    <h2>Designed at 375 pixels first</h2>
+    <p>
+      A vertical series is watched on phones, so the site was designed at phone width first. The
+      title is sized by both the screen’s width and its height, so the whole cover, buttons
+      included, fits above the fold. The hint under the buttons changes from “rub the page” to
+      “press &amp; hold the page” on touch screens, and the vertical trailer fills the width of the
+      screen.
+    </p>
+    <figure class="cs-shot">
+      <div class="cs-phones">
+        {phoneScreens.map((s) => <Screenshot src={s.src} alt={s.alt} widths={[300, 500, 700]} sizes={phoneSizes} class="cs-screen cs-phone" />)}
+      </div>
+      <figcaption>The circle under a finger, the trailer, and a flipped reference card on a phone.</figcaption>
+    </figure>
+  </section>
+
+  <section class="reveal">
+    <p class="eyebrow">Engineering highlights</p>
+    <h2>Light, private, and native</h2>
+    <div class="cs-features">
+      <div class="card">
+        <span class="icon-badge"><Icon name="layers" /></span>
+        <h3>Design system first</h3>
+        <p>
+          Colors, type, spacing, components, motion, and voice are written down before they’re built,
+          and the stylesheet’s tokens mirror that document, so the site and its rules can’t drift
+          apart.
+        </p>
+      </div>
+      <div class="card">
+        <span class="icon-badge"><Icon name="target" /></span>
+        <h3>A performance budget</h3>
+        <p>
+          The page has a 1.5 MB budget before any video plays. Fonts are self-hosted subsets with
+          the title’s font preloaded, the cast cards and trailer poster are resized WebP, and clip
+          videos don’t load until they play.
+        </p>
+      </div>
+      <div class="card">
+        <span class="icon-badge"><Icon name="lock" /></span>
+        <h3>No platform embeds</h3>
+        <p>
+          No TikTok, Instagram, or YouTube script loads with the page, so reading it sends nothing
+          to those platforms. YouTube’s privacy-enhanced player loads only when someone presses
+          play.
+        </p>
+      </div>
+      <div class="card">
+        <span class="icon-badge"><Icon name="code" /></span>
+        <h3>Motion without libraries</h3>
+        <p>
+          The circle, the marker that draws itself around the title, and the card flips use CSS
+          transitions and animations, a registered custom property, and requestAnimationFrame. The only runtime
+          dependencies are Astro and the fonts.
+        </p>
+      </div>
+      <div class="card">
+        <span class="icon-badge"><Icon name="users" /></span>
+        <h3>Accessible by default</h3>
+        <p>
+          Real buttons with labels, a visible red focus ring, decorative layers hidden from screen
+          readers, reduced-motion support, and no horizontal scrolling at 375 pixels.
+        </p>
+      </div>
+      <div class="card">
+        <span class="icon-badge"><Icon name="file-text" /></span>
+        <h3>Content as data</h3>
+        <p>
+          Clips come from one data file with each post’s platform, link, video, poster, and caption,
+          and the cast is one list, so adding a clip or a cast member is one entry.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <p class="eyebrow">What’s next</p>
+    <h2>What launch still needs</h2>
+    <p>
+      The site launches once the domain and hosting are settled. After that, more of the show’s clips join the extracurriculars, and a fifth
+      section, the transcript, lists the episodes once the series is released.
+    </p>
+  </section>
+</CaseStudy>

@@ -8,6 +8,7 @@ import { url } from '../../lib/url';
 import clearpathPreview from '../../assets/photos/clearpath-preview.png';
 import wfsPreview from '../../assets/photos/wfs-preview.png';
 import websitePreview from '../../assets/photos/union-website-preview.png';
+import darkCirclesPreview from '../../assets/photos/dark-circles-preview.png';
 
 type Project = {
   name: string;
@@ -67,12 +68,24 @@ const projects: Project[] = [
     text: 'The public website for a district council of labor unions and its nine locals, giving members, contractors, and the community one front door, built in Next.js alongside the workforce platform it signs people into.',
     tags: ['Next.js', 'Responsive design', 'Accessible UI', 'Design system'],
   },
+  {
+    name: 'Dark Circles',
+    org: 'Violent Delights Productions',
+    role: 'Website Developer',
+    period: 'Oct 2026 – Present',
+    href: '/projects/dark-circles',
+    image: darkCirclesPreview,
+    imageAlt: 'The Dark Circles cover page on a desktop beside the same page on a phone, where a dark circle under a finger reveals a word in Farsi',
+    tone: 'turquoise',
+    text: 'The website for a 30-episode vertical dark comedy, designed as its lead’s flawless medical-school application, with her unfiltered inner voice scrawled in the margins and a dark circle that cuts through the paper to show it.',
+    tags: ['Astro', 'TypeScript', 'Modern CSS', 'Design system'],
+  },
 ];
 ---
 
 <Base
   title="Projects"
-  description="Featured projects by Sām Kazemi: ClearPath Virtual Health, and the Union Workforce Ecosystem and labor union website built at Workforce Systems."
+  description="Featured projects by Sām Kazemi: ClearPath Virtual Health, the Union Workforce Ecosystem and labor union website built at Workforce Systems, and the website for the series Dark Circles."
 >
   <PageHeader
     eyebrow="Projects"
