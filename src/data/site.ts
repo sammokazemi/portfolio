@@ -143,7 +143,7 @@ export const resume = {
       name: 'MedManage Solutions',
       role: 'Lead Software Engineer',
       location: 'Daly City, CA',
-      dates: 'Sep 2025 – Present',
+      dates: 'Sep 2025 – Oct 2026',
       points: [
         'Architected and built ClearPath Virtual Health from the ground up, a production HIPAA-compliant CCM/RPM platform spanning four role-based portals with MFA, secure session management, and audit logging.',
         'Engineered React/AWS infrastructure with S3, CloudFront, ECS Fargate, CI/CD, and JWT/RBAC API integrations, reducing deployment time by 35% and administrative overhead by 40%.',
