@@ -15,6 +15,11 @@ import memberHome from '../../assets/projects/wfs/member-home.png';
 import memberTicket from '../../assets/projects/wfs/member-ticket.png';
 import memberWallet from '../../assets/projects/wfs/member-wallet.png';
 import appMap from '../../assets/projects/wfs/app-map.png';
+import appTraining from '../../assets/projects/wfs/app-training.png';
+import appCourse from '../../assets/projects/wfs/app-course.png';
+import appReport from '../../assets/projects/wfs/app-report.png';
+import unionClass from '../../assets/projects/wfs/union-class.png';
+import unionImport from '../../assets/projects/wfs/union-import.png';
 
 const desktopSizes = '(min-width: 1000px) 960px, calc(100vw - 32px)';
 const pairSizes = '(min-width: 1000px) 470px, (min-width: 900px) 45vw, calc(100vw - 32px)';
@@ -26,11 +31,31 @@ const phoneScreens = [
   { src: memberWallet, alt: 'Member app wallet with the member’s union card and a warning that a certification lapses soon' },
 ];
 
+const trainingScreens = [
+  { src: appTraining, alt: 'Member app training screen: the lapsing HAZWOPER card with a renewal seat to reserve, above the online courses' },
+  { src: appCourse, alt: 'An online course in the member app: the current lesson over a video still, lessons watched, run time, and the quiz’s pass mark' },
+  { src: appReport, alt: 'An apprentice’s July hours report in the member app: totals by work process, today’s entries, and buttons to save a draft or post the report' },
+];
+
+const appRules = [
+  'Sign-in runs against the same Laravel API as the web portals, and the token is kept in the iOS Keychain or Android Keystore. A release build ignores any start screen it is handed, so nothing can open a screen behind sign-in.',
+  'Every screen reads its data through one typed loader, and the whole app runs on the scenario’s clock rather than the phone’s, so every date, countdown, and “in 7 days” agrees with the web portal.',
+  'Every control has a screen-reader label, text grows with the phone’s setting up to 130%, the most its fixed-width rows can hold, and the fonts ship inside the app, so no request leaves it to fetch them.',
+  'A route test opens all 46 screens at three sizes, including a small phone with enlarged text, and CI checks formatting, static analysis, and the tests on every push.',
+];
+
+const staffRules = [
+  'Imports read a CSV in the browser and check every field before anything is written: member-number and date formats, amounts above zero, five-digit ZIP codes, and duplicates. Rows with errors are left out, never half-loaded.',
+  'Batch posting from lockbox, payroll-deduction, and ACH-return files matches a payment only when the member is on the roll and the amount is a whole number of months at the dues rate.',
+  'Converting old records to the Department of Labor’s separate race and ethnicity fields carries over only what a value actually states. When a value spans two answers or none, the screen asks the member instead of guessing.',
+  'A new dues or pay rate can only take effect after today, bargaining-unit codes must be unique, and a closed register day, an issued transfer, or a confirmed benefit election can’t be edited.',
+];
+
 const surfaces = [
-  { name: 'Union operations · 30 screens', text: 'The desktop workspace for business agents, dispatchers, and officers: dispatch, membership, dues, grievances, training, and reporting. It is the system of record behind everything else.' },
+  { name: 'Union operations · 35 screens', text: 'The desktop workspace for business agents, dispatchers, and officers: dispatch, membership, dues, grievances, training, and reporting. It is the system of record behind everything else.' },
   { name: 'Contractor portal · 15 screens', text: 'For coordinators, payroll clerks, and foremen. Contractors will click a link but won’t install an app, so it lives on the web, and it is responsive because the foreman is on a jobsite with a phone.' },
-  { name: 'Member portal · 37 screens', text: 'Everything a member can do on a desktop: dispatch, dues, pension, credentials, training, and health coverage, with no separate login for health.' },
-  { name: 'Member app', text: 'A laborer has no desk, so the phone is where most members will live. The app is built in Flutter as its own project, on the same API.' },
+  { name: 'Member portal · 41 screens', text: 'Everything a member can do on a desktop: dispatch, dues, pension, credentials, training, apprenticeship hours, and health coverage, with no separate login for health.' },
+  { name: 'Member app · 46 screens', text: 'A laborer has no desk, so the phone is where most members will live. The app is built in Flutter as its own project, on the same API, with five tabs: Home, Dispatch, Wallet, Hall, and Me.' },
   { name: 'Sign-in and the public website', text: 'Members, union staff, and contractors each sign in from the union’s public website, which has its own case study.' },
 ];
 
@@ -52,9 +77,9 @@ const coverageRules = [
 
 <CaseStudy
   name="Union Workforce Ecosystem"
-  description="Case study: the Union Workforce Ecosystem, a workforce platform for a laborers’ union that Sām Kazemi leads as Lead Developer at Workforce Systems, built in Next.js and TypeScript on a Laravel API."
-  summary="A workforce platform for a laborers’ union: one Next.js app for union staff, contractors, and members, on a Laravel API, unifying dispatch, dues, grievances, training, and benefits into one system of record."
-  role="Lead Developer: platform design and front end"
+  description="Case study: the Union Workforce Ecosystem, a workforce platform for a laborers’ union that Sām Kazemi leads as Lead Developer at Workforce Systems, built in Next.js and TypeScript with a Flutter member app, on a Laravel API."
+  summary="A workforce platform for a laborers’ union: one Next.js app for union staff, contractors, and members, and a Flutter app for members’ phones, both on a Laravel API, unifying dispatch, dues, grievances, training, and benefits into one system of record."
+  role="Lead Developer: platform design, web and mobile front end"
   org="Workforce Systems (WFS)"
   period="Jul 2026 – Present"
   status="In development under contract"
@@ -66,6 +91,8 @@ const coverageRules = [
     'React',
     'TypeScript',
     'Tailwind CSS',
+    'Flutter',
+    'Dart',
     'Laravel REST API',
     'Sanctum token auth',
     'MySQL',
@@ -140,10 +167,11 @@ const coverageRules = [
 
   <section class="reveal">
     <p class="eyebrow">The product</p>
-    <h2>One app, three portals, one system of record</h2>
+    <h2>Three portals, a phone app, one system of record</h2>
     <p>
-      The platform is a single Next.js application written in strict TypeScript. Union operations
-      holds the data, and every other surface is a view onto it: a contractor’s request for workers
+      The web platform is a single Next.js application written in strict TypeScript, and the member
+      app is written in Flutter. Union operations holds the data, and every other surface is a view
+      onto it: a contractor’s request for workers
       becomes a call at the hall, which becomes a dispatch on a member’s phone, with no re-keying in
       between. Each surface’s form follows from who uses it and where they are.
     </p>
@@ -177,15 +205,30 @@ const coverageRules = [
         dues, and the certification that needs attention.
       </figcaption>
     </figure>
+  </section>
+
+  <section class="reveal">
+    <p class="eyebrow">The member app</p>
+    <h2>The same record, in a laborer’s pocket</h2>
+    <p>
+      The member app was ported from the same prototype as the web portals, screen for screen, and
+      covers what a member does from a jobsite: clocking in, the dispatch ticket at the gate, the
+      card wallet, dues, the steward, health coverage, training, and apprenticeship hours. It shows
+      the same member on the same morning as the member portal, down to the minutes before report
+      time.
+    </p>
     <figure class="cs-shot">
       <div class="cs-phones">
         {phoneScreens.map((s) => <Screenshot src={s.src} alt={s.alt} widths={[300, 500, 700]} sizes={phoneSizes} class="cs-screen cs-phone" />)}
       </div>
       <figcaption>
-        The member app on a phone, as designed in the prototype: home on the morning of a dispatch,
-        the dispatch ticket, and the wallet holding the member’s union card.
+        The Flutter member app: home on the morning of a dispatch, the dispatch ticket, and the
+        wallet holding the member’s union card.
       </figcaption>
     </figure>
+    <ul class="check-list">
+      {appRules.map((r) => <li>{r}</li>)}
+    </ul>
   </section>
 
   <section class="reveal">
@@ -303,6 +346,81 @@ const coverageRules = [
   </section>
 
   <section class="reveal">
+    <p class="eyebrow">Training and apprenticeship</p>
+    <h2>From an online course to a graded class</h2>
+    <p>
+      Training runs through every side of the platform. Members take short online courses, from heat
+      illness and silica to knowing their contract, on the web or in the app. Each one is a set of
+      video lessons and a four-question quiz that passes at three of four, and the quiz can’t be
+      submitted until every question is answered.
+    </p>
+    <p>
+      Apprentices log their on-the-job hours each month, day by day and by work process. Posted
+      months must add up to the hours on the training center’s roster, a month before indenture or
+      in the future can’t be started, and posting locks the report until the training coordinator
+      signs it off. A card shows how far the apprentice is from the next 1,000-hour step, and the
+      classroom hours still owed before it.
+    </p>
+    <figure class="cs-shot">
+      <div class="cs-phones">
+        {trainingScreens.map((s) => <Screenshot src={s.src} alt={s.alt} widths={[300, 500, 700]} sizes={phoneSizes} class="cs-screen cs-phone" />)}
+      </div>
+      <figcaption>
+        In the member app: training, with the lapsing card and the online courses, a course’s
+        lessons, and an apprentice’s July hours report.
+      </figcaption>
+    </figure>
+    <p>
+      On the union side, each training-center class has a roster, attendance, scored components,
+      and a waiting list. Before anyone is seated, enrollment checks the class type, the member’s
+      standing, dues paid through last month, prerequisite cards, and the enrollment window, and
+      seats never exceed the class maximum. Grading follows written rules: a withdrawal is a W,
+      missing every day is a no-show, a single missed day needs a make-up, and otherwise the
+      weighted component score passes at 75%.
+    </p>
+    <figure class="cs-shot">
+      <Screenshot
+        src={unionClass}
+        alt="A training-center class waiting to be graded: enrollment, seats left, attendance, and a roster where each row’s hours and score say pass, fail, or no show"
+        widths={[800, 1200, 1600, 2200]}
+        sizes={desktopSizes}
+        class="cs-screen"
+      />
+      <figcaption>
+        A class waiting to be graded: each row says what its attendance and weighted score add up
+        to, and an administrator confirms the grade.
+      </figcaption>
+    </figure>
+  </section>
+
+  <section class="reveal">
+    <p class="eyebrow">Staff tools</p>
+    <h2>Retiring a legacy desktop system</h2>
+    <p>
+      The union’s staff kept their records in an older desktop system, so the union portal rebuilds
+      the tools they relied on there: bargaining units, dues and pay rates, imports, batch posting, a
+      cash register per office, custom fields on the member record, and a custom report builder.
+      Each one stops a bad record at the door.
+    </p>
+    <ul class="check-list">
+      {staffRules.map((r) => <li>{r}</li>)}
+    </ul>
+    <figure class="cs-shot">
+      <Screenshot
+        src={unionImport}
+        alt="The union portal’s import: a CSV’s columns mapped to member fields, a preview with rows flagged in error, and past imports with how many rows each rejected"
+        widths={[800, 1200, 1600, 2200]}
+        sizes={desktopSizes}
+        class="cs-screen"
+      />
+      <figcaption>
+        An import that won’t half-load: rows that fail a check are left out, and every past run
+        records what it rejected.
+      </figcaption>
+    </figure>
+  </section>
+
+  <section class="reveal">
     <p class="eyebrow">Engineering highlights</p>
     <h2>Built to swap fixtures for real data</h2>
     <div class="cs-features">
@@ -311,8 +429,9 @@ const coverageRules = [
         <h3>Prototype first, then product</h3>
         <p>
           The platform started as an 85-screen static prototype. Every desktop screen was then
-          ported into the Next.js app with the same Tailwind tokens, so the product matches the
-          prototype screen for screen.
+          ported into the Next.js app with the same Tailwind tokens, and every phone screen into
+          the Flutter app with the same colors and type, so the product matches the prototype
+          screen for screen.
         </p>
       </div>
       <div class="card">
@@ -387,8 +506,9 @@ const coverageRules = [
     <p class="eyebrow">What’s next</p>
     <h2>From sign-in to the whole record</h2>
     <p>
-      Sign-in, sign-out, and password reset run against the Laravel API today, and every other
-      screen reads typed sample data through the same layer that will call the API. A companion
+      Sign-in, sign-out, and password reset run against the Laravel API today, on the web and in
+      the app, and every other screen reads typed sample data through the same layer that will call
+      the API. A companion
       backend map lists every endpoint the screens need, grouped into modules, so the build works
       down a written list. Next come the dispatch endpoints the rest of the platform hangs on, then
       the remaining modules on that map, a second sign-in factor, and launch on AWS Amplify, chosen

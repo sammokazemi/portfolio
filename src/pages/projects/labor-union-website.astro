@@ -148,9 +148,10 @@ const phoneScreens = [
     <h2>The app, and the path into the trade</h2>
     <p>
       The members page explains the app in terms of what a member looks up: book position, dispatch
-      ticket, card wallet, hours, dues, and coverage. Beside the copy is the member app’s actual
-      home screen running inside a phone frame rather than a picture of one, so the site and the app
-      can’t drift apart.
+      ticket, card wallet, hours, dues, and coverage. Beside the copy, the phone frame runs a live
+      build of the app’s home screen rather than a picture of one. The app itself is built in
+      Flutter and covered in the{' '}
+      <a href={url('/projects/workforce-systems')}>Union Workforce Ecosystem</a> case study.
     </p>
     <figure class="cs-shot">
       <Screenshot
@@ -160,7 +161,7 @@ const phoneScreens = [
         sizes={desktopSizes}
         class="cs-screen"
       />
-      <figcaption>The members page, with the member app’s live home screen beside the copy.</figcaption>
+      <figcaption>The members page, with a live build of the app’s home screen beside the copy.</figcaption>
     </figure>
     <p>
       Further down, the apprenticeship section lays out the five steps from the entry skill
@@ -292,8 +293,9 @@ const phoneScreens = [
         <h3>Its own design system</h3>
         <p>
           The website has its own visual system, scoped in the same stylesheet as the portals’ so the
-          two can’t bleed into each other. Fonts are self-hosted rather than loaded from Google, and
-          the pages are prerendered at build time.
+          two can’t bleed into each other. Fonts and photographs are self-hosted, the photos as WebP,
+          rather than loaded from Google and stock-photo services, and the pages are prerendered at
+          build time.
         </p>
       </div>
       <div class="card">
