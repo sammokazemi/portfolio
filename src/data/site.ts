@@ -117,8 +117,7 @@ type ResumeEntry = {
 };
 
 // Mirrors the downloadable PDF (public/resume/Sam-Kazemi-Resume.pdf) line for
-// line;
-// update this block whenever the PDF changes.
+// line; after changing this block, run `npm run resume:pdf` to rebuild the PDF.
 export const resume = {
   summary:
     'Health tech software engineer with hands-on experience architecting a production HIPAA-compliant CCM/RPM platform from the ground up. Specialized in React, AWS, and clinical workflow systems across multi-portal, regulated environments.',
@@ -139,6 +138,17 @@ export const resume = {
     },
   ],
   experience: [
+    {
+      name: 'Workforce Systems',
+      role: 'Lead Developer',
+      location: 'San Francisco, CA',
+      dates: 'Jul 2026 – Present',
+      points: [
+        'Lead development of a union workforce platform in Next.js and TypeScript: union, contractor, and member portals (90+ screens) and a public website, unifying dispatch, dues, grievances, training, and benefits.',
+        'Built the iOS/Android member app in Flutter (46 screens) with secure token storage, screen-reader labels, and route tests at three screen sizes.',
+        'Added contractor accounts and role-scoped auth middleware to the Laravel REST API, with feature tests.',
+      ],
+    },
     {
       name: 'MedManage Solutions',
       role: 'Lead Software Engineer',
@@ -161,18 +171,6 @@ export const resume = {
       ],
     },
   ],
-  projects: [
-    {
-      name: 'Union Workforce Ecosystem',
-      role: 'Software Developer',
-      location: 'San Francisco, CA',
-      dates: 'Jul 2026 – Present',
-      points: [
-        'Designed and prototyped a five-portal workforce platform unifying dispatch, dues, grievances, training, and benefits.',
-        'Built normalized insurance data models and shared design-system tooling across 100+ screens, eliminating cross-screen inconsistencies and UI drift.',
-      ],
-    },
-  ],
   activities: [
     {
       name: 'MESA Program at San Francisco State',
@@ -192,7 +190,6 @@ export const resume = {
   summary: string;
   education: ResumeEntry[];
   experience: ResumeEntry[];
-  projects: ResumeEntry[];
   activities: ResumeEntry[];
   skills: { label: string; value: string }[];
 };
