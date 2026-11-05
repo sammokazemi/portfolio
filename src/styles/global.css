@@ -65,6 +65,8 @@
 html {
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
+  /* Section links (/#skills) land below the 72px sticky navbar, not under it. */
+  scroll-padding-top: 72px;
 }
 
 body {
@@ -164,7 +166,7 @@ p {
 }
 
 .section {
-  padding: clamp(64px, 9vw, 112px) 0;
+  padding: clamp(28px, 3.5vw, 40px) 0;
 }
 
 .section--alt {
@@ -173,7 +175,7 @@ p {
 
 .section-head {
   max-width: 680px;
-  margin-bottom: clamp(32px, 5vw, 56px);
+  margin-bottom: clamp(18px, 2vw, 24px);
 }
 
 .section-head--center {

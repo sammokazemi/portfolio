@@ -6,8 +6,8 @@ import { url } from '../lib/url';
 import { splitEmail } from '../lib/text';
 
 const year = new Date().getFullYear();
-const explore = nav.slice(0, 3);
-const more = nav.slice(3);
+const explore = nav.slice(0, 2);
+const more = nav.slice(2);
 const profiles = socials.filter((s) => !s.placeholder);
 const emails = [site.email, site.workEmail].map(splitEmail);
 ---
@@ -43,6 +43,8 @@ const emails = [site.email, site.workEmail].map(splitEmail);
         <h2>Explore</h2>
         <ul>
           <li><a href={url('/')}>Home</a></li>
+          <li><a href={url('/about')}>About</a></li>
+          <li><a href={url('/ai')}>AI Workflow</a></li>
           {explore.map((item) => <li><a href={url(item.href)}>{item.label}</a></li>)}
         </ul>
       </nav>
@@ -51,7 +53,6 @@ const emails = [site.email, site.workEmail].map(splitEmail);
         <h2>More</h2>
         <ul>
           {more.map((item) => <li><a href={url(item.href)}>{item.label}</a></li>)}
-          <li><a href={url('/contact')}>Contact</a></li>
         </ul>
       </nav>
 

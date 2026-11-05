@@ -1,11 +1,10 @@
 ---
-import Base from '../layouts/Base.astro';
-import PageHeader from '../components/PageHeader.astro';
-import Icon from '../components/Icon.astro';
+import Icon from '../Icon.astro';
 import { Image } from 'astro:assets';
-import { site, socials } from '../data/site';
-import benchPhoto from '../assets/photos/contact-bench.jpg';
-import { splitEmail } from '../lib/text';
+import { site, socials } from '../../data/site';
+import benchPhoto from '../../assets/photos/contact-bench.jpg';
+import { splitEmail } from '../../lib/text';
+import { url } from '../../lib/url';
 
 const linked = socials.filter((s) => !s.placeholder);
 
@@ -13,114 +12,122 @@ const [emailUser, emailDomain] = splitEmail(site.email);
 const [workUser, workDomain] = splitEmail(site.workEmail);
 ---
 
-<Base title="Contact" description="Get in touch with Sām Kazemi by email, LinkedIn, or GitHub.">
-  <PageHeader
-    eyebrow="Contact"
-    title="Let’s talk"
-    lead="Whether it’s a role, a project, or a conversation about community, Sām would like to hear from you. Email is the fastest way to reach him."
-  />
-
-  <section class="section">
-    <div class="container contact">
-      <div class="card contact__form-card reveal">
-        <h2>Send a message</h2>
-        <p class="form__intro">Fields marked <span class="req" aria-hidden="true">*</span> are required.</p>
-
-        <form class="form" id="contact-form" novalidate data-fallback-email={site.email}>
-          <div class="form__row">
-            <div class="field">
-              <label for="cf-name">Name <span class="req" aria-hidden="true">*</span></label>
-              <input id="cf-name" name="name" type="text" autocomplete="name" maxlength="100" required />
-            </div>
-            <div class="field">
-              <label for="cf-email">Email <span class="req" aria-hidden="true">*</span></label>
-              <input id="cf-email" name="email" type="email" autocomplete="email" maxlength="254" required />
-            </div>
-          </div>
-
-          <div class="form__row">
-            <div class="field">
-              <label for="cf-company">Company <span class="opt">(optional)</span></label>
-              <input id="cf-company" name="company" type="text" autocomplete="organization" maxlength="120" />
-            </div>
-            <div class="field">
-              <label for="cf-when">Preferred date &amp; time <span class="opt">(optional)</span></label>
-              <input id="cf-when" name="when" type="datetime-local" />
-            </div>
-          </div>
-
-          <div class="field">
-            <label for="cf-subject">Subject <span class="opt">(optional)</span></label>
-            <input id="cf-subject" name="subject" type="text" maxlength="150" />
-          </div>
-
-          <div class="field">
-            <label for="cf-message">Message <span class="req" aria-hidden="true">*</span></label>
-            <textarea id="cf-message" name="message" rows="6" maxlength="5000" required></textarea>
-          </div>
-
-          <!-- Cloudflare Turnstile renders here, and only becomes visible if it needs the visitor to click. -->
-          <div class="form__turnstile" id="contact-turnstile"></div>
-
-          <div class="form__status" id="contact-status" role="alert" aria-live="assertive" hidden></div>
-
-          <button type="submit" class="btn btn--primary form__submit">
-            <span class="form__spinner" aria-hidden="true"></span>
-            <span class="form__submit-label">Submit message</span>
-          </button>
-        </form>
+  <section class="section" id="contact">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">Contact</p>
+        <h2>Let’s talk</h2>
       </div>
+      <div class="contact">
+        <div class="card contact__form-card reveal">
+          <h3>Send a message</h3>
+          <p class="form__intro">Fields marked <span class="req" aria-hidden="true">*</span> are required.</p>
 
-      <aside class="card contact__aside reveal" style="--delay: 0.1s">
-        <Image
-          src={benchPhoto}
-          alt="Sām Kazemi relaxing on a yellow bench in an Oakland A's cap"
-          widths={[460, 920]}
-          sizes="(min-width: 960px) 460px, calc(100vw - 32px)"
-          class="contact__photo"
-        />
-        <ul class="channels">
-          <li>
-            <a class="channel" href={`mailto:${site.email}`}>
-              <span class="icon-badge"><Icon name="mail" /></span>
-              <span class="channel__text">
-                <span class="channel__label">Email Sām</span>
-                <span class="channel__value">{emailUser}<wbr />{emailDomain}</span>
-              </span>
-              <Icon name="arrow-right" size={18} class="channel__arrow" />
-            </a>
-          </li>
-          <li>
-            <a class="channel" href={`mailto:${site.workEmail}`}>
-              <span class="icon-badge"><Icon name="mail" /></span>
-              <span class="channel__text">
-                <span class="channel__label">Work email</span>
-                <span class="channel__value">{workUser}<wbr />{workDomain}</span>
-              </span>
-              <Icon name="arrow-right" size={18} class="channel__arrow" />
-            </a>
-          </li>
-          <li class="channels__pair">
-            {
-              linked.map((s) => (
-                <a class="channel" href={s.href} target="_blank" rel="noopener me">
-                  <span class="icon-badge">
-                    <Icon name={s.icon} />
-                  </span>
-                  <span class="channel__text">
-                    <span class="channel__label">{s.label}</span>
-                    <span class="channel__value">{s.handle}</span>
-                  </span>
-                  <span class="visually-hidden">(opens in a new tab)</span>
-                </a>
-              ))
-            }
-          </li>
-        </ul>
-      </aside>
+          <form class="form" id="contact-form" novalidate data-fallback-email={site.email}>
+            <div class="form__row">
+              <div class="field">
+                <label for="cf-name">Name <span class="req" aria-hidden="true">*</span></label>
+                <input id="cf-name" name="name" type="text" autocomplete="name" maxlength="100" required />
+              </div>
+              <div class="field">
+                <label for="cf-email">Email <span class="req" aria-hidden="true">*</span></label>
+                <input id="cf-email" name="email" type="email" autocomplete="email" maxlength="254" required />
+              </div>
+            </div>
+
+            <div class="form__row">
+              <div class="field">
+                <label for="cf-company">Company <span class="opt">(optional)</span></label>
+                <input id="cf-company" name="company" type="text" autocomplete="organization" maxlength="120" />
+              </div>
+              <div class="field">
+                <label for="cf-when">Preferred date &amp; time <span class="opt">(optional)</span></label>
+                <input id="cf-when" name="when" type="datetime-local" />
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="cf-subject">Subject <span class="opt">(optional)</span></label>
+              <input id="cf-subject" name="subject" type="text" maxlength="150" />
+            </div>
+
+            <div class="field">
+              <label for="cf-message">Message <span class="req" aria-hidden="true">*</span></label>
+              <textarea id="cf-message" name="message" rows="6" maxlength="5000" required></textarea>
+            </div>
+
+            <!-- Cloudflare Turnstile renders here, and only becomes visible if it needs the visitor to click. -->
+            <div class="form__turnstile" id="contact-turnstile"></div>
+
+            <div class="form__status" id="contact-status" role="alert" aria-live="assertive" hidden></div>
+
+            <button type="submit" class="btn btn--primary form__submit">
+              <span class="form__spinner" aria-hidden="true"></span>
+              <span class="form__submit-label">Submit message</span>
+            </button>
+          </form>
+        </div>
+
+        <aside class="card contact__aside reveal" style="--delay: 0.1s">
+          <Image
+            src={benchPhoto}
+            alt="Sām Kazemi relaxing on a yellow bench in an Oakland A's cap"
+            widths={[460, 920]}
+            sizes="(min-width: 960px) 460px, calc(100vw - 32px)"
+            class="contact__photo"
+          />
+          <ul class="channels">
+            <li>
+              <a class="channel" href={`mailto:${site.email}`}>
+                <span class="icon-badge"><Icon name="mail" /></span>
+                <span class="channel__text">
+                  <span class="channel__label">Email Sām</span>
+                  <span class="channel__value">{emailUser}<wbr />{emailDomain}</span>
+                </span>
+                <Icon name="arrow-right" size={18} class="channel__arrow" />
+              </a>
+            </li>
+            <li>
+              <a class="channel" href={`mailto:${site.workEmail}`}>
+                <span class="icon-badge"><Icon name="mail" /></span>
+                <span class="channel__text">
+                  <span class="channel__label">Work email</span>
+                  <span class="channel__value">{workUser}<wbr />{workDomain}</span>
+                </span>
+                <Icon name="arrow-right" size={18} class="channel__arrow" />
+              </a>
+            </li>
+            <li class="channels__pair">
+              {
+                linked.map((s) => (
+                  <a class="channel" href={s.href} target="_blank" rel="noopener me">
+                    <span class="icon-badge">
+                      <Icon name={s.icon} />
+                    </span>
+                    <span class="channel__text">
+                      <span class="channel__label">{s.label}</span>
+                      <span class="channel__value">{s.handle}</span>
+                    </span>
+                    <span class="visually-hidden">(opens in a new tab)</span>
+                  </a>
+                ))
+              }
+            </li>
+            <li>
+              <a class="channel" href={url('/about')}>
+                <span class="icon-badge"><Icon name="users" /></span>
+                <span class="channel__text">
+                  <span class="channel__label">About</span>
+                  <span class="channel__value">Learn more about Sām</span>
+                </span>
+                <Icon name="arrow-right" size={18} class="channel__arrow" />
+              </a>
+            </li>
+          </ul>
+        </aside>
+      </div>
     </div>
   </section>
-</Base>
 
 <script>
   import { PUBLIC_CONTACT_API_URL, PUBLIC_TURNSTILE_SITE_KEY } from 'astro:env/client';
@@ -427,7 +434,7 @@ const [workUser, workDomain] = splitEmail(site.workEmail);
     }
   }
 
-  .contact__form-card h2 {
+  .contact__form-card h3 {
     font-size: 1.3rem;
     margin-bottom: 6px;
   }

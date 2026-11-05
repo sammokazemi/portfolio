@@ -44,12 +44,13 @@ export const socials: Social[] = [
   { label: 'X', href: '#', icon: 'x', handle: 'your-handle', placeholder: true },
 ];
 
+// About and AI Workflow aren't in the navbar; the footer links to both.
 export const nav = [
-  { label: 'About', href: '/about' },
-  { label: 'Projects', href: '/projects' },
-  { label: 'Skills', href: '/skills' },
-  { label: 'Reviews', href: '/reviews' },
-  { label: 'Resume', href: '/resume' },
+  { label: 'Projects', href: '/#projects' },
+  { label: 'Skills', href: '/#skills' },
+  { label: 'Reviews', href: '/#reviews' },
+  { label: 'Resume', href: '/#resume' },
+  { label: 'Contact', href: '/#contact' },
 ];
 
 export const skills = [
@@ -101,11 +102,16 @@ export const skills = [
   },
 ] as const;
 
+// Three ClearPath outcomes, then a Workforce Systems figure counted from its repos
+// (2026-11-05): 139 Playwright + 202 Flutter tests.
+// Never name the union or its locals here (see the Workforce Systems case study).
+// The 200%+ wording matches the resume: his systems contributed to it, not caused it alone.
+// `short` is shown on phones, where the strip is four narrow columns.
 export const metrics = [
-  { value: '200%+', label: 'Growth in recurring revenue from patient engagement systems' },
-  { value: '40%', label: 'Less administrative overhead after automating infrastructure' },
-  { value: '35%', label: 'Faster deployments with automated CI/CD on AWS' },
-  { value: '15%', label: 'Fewer missed appointments through care coordination' },
+  { value: '200%+', label: 'Recurring revenue growth his ClearPath systems helped drive', short: 'Revenue growth' },
+  { value: '35%', label: 'Faster deployments with CI/CD on AWS at ClearPath', short: 'Faster deploys' },
+  { value: '40%', label: 'Less administrative overhead after automating infrastructure', short: 'Less admin work' },
+  { value: '340+', label: 'Automated tests across the Workforce Systems web and mobile apps', short: 'Automated tests' },
 ];
 
 type ResumeEntry = {

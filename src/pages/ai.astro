@@ -1,0 +1,174 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+---
+
+<!-- Linked from the footer and the AI skills card, like About. -->
+<Base
+  title="AI Workflow"
+  description="How Sām Kazemi builds with AI: Claude Code, Codex, AI agents, and prompt engineering, with review and testing of everything they produce."
+>
+  <PageHeader
+    eyebrow="AI in his workflow"
+    title="How he builds with AI"
+    lead="Sām uses AI every day, and treats it the way he treats any engineering tool: with discipline, the right configuration for the job, and a review of everything it produces."
+  >
+    <ul class="tag-list reveal" style="--delay: 0.15s" aria-label="AI tools">
+      <li class="tag">Claude Code</li>
+      <li class="tag">Codex</li>
+      <li class="tag">AI agents</li>
+      <li class="tag">Prompt engineering</li>
+    </ul>
+  </PageHeader>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">His workflow</p>
+        <h2>How he works with AI</h2>
+      </div>
+      <figure class="ai__quote card reveal" style="--delay: 0.08s">
+        <svg class="ai__mark" viewBox="0 0 48 36" aria-hidden="true">
+          <path d="M0 36V21C0 9 6 2 18 0l2 5c-6 2-9 6-9 12h8v19H0zm28 0V21C28 9 34 2 46 0l2 5c-6 2-9 6-9 12h8v19H28z" />
+        </svg>
+        <blockquote>
+          <p>
+            I use Claude Code and Codex every day as part of my engineering workflow, both to build
+            new features and to maintain and audit production code. I’ve developed a structured
+            approach to prompt engineering built to minimize hallucinations and AI-generated slop:
+            every task gets the right context, the right constraints, and the right token budget. I
+            use stronger models and deeper reasoning when I’m auditing code or reviewing a complex
+            implementation, and lighter, more efficient configurations for straightforward work.
+          </p>
+          <p>
+            I use these tools to organize repositories, write and run tests, produce implementation
+            guides and sitemaps, maintain audit logs, and import or build custom skills that keep
+            engineering guidelines consistent. I’ve also built AI agents that handle specific
+            development tasks autonomously while operating inside clearly defined constraints.
+          </p>
+          <p>
+            A major part of my workflow is quality control. I’m constantly looking for
+            hallucinations, incorrect assumptions, duplicated or unnecessary code, and the other
+            patterns that add up to slop. I review all AI-generated code and test every
+            implementation myself, to catch both the obvious bugs and the “ghost bugs” that basic
+            testing won’t surface. AI is an engineering tool and a collaborator, not an authority.
+            The final responsibility for correctness stays with me.
+          </p>
+        </blockquote>
+        <figcaption class="ai__cite">
+          <span class="ai__name">Sām Kazemi</span>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">His take</p>
+        <h2>Hiring in the age of AI</h2>
+      </div>
+      <!-- An argument, not a quote: one paragraph under a gold rule, no card. -->
+      <p class="hiring reveal">
+        In the age of AI, a lot of companies are unsure how to hire. Some still screen with
+        LeetCode, no-AI policies, and no-AI coding challenges. Those can show how an engineer
+        thinks about code, but real work has moved on. Very little production code is written
+        fully by hand anymore, even by senior engineers, so a no-AI coding challenge is a bit like
+        asking a candidate to write in binary: it tests a skill nobody will ever use on the job. It
+        also misses the bigger risk. Engineers hired through no-AI screens still use AI once they
+        start, like every developer does, and without understanding how models behave, the
+        patterns they fall into, and how to prompt them, the result is slop: code scattered with
+        ghost bugs and low-quality patterns. What a team really needs is an engineer who knows how
+        to use AI the right way. I believe that is now the most valuable skill in software, even
+        more than writing code by hand. I stay current on the latest models, tools, and techniques
+        and keep learning new methods every day, and that is the engineer I have made myself into.
+      </p>
+      <p class="hiring__sign reveal">Sām Kazemi</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .tag-list {
+    margin-top: 20px;
+  }
+
+  /* Hiring: one paragraph under a gold rule, set larger than the workflow card. */
+  .hiring {
+    margin: 0;
+    padding-top: 24px;
+    border-top: 2px solid var(--gold);
+    color: var(--ink-soft);
+    font-size: clamp(1.05rem, 1.4vw, 1.2rem);
+    line-height: 1.85;
+  }
+
+  .hiring__sign {
+    margin: 36px 0 0;
+    text-align: right;
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-style: italic;
+    color: var(--ink);
+  }
+
+  .hiring__sign::before {
+    content: '— ';
+    color: var(--gold-strong);
+  }
+
+  .ai__quote {
+    margin: 0;
+    padding: clamp(20px, 3vw, 32px);
+    border-top: 4px solid var(--gold);
+  }
+
+  .ai__mark {
+    width: 32px;
+    height: 24px;
+    margin-bottom: 12px;
+    fill: var(--gold-bright);
+  }
+
+  .ai__quote blockquote {
+    margin: 0;
+  }
+
+  .ai__quote blockquote p {
+    margin-bottom: 0.8em;
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  .ai__quote blockquote p:first-child {
+    font-family: var(--font-display);
+    font-size: clamp(1.05rem, 1.5vw, 1.15rem);
+    line-height: 1.55;
+    color: var(--ink);
+  }
+
+  @media (min-width: 1000px) {
+    .ai__quote blockquote {
+      column-count: 2;
+      column-gap: 48px;
+      column-rule: 1px solid var(--line);
+    }
+    .ai__quote blockquote p {
+      break-inside: avoid;
+    }
+  }
+
+  .ai__cite {
+    display: grid;
+    gap: 2px;
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+  }
+
+  .ai__name {
+    font-weight: 800;
+    color: var(--ink);
+  }
+</style>

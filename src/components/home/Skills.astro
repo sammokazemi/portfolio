@@ -1,0 +1,113 @@
+---
+import Icon from '../Icon.astro';
+import { skills } from '../../data/site';
+import { url } from '../../lib/url';
+---
+
+  <section class="section section--alt" id="skills">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">Skills</p>
+        <h2>The tools behind the work</h2>
+      </div>
+      <div class="grid skills-grid">
+        {
+          skills.map((s, i) => (
+            <div class="card skill reveal" style={`--delay: ${(i % 3) * 0.08}s`}>
+              <div class="skill__head">
+                <span class="icon-badge">
+                  <Icon name={s.icon} />
+                </span>
+                <h3>{s.group}</h3>
+              </div>
+              <ul class="skill__list">
+                {s.items.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+              {s.group === 'AI-Assisted Engineering' && (
+                <a class="skill__more" href={url('/ai')}>
+                  How he builds with AI <Icon name="arrow-right" size={16} />
+                </a>
+              )}
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+<style>
+  /* Compact on purpose: all six groups fit in two rows on desktop. */
+  .skills-grid {
+    gap: 16px;
+  }
+
+  @media (min-width: 640px) {
+    .skills-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1000px) {
+    .skills-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .skill {
+    padding: 20px;
+  }
+
+  .skill__head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .skill__head .icon-badge {
+    flex: none;
+    width: 34px;
+    height: 34px;
+  }
+
+  .skill__head .icon-badge :global(svg) {
+    width: 18px;
+    height: 18px;
+  }
+
+  .skill__head h3 {
+    margin: 0;
+    font-size: 1.05rem;
+  }
+
+  .skill__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .skill__more {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 14px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .skill__list li {
+    padding: 4px 10px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--bg);
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--ink);
+  }
+</style>

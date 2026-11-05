@@ -9,7 +9,8 @@ const path = Astro.url.pathname;
 
 <header class="nav" data-nav>
   <div class="container nav__inner">
-    <a href={url('/')} class="nav__brand" aria-label="Sām Kazemi, home">
+    <!-- #hero: on the home page this scrolls up to the hero instead of reloading. -->
+    <a href={url('/#hero')} class="nav__brand" aria-label="Sām Kazemi, home">
       <Logo />
     </a>
 
@@ -31,7 +32,7 @@ const path = Astro.url.pathname;
     </nav>
 
     <div class="nav__actions">
-      <a href={url('/contact')} class="btn btn--primary nav__cta">Get in touch</a>
+      <a href={url('/about')} class="btn btn--primary nav__cta">About Sām</a>
       <button
         class="nav__icon-btn nav__settings"
         type="button"
@@ -71,9 +72,6 @@ const path = Astro.url.pathname;
         </li>
       ))
     }
-    <li>
-      <a href={url('/contact')} class="btn btn--primary">Get in touch</a>
-    </li>
   </ul>
 </nav>
 
@@ -102,6 +100,10 @@ const path = Astro.url.pathname;
   };
 
   toggle?.addEventListener('click', () => setMenu(!isOpen()));
+  // Most links jump to a section of this same page, so close the menu on any link click.
+  menu?.addEventListener('click', (e) => {
+    if ((e.target as Element).closest('a')) setMenu(false);
+  });
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && isOpen()) setMenu(false, !!menu?.contains(document.activeElement));
   });
@@ -127,6 +129,32 @@ const path = Astro.url.pathname;
   const onScroll = () => header?.classList.toggle('is-scrolled', window.scrollY > 8);
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
+
+  // Scroll-spy: on the home page, the link for the section under the navbar gets
+  // aria-current="location" and turns gold. Nothing is current above the first section.
+  const path = (p: string) => p.replace(/\/$/, '');
+  const spy = [...document.querySelectorAll<HTMLAnchorElement>('.nav__links a, .nav__mobile a')].flatMap((a) => {
+    const target = new URL(a.href);
+    const section = path(target.pathname) === path(location.pathname) && target.hash ? document.getElementById(target.hash.slice(1)) : null;
+    return section ? [{ a, section }] : [];
+  });
+  if (spy.length) {
+    const updateSpy = () => {
+      const line = (header?.offsetHeight ?? 72) + 8;
+      let current: HTMLElement | null = null;
+      for (const { section } of spy) if (section.getBoundingClientRect().top <= line) current = section;
+      // The last section can be too short to reach the navbar; at the bottom, it is the current one.
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2) current = spy.at(-1)!.section;
+      for (const { a, section } of spy) {
+        if (section === current) a.setAttribute('aria-current', 'location');
+        else a.removeAttribute('aria-current');
+      }
+    };
+    // Cheap enough (a handful of rects) to run on every scroll event without throttling.
+    updateSpy();
+    window.addEventListener('scroll', updateSpy, { passive: true });
+    window.addEventListener('resize', updateSpy, { passive: true });
+  }
 
   // The settings button is handled by Settings.astro.
 </script>
@@ -201,32 +229,43 @@ const path = Astro.url.pathname;
     font-weight: 600;
   }
 
+  /* The section in view (scroll-spy). Color only, so the links don't shift as it moves. */
+  .nav__links a[aria-current='location'] {
+    color: var(--gold-strong);
+  }
+
   .nav__actions {
     display: flex;
     align-items: center;
     gap: 8px;
   }
 
+  /* Styled like the nav links: no box, soft ink, the same hover highlight. */
   .nav__icon-btn {
     display: grid;
     place-items: center;
     width: 44px;
     height: 44px;
     padding: 0;
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    background: var(--surface);
-    color: var(--ink);
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--ink-soft);
     cursor: pointer;
+    transition: color 0.2s, background 0.2s;
   }
 
   .nav__icon-btn:hover {
-    border-color: var(--gold);
-    color: var(--gold-strong);
+    color: var(--ink);
+    background: var(--bg-alt);
   }
 
-  .nav__settings[aria-expanded='true'] {
-    border-color: var(--gold);
+  :global(:root:not([data-theme='dark'])) .nav__icon-btn:hover {
+    background: color-mix(in srgb, var(--bg-alt) 45%, transparent);
+  }
+
+  /* Open, like the current page's link. */
+  .nav__icon-btn[aria-expanded='true'] {
     color: var(--gold-strong);
   }
 
@@ -247,6 +286,12 @@ const path = Astro.url.pathname;
     display: none;
     min-height: 42px;
     padding: 9px 18px;
+  }
+
+  @media (min-width: 640px) {
+    .nav__cta {
+      display: inline-flex;
+    }
   }
 
   /* Same place and slide as the settings panel (Settings.astro), but sized for
@@ -313,21 +358,8 @@ const path = Astro.url.pathname;
     color: var(--gold-strong);
   }
 
-  .nav__mobile a[aria-current='page'] {
+  .nav__mobile a[aria-current] {
     color: var(--gold-strong);
-  }
-
-  .nav__mobile .btn {
-    width: 100%;
-    min-height: 56px;
-    margin-top: clamp(18px, 5vw, 24px);
-    font-size: clamp(1.05rem, 0.95rem + 0.8vw, 1.2rem);
-  }
-
-  @media (min-width: 640px) {
-    .nav__cta {
-      display: inline-flex;
-    }
   }
 
   @media (min-width: 1080px) {

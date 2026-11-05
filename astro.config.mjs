@@ -5,6 +5,7 @@ import sitemap from '@astrojs/sitemap';
 // SITE_URL / BASE_PATH are set by the GitHub Pages workflow. Locally the site
 // is served from the root. For a custom domain, set SITE_URL to it and drop BASE_PATH.
 const base = process.env.BASE_PATH || '/';
+const root = base.replace(/\/$/, '');
 
 export default defineConfig({
   site: process.env.SITE_URL || 'https://sammokazemi.github.io',
@@ -14,8 +15,12 @@ export default defineConfig({
   server: { port: Number(process.env.PORT) || 4321 },
   // Old case-study URL, kept so links already sent out still land. Astro prefixes
   // the source with the base path but not the destination, so that is done here.
+  // The standalone pages are now sections of the home page.
   redirects: {
-    '/projects/union-workforce': `${base.replace(/\/$/, '')}/projects/workforce-systems`,
+    '/projects/union-workforce': `${root}/projects/workforce-systems`,
+    ...Object.fromEntries(
+      ['projects', 'skills', 'reviews', 'resume', 'contact'].map((id) => [`/${id}`, `${root}/#${id}`]),
+    ),
   },
   integrations: [sitemap()],
   env: {

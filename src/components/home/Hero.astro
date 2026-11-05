@@ -1,0 +1,135 @@
+---
+import Icon from '../Icon.astro';
+import { Image } from 'astro:assets';
+import { site } from '../../data/site';
+import heroPhoto from '../../assets/photos/hero-coffee.jpg';
+---
+
+<section class="hero" id="hero">
+  <div class="hero__glow" aria-hidden="true"></div>
+  <div class="container hero__grid">
+    <div class="hero__copy">
+      <h1 class="reveal" style="--delay: 0.05s">
+        Built from the ground up. <span class="highlight">Like everything else.</span>
+      </h1>
+      <p class="lead reveal" style="--delay: 0.1s">
+        {site.name} is Lead Developer at <strong>Workforce Systems</strong>, building the
+        Next.js, TypeScript, and Flutter platform behind the unions that keep the Bay Area
+        working. Before that, he architected <strong>ClearPath Virtual Health</strong>, a
+        HIPAA-compliant React and AWS platform that care teams use to support patients living
+        with chronic conditions.
+      </p>
+      <div class="btn-row reveal" style="--delay: 0.15s">
+        <a href="#projects" class="btn btn--primary">
+          See his work <Icon name="arrow-right" />
+        </a>
+        <a href="#resume" class="btn btn--ghost">View his resume</a>
+      </div>
+    </div>
+
+    <div class="hero__visual reveal" style="--delay: 0.1s">
+      <div class="portrait">
+        <div class="portrait__frame">
+          <Image
+            src={heroPhoto}
+            alt="Sām Kazemi at a café table, smiling, with an iced coffee"
+            widths={[340, 680]}
+            sizes="(min-width: 960px) 340px, min(340px, calc(100vw - 32px))"
+            loading="eager"
+            fetchpriority="high"
+            class="portrait__img"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(32px, 5vw, 64px) 0 clamp(40px, 6vw, 72px);
+  }
+
+  .hero__glow {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 80% 30%, var(--gold-tint), transparent 50%),
+      radial-gradient(circle at 5% 90%, var(--gold-tint), transparent 40%);
+    pointer-events: none;
+  }
+
+  /* On the dark background the gold glow reads as orange blotches; keep it matte. */
+  :global(:root[data-theme='dark']) .hero__glow {
+    display: none;
+  }
+
+  .hero__grid {
+    position: relative;
+    display: grid;
+    gap: 56px;
+    align-items: center;
+  }
+
+  @media (min-width: 960px) {
+    .hero__grid {
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 48px;
+    }
+  }
+
+  .hero h1 {
+    max-width: 14ch;
+    font-size: clamp(2.2rem, 4.6vw, 3.25rem);
+  }
+
+  @media (min-width: 600px) {
+    .hero h1 .highlight {
+      white-space: nowrap;
+    }
+  }
+
+  .hero h1 .highlight {
+    padding-bottom: 0;
+    background: none;
+    animation: none;
+  }
+
+  .hero .lead {
+    max-width: 54ch;
+    margin: 20px 0 30px;
+  }
+
+  .hero .lead strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .hero__visual {
+    display: flex;
+    justify-content: center;
+  }
+
+  .portrait {
+    position: relative;
+    width: min(100%, 340px);
+  }
+
+  .portrait__frame {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 3 / 4;
+    border-radius: 24px;
+    background: var(--bg-alt);
+    box-shadow: 0 30px 50px -24px rgba(90, 61, 12, 0.45);
+  }
+
+  .portrait__frame :global(.portrait__img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+</style>

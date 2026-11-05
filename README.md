@@ -13,11 +13,12 @@ This repository is the source for his portfolio.
   [ClearPath Virtual Health](https://clearpathvirtualhealth.com/) from the ground up:
   four role-based portals with MFA, secure sessions, and audit logging, on React and
   AWS (S3, CloudFront, ECS Fargate) with CI/CD.
-- **Lead Developer, Workforce Systems.** Designing and building a workforce platform
-  for a labor union in Next.js and TypeScript on a Laravel API, plus the union's public
-  website.
-- **Impact:** 35% faster deployments, 40% less administrative overhead, and 200%+
-  growth in recurring revenue from patient engagement systems.
+- **Lead Developer, Workforce Systems (Jul 2026 – Present).** Designing and building a
+  workforce platform for a labor union in Next.js and TypeScript, an iOS/Android member
+  app in Flutter, both on a Laravel API, plus the union's public website.
+- **Impact:** 200%+ recurring revenue growth that his ClearPath systems helped drive, 35%
+  faster deployments, 40% less administrative overhead, and 340+ automated tests across
+  the Workforce Systems web and mobile apps.
 - **Education:** B.S. in Computer Science, San Francisco State University (2026).
 
 ## Case studies
@@ -27,14 +28,16 @@ This repository is the source for his portfolio.
 | [ClearPath Virtual Health](https://sammokazemi.github.io/portfolio/projects/clearpath/) | HIPAA-compliant CCM/RPM platform with Medicare billing workflows |
 | [Union Workforce Ecosystem](https://sammokazemi.github.io/portfolio/projects/workforce-systems/) | Next.js and TypeScript on a Laravel API: one system of record for dispatch, dues, training, benefits |
 | [Labor Union Website](https://sammokazemi.github.io/portfolio/projects/labor-union-website/) | Public site for a district council of labor unions and its nine locals |
+| [Dark Circles](https://sammokazemi.github.io/portfolio/projects/dark-circles/) | Website for a 30-episode vertical dark comedy, in Astro |
 
-The [resume](https://sammokazemi.github.io/portfolio/resume/) is on the site as a
-printable page and a PDF.
+The [resume](https://sammokazemi.github.io/portfolio/#resume) is on the home page, with a
+PDF download.
 
 ## About this site
 
 Built with [Astro](https://astro.build) as a fully static site: no client framework,
-just a few small scripts for the menu, theme toggle, and scroll reveals. Images are
+just a few small scripts for the menu, theme toggle, scroll reveals, and the navbar
+highlight that follows the section in view. Images are
 served as responsive WebP, the site has light and dark themes, and the contact form
 runs through a Cloudflare Worker with spam protection.
 
@@ -46,13 +49,10 @@ Old Persian cuneiform.
 
 | Route | Content |
 | --- | --- |
-| `/` | Hero, impact metrics, featured work, story teaser |
-| `/about` | Personal story: Antioch, education, the name Sām, heritage |
-| `/projects` | Project overview, with a case study for each project at `/projects/<slug>` |
-| `/skills` | Skills by category and engineering practices |
-| `/reviews` | Recommendations from teammates, classmates, and mentors |
-| `/contact` | Contact form, email, and social links |
-| `/resume` | HTML resume, printable, with PDF download |
+| `/` | One long page, in order: the hero (`#hero`), impact metrics, projects newest first (`#projects`), skills (`#skills`), reviews with each full recommendation behind "Read the full recommendation" (`#reviews`), resume with PDF download (`#resume`), and the contact form (`#contact`). Each section lives in `src/components/home/`. The navbar links jump to these sections and the one in view turns gold. The old `/projects`, `/skills`, `/reviews`, `/resume`, and `/contact` URLs redirect here. |
+| `/ai` | How Sām builds with AI: his workflow, and his take on hiring. Linked from the footer and the AI-Assisted Engineering skills card. |
+| `/about` | Personal story (Antioch, education, the name Sām, heritage), a timeline, and his values. Linked from the navbar's "About Sām" button, the contact card, and the footer. |
+| `/projects/<slug>` | A case study for each project |
 
 ## Editing content
 
@@ -63,7 +63,11 @@ Old Persian cuneiform.
   `placeholder`, or delete the entry.
 - **Resume PDF:** replace `public/resume/Sam-Kazemi-Resume.pdf`, then update the
   `resume` block in `src/data/site.ts` so the HTML resume matches it.
-- **Reviews:** the `reviews` array in `src/data/site.ts`.
+- **Reviews:** the `reviews` array in `src/data/site.ts`. Reviewer photos live in
+  `src/assets/reviews/` and are matched to names in `src/components/home/Reviews.astro`;
+  anyone without a photo shows their initials.
+- **Impact metrics:** the `metrics` array in `src/data/site.ts`. `label` shows on
+  tablets and desktops, `short` on phones, where the strip is one row of four.
 
 ## Development
 
@@ -89,7 +93,7 @@ the contact Worker's allowed origins (see below).
 
 ### Contact form
 
-The form on `/contact` sends messages through a small Cloudflare Worker in
+The contact form (the home page's `#contact` section) sends messages through a small Cloudflare Worker in
 [`worker/`](worker/README.md), which verifies each one and emails it to
 `mokazemi0@gmail.com`. It's deployed separately from the site. Setup, local
 development, and the security model are in [`worker/README.md`](worker/README.md).

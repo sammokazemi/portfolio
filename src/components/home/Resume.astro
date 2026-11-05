@@ -1,8 +1,7 @@
 ---
-import Base from '../layouts/Base.astro';
-import Icon from '../components/Icon.astro';
-import { site, socials, resume } from '../data/site';
-import { url } from '../lib/url';
+import Icon from '../Icon.astro';
+import { site, socials, resume } from '../../data/site';
+import { url } from '../../lib/url';
 
 const linked = socials.filter((s) => !s.placeholder);
 const sections = [
@@ -12,26 +11,24 @@ const sections = [
 ];
 ---
 
-<Base title="Resume" description="Resume of Sām Kazemi, Lead Software Engineer. View online or download as a PDF.">
-  <section class="section resume-wrap">
+  <section class="section resume-wrap" id="resume">
     <div class="container">
       <div class="toolbar reveal">
         <div>
           <p class="eyebrow">Resume</p>
-          <h1>Resume</h1>
+          <h2>Resume</h2>
         </div>
         <div class="btn-row">
           <a class="btn btn--primary" href={url(site.resumePdf)} download="Sām-Kazemi-Resume.pdf">
             <Icon name="download" /> Download PDF
           </a>
-          <a class="btn btn--ghost" href={url('/contact')}>Contact Sām</a>
         </div>
       </div>
 
       <article class="paper reveal" style="--delay: 0.08s">
         <header class="paper__head">
           <div>
-            <h2 class="paper__name">{site.legalName}</h2>
+            <h3 class="paper__name">{site.legalName}</h3>
             <p class="paper__title">{site.title}</p>
           </div>
           <ul class="paper__contact">
@@ -51,14 +48,14 @@ const sections = [
         </header>
 
         <section class="paper__section">
-          <h3>Summary</h3>
+          <h4>Summary</h4>
           <p>{resume.summary}</p>
         </section>
 
         {
           sections.map((section) => (
             <section class="paper__section">
-              <h3>{section.title}</h3>
+              <h4>{section.title}</h4>
               {section.entries.map((e) => (
                 <div class="entry">
                   <div class="entry__head">
@@ -83,7 +80,7 @@ const sections = [
         }
 
         <section class="paper__section">
-          <h3>Skills</h3>
+          <h4>Skills</h4>
           <dl class="skills">
             {
               resume.skills.map((s) => (
@@ -98,13 +95,12 @@ const sections = [
       </article>
     </div>
   </section>
-</Base>
 
 <style>
   .resume-wrap {
     background:
       radial-gradient(circle at 85% 0%, var(--gold-tint), transparent 40%),
-      var(--bg);
+      var(--bg-alt);
   }
 
   .toolbar {
@@ -113,18 +109,15 @@ const sections = [
     justify-content: space-between;
     align-items: flex-end;
     gap: 20px;
-    max-width: 880px;
-    margin: 0 auto 32px;
+    margin: 0 0 32px;
   }
 
-  .toolbar h1 {
+  .toolbar h2 {
     margin: 0;
     font-size: clamp(2rem, 4vw, 2.75rem);
   }
 
   .paper {
-    max-width: 880px;
-    margin: 0 auto;
     padding: clamp(24px, 5vw, 56px);
     background: var(--surface);
     border: 1px solid var(--line);
@@ -149,6 +142,7 @@ const sections = [
 
   .paper__name {
     margin: 0;
+    font-weight: 800;
     font-size: clamp(1.6rem, 3.5vw, 2.1rem);
   }
 
@@ -183,7 +177,7 @@ const sections = [
     padding-top: 24px;
   }
 
-  .paper__section h3 {
+  .paper__section h4 {
     margin-bottom: 14px;
     font-size: 0.8rem;
     font-weight: 800;

@@ -3,9 +3,24 @@ import Base from '../layouts/Base.astro';
 import PageHeader from '../components/PageHeader.astro';
 import Icon from '../components/Icon.astro';
 import { Image } from 'astro:assets';
+import JourneyGraph, { type JourneyEvent } from '../components/JourneyGraph.astro';
 import { site } from '../data/site';
 import muralPhoto from '../assets/photos/about-mural.jpg';
+import graduationPhoto from '../assets/photos/story-graduation.jpg';
 import relief from '../assets/photos/persepolis-relief.jpg';
+
+const journey: JourneyEvent[] = [
+  { when: 'Feb 2001', what: 'Born and raised in the East Bay', lane: 0, kind: 'start' },
+  { when: '2020 – 2023', what: 'Los Medanos College · Honor Roll', lane: 0 },
+  { when: 'Jan 2024', what: 'SFSU · B.S. Computer Science, Minor in Persian Studies', lane: 0 },
+  { when: 'Sep 2025', what: 'Lead Software Engineer, MedManage Solutions', lane: 1, kind: 'branch' },
+  { when: 'Dec 2025', what: 'Software Engineer Intern, Optimyzi', lane: 2, kind: 'branch' },
+  { when: 'Jun 2026', what: 'Optimyzi internship complete', lane: 2, kind: 'end' },
+  { when: 'Jul 2026', what: 'Lead Developer, Workforce Systems', lane: 3, kind: 'branch' },
+  { when: 'Aug 2026', what: 'Graduated from SFSU · Honor Roll + Dean’s List', lane: 0, kind: 'end' },
+  { when: 'Oct 2026', what: 'MedManage Solutions role complete', lane: 1, kind: 'end' },
+  { when: 'Today', what: 'Leading development at Workforce Systems', lane: 3, kind: 'now', lanes: [3] },
+];
 
 const values = [
   {
@@ -40,6 +55,7 @@ const values = [
     title="An engineer shaped by where he comes from"
     lead="Lead Software Engineer, SFSU computer science graduate, and a proud Iranian-American committed to advancing his community through education, cultural awareness, and advocacy."
   />
+
 
   <section class="section">
     <div class="container about">
@@ -199,6 +215,31 @@ const values = [
   </section>
 
   <section class="section section--alt">
+    <div class="container journey">
+      <div>
+        <div class="section-head reveal">
+          <p class="eyebrow">His path</p>
+          <h2>From Antioch to architecting health tech</h2>
+        </div>
+        <JourneyGraph events={journey} class="reveal" style="--delay: 0.1s" />
+      </div>
+
+      <figure class="journey__photo reveal" style="--delay: 0.1s">
+        <Image
+          src={graduationPhoto}
+          alt="Sām Kazemi with classmates in purple caps and gowns at the SFSU commencement at Oracle Park, holding his diploma"
+          widths={[400, 600, 720]}
+          sizes="(min-width: 900px) 440px, calc(100vw - 32px)"
+          class="journey__img"
+        />
+        <figcaption class="journey__chip">
+          <Icon name="graduation-cap" size={16} /> SFSU · Class of 2026
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section">
     <div class="container">
       <div class="section-head section-head--center reveal">
         <p class="eyebrow">What he stands on</p>
@@ -223,6 +264,72 @@ const values = [
 </Base>
 
 <style>
+  /* Sits on section--alt because JourneyGraph outlines its nodes in --bg-alt. */
+  .journey {
+    display: grid;
+    gap: 48px;
+  }
+
+  @media (min-width: 900px) {
+    .journey {
+      grid-template-columns: 1fr 1fr;
+      column-gap: 80px;
+      align-items: center;
+    }
+    .journey__photo {
+      justify-self: end;
+    }
+  }
+
+  .journey__photo {
+    position: relative;
+    /* Leave room for the backdrop offset so it stays inside the page. */
+    width: min(100% - 14px, 440px);
+    margin: 18px 0;
+  }
+
+  /* Gold outline offset up-right behind the photo. */
+  .journey__photo::before {
+    content: '';
+    position: absolute;
+    inset: -14px -14px 14px 14px;
+    border: 2px solid var(--gold-bright);
+    border-radius: 24px;
+  }
+
+  .journey__photo :global(.journey__img) {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+  }
+
+  .journey__chip {
+    position: absolute;
+    right: 24px;
+    bottom: -18px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 16px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    color: var(--ink);
+    font-size: 0.875rem;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .journey__chip :global(svg) {
+    color: var(--gold);
+  }
+
   .about {
     display: grid;
     gap: 48px;

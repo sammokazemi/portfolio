@@ -1,0 +1,265 @@
+---
+import Icon from '../Icon.astro';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { reviews, socials } from '../../data/site';
+// Saved from LinkedIn (its image URLs expire). Reviewers without one show initials.
+import monicaPhoto from '../../assets/reviews/monica-martinez.jpg';
+import noahPhoto from '../../assets/reviews/noah-atkins.jpg';
+import justinPhoto from '../../assets/reviews/justin-haubrich.jpg';
+import jonathanPhoto from '../../assets/reviews/jonathan-pereira.jpg';
+
+const photos: Record<string, ImageMetadata> = {
+  'Monica Martinez': monicaPhoto,
+  'Noah Atkins': noahPhoto,
+  'Justin Haubrich': justinPhoto,
+  'Jonathan Pereira': jonathanPhoto,
+};
+
+const linkedin = socials.find((s) => s.icon === 'linkedin');
+const initials = (name: string) =>
+  name
+    .split(' ')
+    .map((part) => part[0])
+    .join('');
+---
+
+  <section class="section" id="reviews">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">Reviews</p>
+        <h2>What people say about working with Sām</h2>
+      </div>
+      <div class="reviews">
+        {
+          reviews.map((r) => (
+            <article class="review reveal">
+              <span class="review__avatar" aria-hidden="true">
+                {photos[r.name] ? (
+                  <Image src={photos[r.name]!} alt="" widths={[48, 96]} sizes="48px" class="review__photo" />
+                ) : (
+                  initials(r.name)
+                )}
+              </span>
+              <div class="review__main">
+                <div class="review__bubble">
+                  <p class="review__highlight">“{r.highlight}”</p>
+                  {/* The pull quote carries the review; the full text opens on request. */}
+                  <details class="review__more">
+                    <summary>Read the full recommendation</summary>
+                    <blockquote class="review__body">
+                      {r.paragraphs.map((p) => (
+                        <p>{p}</p>
+                      ))}
+                    </blockquote>
+                  </details>
+                  <footer class="review__author">
+                    <cite class="review__name">{r.name}</cite>
+                    <span class="review__headline">{r.headline}</span>
+                    <span class="review__meta">
+                      {r.relationship} · {r.date}
+                    </span>
+                  </footer>
+                </div>
+              </div>
+            </article>
+          ))
+        }
+
+        {
+          linkedin && (
+            <p class="reviews__source reveal">
+              Recommendations originally posted on{' '}
+              <a href={linkedin.href} target="_blank" rel="noopener">
+                LinkedIn <Icon name="arrow-up-right" size={14} />
+              </a>
+              .
+            </p>
+          )
+        }
+      </div>
+    </div>
+  </section>
+
+<style>
+  /* Chat-style: an initials avatar beside a full-width speech bubble for each review. */
+  .reviews {
+    display: grid;
+    gap: 20px;
+  }
+
+  .review {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 14px;
+    align-items: start;
+  }
+
+  .review__avatar {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--gold-tint);
+    border: 2px solid var(--gold);
+    color: var(--gold-strong);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    overflow: hidden;
+  }
+
+  .review__avatar :global(.review__photo) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .review__main {
+    min-width: 0;
+  }
+
+  .review__author {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 2px 10px;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--line);
+  }
+
+  .review__name {
+    font-style: normal;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .review__headline {
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+  }
+
+  .review__meta {
+    flex-basis: 100%;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  .review__bubble {
+    position: relative;
+    padding: 16px 20px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 4px 18px 18px 18px;
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* The tail, pointing back at the avatar. */
+  .review__bubble::before {
+    content: '';
+    position: absolute;
+    top: 18px;
+    left: -7px;
+    width: 12px;
+    height: 12px;
+    background: var(--surface);
+    border-left: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    transform: rotate(45deg);
+  }
+
+  /* Odd reviews are mirrored (avatar on the right, tail pointing right), so the first starts on the right. */
+  .review:nth-child(odd) {
+    grid-template-columns: 1fr auto;
+  }
+
+  .review:nth-child(odd) .review__avatar {
+    order: 2;
+  }
+
+  .review:nth-child(odd) .review__bubble {
+    border-radius: 18px 4px 18px 18px;
+  }
+
+  .review:nth-child(odd) .review__bubble::before {
+    left: auto;
+    right: -7px;
+    transform: rotate(-135deg);
+  }
+
+  .review__highlight {
+    margin: 0 0 8px;
+    font-family: var(--font-display);
+    font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+    line-height: 1.35;
+    color: var(--ink);
+  }
+
+  .review__body {
+    margin: 10px 0 0;
+  }
+
+  .review__more summary {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 32px;
+    color: var(--gold-strong);
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .review__more summary::-webkit-details-marker {
+    display: none;
+  }
+
+  /* A chevron that turns when the review is open. */
+  .review__more summary::after {
+    content: '';
+    width: 7px;
+    height: 7px;
+    margin-top: -3px;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(45deg);
+    transition: transform 0.2s;
+  }
+
+  .review__more[open] summary::after {
+    margin-top: 3px;
+    transform: rotate(-135deg);
+  }
+
+  .review__more summary:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .review__body p {
+    margin-bottom: 0.6em;
+    color: var(--ink-soft);
+    font-size: 0.925rem;
+    line-height: 1.6;
+  }
+
+  .review__body p:last-child {
+    margin-bottom: 0;
+  }
+
+  .reviews__source {
+    margin: 8px 0 0;
+    text-align: center;
+    color: var(--muted);
+  }
+
+  .reviews__source a {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 600;
+  }
+</style>

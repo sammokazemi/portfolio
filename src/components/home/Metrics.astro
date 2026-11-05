@@ -1,0 +1,88 @@
+---
+import { metrics } from '../../data/site';
+---
+
+  <section class="metrics" aria-label="Impact at ClearPath and Workforce Systems">
+    <div class="container">
+      <ul class="metrics__grid">
+        {
+          metrics.map((m, i) => (
+            <li class="reveal" style={`--delay: ${i * 0.06}s`}>
+              <span class="metrics__value">{m.value}</span>
+              <span class="metrics__label metrics__label--full">{m.label}</span>
+              <span class="metrics__label metrics__label--short" aria-hidden="true">{m.short}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+<style>
+  .metrics {
+    border-block: 1px solid var(--line);
+    background: var(--surface);
+  }
+
+  /* One row of four at every width; phones get smaller type to fit. */
+  .metrics__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .metrics__grid li {
+    display: grid;
+    align-content: start;
+    gap: 4px;
+    padding: 16px 4px;
+    text-align: center;
+  }
+
+  .metrics__grid li:not(:last-child) {
+    border-right: 1px solid var(--line);
+  }
+
+  @media (min-width: 900px) {
+    .metrics__grid li {
+      padding: 36px 20px;
+    }
+  }
+
+  .metrics__value {
+    font-size: clamp(1.15rem, 4vw, 2.75rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--gold-strong);
+    line-height: 1.1;
+  }
+
+  .metrics__label {
+    max-width: 24ch;
+    margin: 0 auto;
+    font-size: clamp(0.75rem, 1.6vw, 0.875rem);
+    color: var(--muted);
+    line-height: 1.35;
+  }
+
+  .metrics__label--short {
+    display: none;
+  }
+
+  /* Phones: a two-word label at a readable size. The full label stays for screen readers. */
+  @media (max-width: 639px) {
+    .metrics__label--short {
+      display: block;
+    }
+    .metrics__label--full {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+  }
+</style>

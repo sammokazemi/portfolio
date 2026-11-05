@@ -1,7 +1,5 @@
 ---
-import Base from '../../layouts/Base.astro';
-import PageHeader from '../../components/PageHeader.astro';
-import Icon from '../../components/Icon.astro';
+import Icon from '../Icon.astro';
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import { url } from '../../lib/url';
@@ -27,20 +25,31 @@ type Project = {
   tags: string[];
 };
 
+// Newest first, by start date.
 const projects: Project[] = [
   {
-    name: 'ClearPath Virtual Health',
-    org: 'MedManage Solutions',
-    role: 'Lead Software Engineer',
-    period: 'Sep 2025 – Oct 2026',
-    href: '/projects/clearpath',
-    live: 'https://clearpathvirtualhealth.com/',
-    liveLabel: 'clearpathvirtualhealth.com',
-    image: clearpathPreview,
-    imageAlt: 'The ClearPath Virtual Health website’s home page beside the home screen of the ClearPath patient app on a phone',
+    name: 'Dark Circles',
+    org: 'Violent Delights Productions',
+    role: 'Website Developer',
+    period: 'Oct 2026 – Present',
+    href: '/projects/dark-circles',
+    image: darkCirclesPreview,
+    imageAlt: 'The Dark Circles cover page on a desktop beside the same page on a phone, where a dark circle under a finger reveals a word in Farsi',
     tone: 'turquoise',
-    text: 'A production HIPAA-compliant CCM/RPM platform, architected from the ground up. Four role-based portals, MFA and audit logging, Medicare billing workflows, and AWS infrastructure behind it.',
-    tags: ['React', 'AWS', 'HIPAA', 'RBAC', 'CI/CD', 'CPT / ICD-10'],
+    text: 'The website for a 30-episode vertical dark comedy, designed as its lead’s flawless medical-school application, with her unfiltered inner voice scrawled in the margins and a dark circle that cuts through the paper to show it.',
+    tags: ['Astro', 'TypeScript', 'Modern CSS', 'Design system'],
+  },
+  {
+    name: 'Labor Union Website',
+    org: 'Workforce Systems (WFS)',
+    role: 'Lead Developer',
+    period: 'Aug 2026 – Present',
+    href: '/projects/labor-union-website',
+    image: websitePreview,
+    imageAlt: 'The union website’s home page on a desktop beside the same page on a phone',
+    tone: 'lapis',
+    text: 'The public website for a district council of labor unions and its nine locals, giving members, contractors, and the community one front door, built in Next.js alongside the workforce platform it signs people into.',
+    tags: ['Next.js', 'Responsive design', 'Accessible UI', 'Design system'],
   },
   {
     name: 'Union Workforce Ecosystem',
@@ -57,44 +66,33 @@ const projects: Project[] = [
     tags: ['Next.js', 'TypeScript', 'Flutter', 'Laravel API', 'Playwright'],
   },
   {
-    name: 'Labor Union Website',
-    org: 'Workforce Systems (WFS)',
-    role: 'Lead Developer',
-    period: 'Aug 2026 – Present',
-    href: '/projects/labor-union-website',
-    image: websitePreview,
-    imageAlt: 'The union website’s home page on a desktop beside the same page on a phone',
-    tone: 'lapis',
-    text: 'The public website for a district council of labor unions and its nine locals, giving members, contractors, and the community one front door, built in Next.js alongside the workforce platform it signs people into.',
-    tags: ['Next.js', 'Responsive design', 'Accessible UI', 'Design system'],
-  },
-  {
-    name: 'Dark Circles',
-    org: 'Violent Delights Productions',
-    role: 'Website Developer',
-    period: 'Oct 2026 – Present',
-    href: '/projects/dark-circles',
-    image: darkCirclesPreview,
-    imageAlt: 'The Dark Circles cover page on a desktop beside the same page on a phone, where a dark circle under a finger reveals a word in Farsi',
+    name: 'ClearPath Virtual Health',
+    org: 'MedManage Solutions',
+    role: 'Lead Software Engineer',
+    period: 'Sep 2025 – Oct 2026',
+    href: '/projects/clearpath',
+    live: 'https://clearpathvirtualhealth.com/',
+    liveLabel: 'clearpathvirtualhealth.com',
+    image: clearpathPreview,
+    imageAlt: 'The ClearPath Virtual Health website’s home page beside the home screen of the ClearPath patient app on a phone',
     tone: 'turquoise',
-    text: 'The website for a 30-episode vertical dark comedy, designed as its lead’s flawless medical-school application, with her unfiltered inner voice scrawled in the margins and a dark circle that cuts through the paper to show it.',
-    tags: ['Astro', 'TypeScript', 'Modern CSS', 'Design system'],
+    text: 'A production HIPAA-compliant CCM/RPM platform, architected from the ground up. Four role-based portals, MFA and audit logging, Medicare billing workflows, and AWS infrastructure behind it.',
+    tags: ['React', 'AWS', 'HIPAA', 'RBAC', 'CI/CD', 'CPT / ICD-10'],
   },
 ];
 ---
 
-<Base
-  title="Projects"
-  description="Featured projects by Sām Kazemi: ClearPath Virtual Health, the Union Workforce Ecosystem and labor union website built at Workforce Systems, and the website for the series Dark Circles."
->
-  <PageHeader
-    eyebrow="Projects"
-    title="Platforms built for patients and workers"
-    lead="Case studies from the work Sām has led: what the problem was, what he built, and what changed because of it."
-  />
-
-  <section class="section">
-    <div class="container projects">
+<section class="section" id="projects">
+  <div class="container">
+    <div class="section-head projects-head reveal">
+      <p class="eyebrow">Projects</p>
+      <h2>Shipped work across health, labor, and entertainment</h2>
+      <p class="lead">
+        Case studies from the work Sām has led: what the problem was, what he built, and what
+        changed because of it.
+      </p>
+    </div>
+    <div class="projects">
       {
         projects.map((p) => (
           <article class="project reveal">
@@ -103,7 +101,7 @@ const projects: Project[] = [
                 src={p.image}
                 alt={p.imageAlt}
                 widths={[480, 720, 960]}
-                sizes="(min-width: 900px) 640px, calc(100vw - 32px)"
+                sizes="(min-width: 900px) 440px, calc(100vw - 32px)"
                 class="project__img"
               />
             </div>
@@ -112,7 +110,7 @@ const projects: Project[] = [
               <p class="project__meta">
                 {p.role} · {p.org} · {p.period}
               </p>
-              <h2>{p.name}</h2>
+              <h3>{p.name}</h3>
               <p class="project__text">{p.text}</p>
               <ul class="tag-list">
                 {p.tags.map((t) => (
@@ -140,14 +138,22 @@ const projects: Project[] = [
         <a href="https://github.com/sammokazemi" target="_blank" rel="noopener">GitHub <Icon name="arrow-up-right" size={14} /></a>.
       </p>
     </div>
-  </section>
-
-</Base>
+  </div>
+</section>
 
 <style>
+  /* The heading runs the full width on one line; the lead keeps the usual 680px measure. */
+  .projects-head {
+    max-width: none;
+  }
+
+  .projects-head .lead {
+    max-width: 680px;
+  }
+
   .projects {
     display: grid;
-    gap: clamp(32px, 5vw, 56px);
+    gap: 20px;
   }
 
   .project {
@@ -161,11 +167,11 @@ const projects: Project[] = [
 
   @media (min-width: 900px) {
     .project {
-      grid-template-columns: 0.85fr 1.15fr;
+      grid-template-columns: 0.7fr 1.3fr;
     }
     /* Mirror the columns so the text keeps the wider one and both cards stay the same height. */
     .project:nth-child(even) {
-      grid-template-columns: 1.15fr 0.85fr;
+      grid-template-columns: 1.3fr 0.7fr;
     }
     .project:nth-child(even) .project__visual {
       order: 2;
@@ -177,7 +183,7 @@ const projects: Project[] = [
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 260px;
+    min-height: 200px;
   }
 
   .project__visual--turquoise {
@@ -185,7 +191,7 @@ const projects: Project[] = [
   }
 
   .project__visual--lapis {
-    padding: 16px;
+    padding: 12px;
     background: linear-gradient(180deg, #ffffff, #e6eefa);
   }
 
@@ -197,11 +203,18 @@ const projects: Project[] = [
   }
 
   .project__body {
-    padding: clamp(24px, 4vw, 44px);
+    padding: clamp(20px, 3vw, 28px);
+  }
+
+  .project__body h3 {
+    margin-bottom: 6px;
+    font-size: clamp(1.4rem, 2.2vw, 1.75rem);
+    font-weight: 800;
+    letter-spacing: -0.025em;
   }
 
   .project__meta {
-    margin-bottom: 8px;
+    margin-bottom: 4px;
     color: var(--gold-strong);
     font-size: 0.85rem;
     font-weight: 600;
@@ -209,11 +222,18 @@ const projects: Project[] = [
 
   .project__text {
     color: var(--ink-soft);
-    margin-bottom: 20px;
+    font-size: 0.95rem;
+    margin-bottom: 14px;
   }
 
   .project__actions {
-    margin-top: 28px;
+    margin-top: 18px;
+  }
+
+  .project__actions .btn {
+    min-height: 40px;
+    padding: 8px 16px;
+    font-size: 0.9rem;
   }
 
   .projects__more {
