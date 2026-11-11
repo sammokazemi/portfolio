@@ -126,7 +126,7 @@ type ResumeEntry = {
 // line; after changing this block, run `npm run resume:pdf` to rebuild the PDF.
 export const resume = {
   summary:
-    'Health tech software engineer with hands-on experience architecting a production HIPAA-compliant CCM/RPM platform from the ground up. Specialized in React, AWS, and clinical workflow systems across multi-portal, regulated environments.',
+    'Software Engineer with experience building and shipping production web and mobile applications. Skilled in React, TypeScript, Next.js, AWS, and full-stack development, with experience in healthcare technology, enterprise platforms, and secure application architecture.',
   education: [
     {
       name: 'San Francisco State University',
