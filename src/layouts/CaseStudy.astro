@@ -342,6 +342,20 @@ const { name, description, summary, role, org, period, status, live, liveLabel, 
     }
   }
 
+  /* "Before" and "After" over the two screens of a comparison pair. */
+  .cs-content :global(.cs-tag) {
+    margin: 0 0 8px;
+    color: var(--muted);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .cs-content :global(.cs-tag--after) {
+    color: var(--gold-strong);
+  }
+
   .cs-content :global(.cs-shot figcaption) {
     margin-top: 14px;
     color: var(--muted);

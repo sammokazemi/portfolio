@@ -15,6 +15,10 @@ import healthWelfare from '../../assets/projects/union-website/health-welfare.pn
 import phoneHome from '../../assets/projects/union-website/phone-home.png';
 import phoneMenu from '../../assets/projects/union-website/phone-menu.png';
 import phoneCalendar from '../../assets/projects/union-website/phone-calendar.png';
+import beforeHome from '../../assets/projects/union-website/before-home.png';
+import beforeContractors from '../../assets/projects/union-website/before-contractors.png';
+import beforeLocals from '../../assets/projects/union-website/before-locals.png';
+import beforeCalendar from '../../assets/projects/union-website/before-calendar.png';
 
 const desktopSizes = '(min-width: 1000px) 960px, calc(100vw - 32px)';
 const pairSizes = '(min-width: 1000px) 470px, (min-width: 900px) 45vw, calc(100vw - 32px)';
@@ -29,6 +33,29 @@ const pages = [
   { name: 'Contact and the nine locals', text: 'The council office, a short written-enquiry form, and a card for every affiliated local, each with its own page.' },
   { name: 'About and Resources', text: 'The council’s affiliations and the international union, plus a directory of training funds, safety agencies, and voter registration in English and Spanish.' },
   { name: 'Sign in', text: 'Separate sign-ins for members, union staff, and contractors, with password reset for members.' },
+];
+
+const beforeAfter = [
+  {
+    before: { src: beforeHome, alt: 'The old home page: an orange menu bar over a photo of a crew at a concrete pipe, beside a letter of welcome from the council’s business manager' },
+    after: { src: home, alt: 'The new home page: a welcome headline over a photo of a construction crew, with buttons to download the members app or learn more' },
+    caption: 'Home. The old site opened on a letter to employers; the new one says who the council is and puts the member app first.',
+  },
+  {
+    before: { src: beforeContractors, alt: 'The old overview page: the headline On Time, On Budget with the Laborers on Your Side beside a photo, above paragraphs of prose' },
+    after: { src: contractors, alt: 'The new contractors page: the same headline above three service cards in a carousel' },
+    caption: 'Contractors. The headline stayed; the paragraphs of prose became service cards a contractor can scan.',
+  },
+  {
+    before: { src: beforeLocals, alt: 'The old hiring halls page: a list of links to each local beside a county map, hidden here' },
+    after: { src: locals, alt: 'The new contact page: a grid of affiliated local unions, each card with an address, phone number, and a More information link' },
+    caption: 'The locals. A list of bare links became a card for every local, with its address and phone in view.',
+  },
+  {
+    before: { src: beforeCalendar, alt: 'The old events page: a photo banner above a plain list of dates and holiday names' },
+    after: { src: calendar, alt: 'The new calendar: November 2026 as a month grid, with two holidays marked and listed below' },
+    caption: 'Events. A year of dates in one long list became a month calendar that marks each event.',
+  },
 ];
 
 const phoneScreens = [
@@ -76,19 +103,39 @@ const phoneScreens = [
       the same Next.js app, so signing in moves a member, a staff member, or a contractor
       straight into their portal.
     </p>
-    <figure class="cs-shot">
-      <Screenshot
-        src={home}
-        alt="The website home page: a welcome headline over a photo of a construction crew, with buttons to download the members app or learn more"
-        widths={[800, 1200, 1600, 2200]}
-        sizes={desktopSizes}
-        class="cs-screen"
-      />
-      <figcaption>
-        The home page. The council’s name, logo, locals, addresses, phone numbers, and officers are
-        replaced with placeholders in every screen on this page.
-      </figcaption>
-    </figure>
+  </section>
+
+  <section class="reveal">
+    <p class="eyebrow">Before and after</p>
+    <h2>From a brochure to a front door</h2>
+    <p>
+      The council’s old site was a WordPress theme in a fixed-width column, written for one reader,
+      the employer: a letter on the home page, the contractor pitch as prose, the hiring halls as a
+      list of links, and the year’s events as one long list. The new site keeps what worked,
+      including the pitch’s headline, and rebuilds each page around the question its reader brings.
+    </p>
+    <p>
+      In every screen on this page, old and new, the council’s name, logo, locals, addresses, phone
+      numbers, and officers are replaced with placeholders, and company marks in the old photos are
+      blurred.
+    </p>
+    {
+      beforeAfter.map((pair) => (
+        <figure class="cs-shot cs-shot--wide">
+          <div class="cs-pair">
+            <div>
+              <p class="cs-tag">Before</p>
+              <Screenshot src={pair.before.src} alt={pair.before.alt} widths={[600, 900, 1400]} sizes={pairSizes} class="cs-screen" />
+            </div>
+            <div>
+              <p class="cs-tag cs-tag--after">After</p>
+              <Screenshot src={pair.after.src} alt={pair.after.alt} widths={[600, 900, 1400]} sizes={pairSizes} class="cs-screen" />
+            </div>
+          </div>
+          <figcaption>{pair.caption}</figcaption>
+        </figure>
+      ))
+    }
   </section>
 
   <section class="reveal">
