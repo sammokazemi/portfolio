@@ -114,10 +114,12 @@ export const metrics = [
   { value: '340+', label: 'Automated tests across the Workforce Systems web and mobile apps', short: 'Automated tests' },
 ];
 
-type ResumeEntry = {
+export type ResumeEntry = {
   name: string;
   role: string;
+  /** A city, or for a project its web address, linked to `href`. */
   location: string;
+  href?: string;
   dates: string;
   points: string[];
 };
@@ -134,13 +136,6 @@ export const resume = {
       location: 'San Francisco, CA',
       dates: 'Jan 2024 – Aug 2026',
       points: ['GPA: 3.53/4.00, Honor Roll + Dean’s List'],
-    },
-    {
-      name: 'Los Medanos College',
-      role: 'Lower Division Computer Science Coursework, Transfer to SFSU',
-      location: 'Pittsburg, CA',
-      dates: 'Aug 2020 – Nov 2023',
-      points: ['GPA: 3.43/4.00, Honor Roll'],
     },
   ],
   experience: [
@@ -177,27 +172,34 @@ export const resume = {
       ],
     },
   ],
-  activities: [
+  projects: [
     {
-      name: 'MESA Program at San Francisco State',
-      role: 'Mentor',
-      location: 'San Francisco, CA',
-      dates: 'Aug 2024 – Aug 2026',
-      points: ['Guided peers in academic and career development, fostering collaboration and professional growth.'],
+      name: 'Planet Pooyah',
+      role: 'Creator',
+      location: 'planetpooyah.com',
+      href: 'https://planetpooyah.com/',
+      dates: 'Oct 2026 – Present',
+      points: [
+        'Built a cross-platform learning app in Next.js and TypeScript for web, Android, and iOS from one codebase with Capacitor, on a Laravel REST API with offline-first sync that merges progress across devices.',
+        'Integrated Stripe subscriptions (Cashier, webhooks), Google/Apple sign-in, and child-privacy data minimization, covered by 316 automated tests (Vitest, PHPUnit).',
+      ],
     },
   ],
   skills: [
-    { label: 'Languages & Frameworks', value: 'JavaScript, TypeScript, React, Python, Node.js, HTML5/CSS, SQL, Java, C++' },
-    { label: 'Cloud & DevOps', value: 'AWS (S3, CloudFront, ECS Fargate), CI/CD, REST API Integration, System Architecture' },
-    { label: 'Healthcare & Compliance', value: 'HIPAA, CCM/RPM, Medicare Billing (CPT/ICD-10), EHR Workflows, MFA, RBAC' },
-    { label: 'Languages', value: 'English, Persian' },
+    { label: 'Languages', value: 'JavaScript, TypeScript, Python, PHP, Dart, SQL, Java, C++, HTML5/CSS' },
+    { label: 'Frameworks & Data', value: 'React, Next.js, Node.js, Express, Flutter, Laravel, PostgreSQL, REST APIs' },
+    { label: 'Cloud & DevOps', value: 'AWS (S3, CloudFront, ECS Fargate), CI/CD, Stripe, System Architecture, HIPAA, RBAC' },
+    { label: 'Spoken Languages', value: 'English, Persian' },
   ],
+  // Product names in bullets that link to the live product, in the PDF and on the site.
+  links: [{ text: 'ClearPath Virtual Health', href: 'https://clearpathvirtualhealth.com/' }],
 } satisfies {
   summary: string;
   education: ResumeEntry[];
   experience: ResumeEntry[];
-  activities: ResumeEntry[];
+  projects: ResumeEntry[];
   skills: { label: string; value: string }[];
+  links: { text: string; href: string }[];
 };
 
 export type Review = {

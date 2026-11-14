@@ -1,14 +1,20 @@
 ---
 import Icon from '../Icon.astro';
-import { site, socials, resume } from '../../data/site';
+import { site, socials, resume, type ResumeEntry } from '../../data/site';
 import { url } from '../../lib/url';
 
 const linked = socials.filter((s) => !s.placeholder);
-const sections = [
+const sections: { title: string; entries: ResumeEntry[] }[] = [
   { title: 'Education', entries: resume.education },
   { title: 'Experience', entries: resume.experience },
-  { title: 'Activities & Leadership', entries: resume.activities },
+  { title: 'Projects', entries: resume.projects },
 ];
+
+// Splits a bullet around the product names that link to the live product.
+const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const linkPattern = new RegExp(`(${resume.links.map((l) => escapeRe(l.text)).join('|')})`);
+const pieces = (p: string) => p.split(linkPattern).filter(Boolean);
+const hrefOf = (text: string) => resume.links.find((l) => l.text === text)?.href;
 ---
 
   <section class="section resume-wrap" id="resume">
@@ -64,13 +70,32 @@ const sections = [
                       <p class="entry__sub">{e.role}</p>
                     </div>
                     <div class="entry__meta">
-                      <p>{e.location}</p>
+                      <p>
+                        {e.href ? (
+                          <a href={e.href} target="_blank" rel="noopener">
+                            {e.location}
+                          </a>
+                        ) : (
+                          e.location
+                        )}
+                      </p>
                       <p>{e.dates}</p>
                     </div>
                   </div>
                   <ul>
                     {e.points.map((p) => (
-                      <li>{p}</li>
+                      <li>
+                        {pieces(p).map((t) => {
+                          const href = hrefOf(t);
+                          return href ? (
+                            <a href={href} target="_blank" rel="noopener">
+                              {t}
+                            </a>
+                          ) : (
+                            t
+                          );
+                        })}
+                      </li>
                     ))}
                   </ul>
                 </div>

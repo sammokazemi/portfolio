@@ -26,11 +26,13 @@ const github = socials.find((s) => s.icon === 'github');
 // "GPA: 3.53/4.00, Honor Roll" renders as a bold label, the number, then italic honors.
 const point = (p) => {
   const gpa = p.match(/^GPA: ([^,]+)(?:, (.*))?$/);
-  return gpa ? `<b>GPA:</b> ${esc(gpa[1])}${gpa[2] ? `, <i>${esc(gpa[2])}</i>` : ''}` : esc(p);
+  if (gpa) return `<b>GPA:</b> ${esc(gpa[1])}${gpa[2] ? `, <i>${esc(gpa[2])}</i>` : ''}`;
+  // Product names in a bullet link to the live product.
+  return resume.links.reduce((h, l) => h.replace(esc(l.text), link(l.href, l.text)), esc(p));
 };
 const entry = (e) => `
   <div class="entry">
-    <div class="row b"><span>${esc(e.name)}</span><span>${esc(e.location)}</span></div>
+    <div class="row b"><span>${esc(e.name)}</span><span>${e.href ? link(e.href, e.location) : esc(e.location)}</span></div>
     <div class="row i"><span>${esc(e.role)}</span><span>${esc(e.dates)}</span></div>
     <ul>${e.points.map((p) => `<li>${point(p)}</li>`).join('')}</ul>
   </div>`;
@@ -67,7 +69,7 @@ const html = `<!doctype html>
   <h2>Summary</h2><p class="summary">${esc(resume.summary)}</p>
   <h2>Education</h2>${resume.education.map(entry).join('')}
   <h2>Experience</h2>${resume.experience.map(entry).join('')}
-  <h2>Activities &amp; Leadership</h2>${resume.activities.map(entry).join('')}
+  <h2>Projects</h2>${resume.projects.map(entry).join('')}
   <h2>Skills</h2><div class="skills">${resume.skills.map((s) => `<div><b>${esc(s.label)}:</b> ${esc(s.value)}</div>`).join('')}</div>
 </div></body></html>`;
 
