@@ -4,8 +4,6 @@ import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import { url } from '../../lib/url';
 import clearpathPreview from '../../assets/photos/clearpath-preview.png';
-import wfsPreview from '../../assets/photos/wfs-preview.png';
-import websitePreview from '../../assets/photos/union-website-preview.png';
 import darkCirclesPreview from '../../assets/photos/dark-circles-preview.png';
 import planetPooyahPreview from '../../assets/photos/planet-pooyah-preview.png';
 
@@ -55,32 +53,6 @@ const projects: Project[] = [
     tags: ['Astro', 'TypeScript', 'Modern CSS', 'Design system'],
   },
   {
-    name: 'Labor Union Website',
-    org: 'Workforce Systems (WFS)',
-    role: 'Lead Developer',
-    period: 'Aug 2026 – Present',
-    href: '/projects/labor-union-website',
-    image: websitePreview,
-    imageAlt: 'The union website’s home page on a desktop beside the same page on a phone',
-    tone: 'lapis',
-    text: 'The public website for a district council of labor unions and its nine locals, giving members, contractors, and the community one front door, built in Next.js alongside the workforce platform it signs people into.',
-    tags: ['Next.js', 'Responsive design', 'Accessible UI', 'Design system'],
-  },
-  {
-    name: 'Union Workforce Ecosystem',
-    org: 'Workforce Systems (WFS)',
-    role: 'Lead Developer',
-    period: 'Jul 2026 – Present',
-    href: '/projects/workforce-systems',
-    live: 'https://workforcesystems.net/',
-    liveLabel: 'workforcesystems.net',
-    image: wfsPreview,
-    imageAlt: 'The Union Workforce Ecosystem’s union operations dashboard on a desktop beside the member app’s home screen on a phone',
-    tone: 'lapis',
-    text: 'A workforce platform for a laborers’ union: one Next.js app for union staff, contractors, and members, and a Flutter app for members’ phones, both on a Laravel API, unifying dispatch, dues, grievances, training, and benefits into one system of record.',
-    tags: ['Next.js', 'TypeScript', 'Flutter', 'Laravel API', 'Playwright'],
-  },
-  {
     name: 'ClearPath Virtual Health',
     org: 'MedManage Solutions',
     role: 'Lead Software Engineer',
@@ -101,7 +73,7 @@ const projects: Project[] = [
   <div class="container">
     <div class="section-head projects-head reveal">
       <p class="eyebrow">Projects</p>
-      <h2>Shipped work in health, labor, education, and media</h2>
+      <h2>Shipped work in health, education, and media</h2>
       <p class="lead">
         Case studies from the work Sām has led: what the problem was, what he built, and what
         changed because of it.

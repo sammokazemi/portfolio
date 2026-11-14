@@ -13,11 +13,10 @@ export default defineConfig({
   trailingSlash: 'ignore',
   // Tooling that assigns ports (e.g. a second dev server beside another) sets PORT.
   server: { port: Number(process.env.PORT) || 4321 },
-  // Old case-study URL, kept so links already sent out still land. Astro prefixes
-  // the source with the base path but not the destination, so that is done here.
-  // The standalone pages are now sections of the home page.
+  // The standalone pages are now sections of the home page, kept so links already
+  // sent out still land. Astro prefixes the source with the base path but not the
+  // destination, so that is done here.
   redirects: {
-    '/projects/union-workforce': `${root}/projects/workforce-systems`,
     ...Object.fromEntries(
       ['projects', 'skills', 'reviews', 'resume', 'contact'].map((id) => [`/${id}`, `${root}/#${id}`]),
     ),

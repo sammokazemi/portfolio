@@ -104,7 +104,7 @@ export const skills = [
 
 // Three ClearPath outcomes, then a Workforce Systems figure counted from its repos
 // (2026-11-05): 139 Playwright + 202 Flutter tests.
-// Never name the union or its locals here (see the Workforce Systems case study).
+// Never name the union or its locals here.
 // The 200%+ wording matches the resume: his systems contributed to it, not caused it alone.
 // `short` is shown on phones, where the strip is four narrow columns.
 export const metrics = [
