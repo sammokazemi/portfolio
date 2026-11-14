@@ -13,7 +13,7 @@ This repository is the source for his portfolio.
   [ClearPath Virtual Health](https://clearpathvirtualhealth.com/) from the ground up:
   four role-based portals with MFA, secure sessions, and audit logging, on React and
   AWS (S3, CloudFront, ECS Fargate) with CI/CD.
-- **Lead Developer, Workforce Systems (Jul 2026 – Present).** Designing and building a
+- **Lead Software Engineer, Workforce Systems (Nov 2026 – Present).** Designing and building a
   workforce platform for a labor union in Next.js and TypeScript, an iOS/Android member
   app in Flutter, both on a Laravel API, plus the union's public website.
 - **Impact:** 200%+ recurring revenue growth that his ClearPath systems helped drive, 35%

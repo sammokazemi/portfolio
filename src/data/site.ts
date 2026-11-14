@@ -146,9 +146,9 @@ export const resume = {
   experience: [
     {
       name: 'Workforce Systems',
-      role: 'Lead Developer',
+      role: 'Lead Software Engineer',
       location: 'San Francisco, CA',
-      dates: 'Jul 2026 – Present',
+      dates: 'Nov 2026 – Present',
       points: [
         'Lead development of a union workforce platform in Next.js and TypeScript: union, contractor, and member portals (90+ screens) and a public website, unifying dispatch, dues, grievances, training, and benefits.',
         'Built the iOS/Android member app in Flutter (46 screens) with secure token storage, screen-reader labels, and route tests at three screen sizes.',
