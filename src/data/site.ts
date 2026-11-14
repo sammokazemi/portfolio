@@ -127,8 +127,6 @@ export type ResumeEntry = {
 // Mirrors the downloadable PDF (public/resume/Sam-Kazemi-Resume.pdf) line for
 // line; after changing this block, run `npm run resume:pdf` to rebuild the PDF.
 export const resume = {
-  summary:
-    'Software Engineer with experience building and shipping production web and mobile applications. Skilled in React, TypeScript, Next.js, AWS, and full-stack development, with experience in healthcare technology, enterprise platforms, and secure application architecture.',
   education: [
     {
       name: 'San Francisco State University',
@@ -136,6 +134,13 @@ export const resume = {
       location: 'San Francisco, CA',
       dates: 'Jan 2024 – Aug 2026',
       points: ['GPA: 3.53/4.00, Honor Roll + Dean’s List'],
+    },
+    {
+      name: 'Los Medanos College',
+      role: 'Lower Division Computer Science Coursework, Transfer to SFSU',
+      location: 'Pittsburg, CA',
+      dates: 'Aug 2020 – Nov 2023',
+      points: ['GPA: 3.43/4.00, Honor Roll'],
     },
   ],
   experience: [
@@ -145,20 +150,21 @@ export const resume = {
       location: 'San Francisco, CA',
       dates: 'Nov 2026 – Present',
       points: [
-        'Lead development of a union workforce platform in Next.js and TypeScript: union, contractor, and member portals (90+ screens) and a public website, unifying dispatch, dues, grievances, training, and benefits.',
-        'Built the iOS/Android member app in Flutter (46 screens) with secure token storage, screen-reader labels, and route tests at three screen sizes.',
-        'Added contractor accounts and role-scoped auth middleware to the Laravel REST API, with feature tests.',
+        'Lead a four-person engineering team building a labor union’s workforce platform, consolidating dispatch, dues, grievances, training, and benefits into one system of record.',
+        'Built the Next.js/TypeScript web app: a public site plus member, contractor, and union-operations portals across 98 routes, guarded by 139 Playwright end-to-end tests.',
+        'Built the iOS/Android member app from one Flutter codebase (38 screens, 202 widget tests at three screen sizes), and added contractor accounts with role-scoped auth to the Laravel API.',
       ],
     },
     {
       name: 'MedManage Solutions',
-      role: 'Lead Software Engineer',
+      role: 'Founding Software Engineer & Engineering Lead',
       location: 'Daly City, CA',
       dates: 'Sep 2025 – Oct 2026',
       points: [
-        'Architected and built ClearPath Virtual Health from the ground up, a production HIPAA-compliant CCM/RPM platform spanning four role-based portals with MFA, secure session management, and audit logging.',
-        'Engineered React/AWS infrastructure with S3, CloudFront, ECS Fargate, CI/CD, and JWT/RBAC API integrations, reducing deployment time by 35% and administrative overhead by 40%.',
-        'Built Medicare billing and patient engagement systems supporting CPT/ICD-10 workflows, physician sign-off, PDF reporting, and care coordination, contributing to 200%+ recurring revenue growth and 15% fewer missed appointments.',
+        'Helped drive 200%+ recurring revenue growth and 15% fewer missed appointments as first engineer, architecting ClearPath Virtual Health, a HIPAA-compliant chronic care and Medicare billing platform.',
+        'Led a team of 7 engineers, turning requirements from physicians, nurses, care coordinators, attorneys, and the CEO into four role-based portals and a Flutter patient app for iOS and Android.',
+        'Cut deployment time 35% and administrative overhead 40% with a React/AWS stack (S3, CloudFront, ECS Fargate) and CI that runs lint, dependency audits, and 1,600+ automated tests on every push.',
+        'Secured patient data to HIPAA standards with MFA, session timeouts, audit logging, a PHI-redacting logger, CSP headers, and tamper-evident multi-region AWS CloudTrail logs.',
       ],
     },
     {
@@ -167,8 +173,8 @@ export const resume = {
       location: 'San Francisco, CA',
       dates: 'Dec 2025 – Jun 2026',
       points: [
-        'Helped design core modules for a full-stack healthcare platform using React, TypeScript, Node.js, Express, and PostgreSQL with shared data models and RBAC.',
-        'Built clinical workflows and multi-portal architecture spanning intake, diagnosis, lab results, authentication, and secure API integrations.',
+        'Co-designed the shared data models and RBAC behind a multi-portal healthcare platform in React, TypeScript, Node.js/Express, and PostgreSQL.',
+        'Built clinical workflows for intake, diagnosis, and lab results, with authentication and secure API integrations.',
       ],
     },
   ],
@@ -194,7 +200,6 @@ export const resume = {
   // Product names in bullets that link to the live product, in the PDF and on the site.
   links: [{ text: 'ClearPath Virtual Health', href: 'https://clearpathvirtualhealth.com/' }],
 } satisfies {
-  summary: string;
   education: ResumeEntry[];
   experience: ResumeEntry[];
   projects: ResumeEntry[];

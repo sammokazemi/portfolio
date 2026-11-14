@@ -53,11 +53,6 @@ const hrefOf = (text: string) => resume.links.find((l) => l.text === text)?.href
           </ul>
         </header>
 
-        <section class="paper__section">
-          <h4>Summary</h4>
-          <p>{resume.summary}</p>
-        </section>
-
         {
           sections.map((section) => (
             <section class="paper__section">

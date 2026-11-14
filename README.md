@@ -9,7 +9,7 @@ This repository is the source for his portfolio.
 
 ## At a glance
 
-- **Lead Software Engineer, MedManage Solutions (Sep 2025 – Oct 2026).** Architected and built
+- **Founding Software Engineer, MedManage Solutions (Sep 2025 – Oct 2026).** Architected and built
   [ClearPath Virtual Health](https://clearpathvirtualhealth.com/) from the ground up:
   four role-based portals with MFA, secure sessions, and audit logging, on React and
   AWS (S3, CloudFront, ECS Fargate) with CI/CD.

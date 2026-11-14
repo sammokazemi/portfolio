@@ -52,7 +52,6 @@ const html = `<!doctype html>
   h2 { margin: 3.4pt 0 0; font-size: 13pt; line-height: 16pt; text-align: center; text-transform: uppercase; }
   h2:first-of-type { margin-top: 7.6pt; }
   .entry + h2 { margin-top: 5pt; }
-  .summary { margin: 0; line-height: 13.4pt; }
   .entry + .entry { margin-top: 4.5pt; }
   .row { display: flex; justify-content: space-between; }
   .b { font-weight: 700; }
@@ -66,7 +65,6 @@ const html = `<!doctype html>
   <h1>${esc(site.legalName)}</h1>
   <p class="contact">US Citizen • ${link(`mailto:${site.email}`, site.email)} • ${PHONE} • ${link(PORTFOLIO, 'Website/Portfolio')} • LinkedIn: ${link(linkedin.href, linkedin.handle)} • Github: ${link(github.href, github.handle)}</p>
   <div class="rule"></div>
-  <h2>Summary</h2><p class="summary">${esc(resume.summary)}</p>
   <h2>Education</h2>${resume.education.map(entry).join('')}
   <h2>Experience</h2>${resume.experience.map(entry).join('')}
   <h2>Projects</h2>${resume.projects.map(entry).join('')}
