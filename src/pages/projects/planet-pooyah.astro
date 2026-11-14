@@ -1,0 +1,432 @@
+---
+import Screenshot from '../../components/Screenshot.astro';
+import CaseStudy from '../../layouts/CaseStudy.astro';
+import Icon from '../../components/Icon.astro';
+import home from '../../assets/projects/planet-pooyah/home.png';
+import tracks from '../../assets/projects/planet-pooyah/tracks.png';
+import investorsMarket from '../../assets/projects/planet-pooyah/investors-market.png';
+import investorsNiche from '../../assets/projects/planet-pooyah/investors-niche.png';
+import phoneTraceAlef from '../../assets/projects/planet-pooyah/phone-trace-alef.png';
+import phoneTraceBe from '../../assets/projects/planet-pooyah/phone-trace-be.png';
+import phoneOrder from '../../assets/projects/planet-pooyah/phone-order.png';
+import phoneQuiz from '../../assets/projects/planet-pooyah/phone-quiz.png';
+import phoneCards from '../../assets/projects/planet-pooyah/phone-cards.png';
+import phoneStory from '../../assets/projects/planet-pooyah/phone-story.png';
+import phoneTrial from '../../assets/projects/planet-pooyah/phone-trial.png';
+import phoneHaftseen from '../../assets/projects/planet-pooyah/phone-haftseen.png';
+import phoneCylinder from '../../assets/projects/planet-pooyah/phone-cylinder.png';
+import phonePath from '../../assets/projects/planet-pooyah/phone-path.png';
+import phoneAvatar from '../../assets/projects/planet-pooyah/phone-avatar.png';
+import phoneShop from '../../assets/projects/planet-pooyah/phone-shop.png';
+import phonePlus from '../../assets/projects/planet-pooyah/phone-plus.png';
+import phonePractice from '../../assets/projects/planet-pooyah/phone-practice.png';
+import phoneProfile from '../../assets/projects/planet-pooyah/phone-profile.png';
+
+const desktopSizes = '(min-width: 1000px) 960px, calc(100vw - 32px)';
+const pairSizes = '(min-width: 1000px) 470px, (min-width: 900px) 45vw, calc(100vw - 32px)';
+const phoneSizes = '(min-width: 760px) 230px, (min-width: 600px) 30vw, 64vw';
+
+const trackScreens = [
+  { src: phoneTrial, alt: 'A Shahnameh story page: Rostam led over the Seven Mountains to the cave of the White Div, with an illustration of the fight' },
+  { src: phoneHaftseen, alt: 'A culture card about the Haft-Seen table, with the Persian word in large green letters and a speaker button to hear it' },
+  { src: phoneCylinder, alt: 'A history card about the Cyrus Cylinder, with an illustration of the clay cylinder and a short explanation' },
+];
+
+const writingScreens = [
+  { src: phoneTraceAlef, alt: 'The tracing board for alef: a dotted guide line with a gold dot at the top where the stroke starts' },
+  { src: phoneTraceBe, alt: 'The tracing board for be, its boat-shaped stroke half inked in green from right to left, with the dot still to tap' },
+  { src: phoneOrder, alt: 'A word-building game: two empty slots for the word âb, water, with the letters alef and be on tiles below' },
+];
+
+const lessonScreens = [
+  { src: phoneQuiz, alt: 'A multiple-choice question asking what آب means, with water marked right and the Simorgh cheering Afarin, great job' },
+  { src: phoneCards, alt: 'Flip cards about Iran: Tehran, Damavand, the Caspian Sea, saffron and Persian cats, with the Persian card turned over to its fact' },
+  { src: phoneStory, alt: 'A picture-book page from the story of Zal and the Simorgh, with an illustration of the Simorgh over the mountains' },
+];
+
+const habitScreens = [
+  { src: phonePath, alt: 'The learning path: finished lessons with gold checkmarks, the learner’s avatar on the next lesson, and the XP, streak, energy and hearts counters' },
+  { src: phoneAvatar, alt: 'The avatar maker, with the avatar in Rostam’s horned helmet and leopard-skin coat and a grid of outfits to choose from' },
+  { src: phoneShop, alt: 'The Bazaar shop with Simorgh’s Feather, Simorgh’s Wing and the Water of Life for energy, and the learner’s pouch below' },
+];
+
+const plusScreens = [
+  { src: phonePlus, alt: 'The Planet Pooyah+ page: no ads and unlimited mistakes, up to four learners, a weekly parent report, and yearly or monthly plans' },
+  { src: phonePractice, alt: 'The Practice tab on a free account: Fix my mistakes, Challenges, Persian practice and Storybook mode, each locked behind Planet Pooyah+' },
+  { src: phoneProfile, alt: 'The learner’s profile: the avatar, a generated username, total XP, and the level with progress to the next one' },
+];
+
+const layers = [
+  {
+    name: 'Next.js app',
+    text: 'Next.js 16, React 19 and TypeScript, exported as plain static files. The same build is hosted on the web and bundled into the phone apps.',
+  },
+  {
+    name: 'Capacitor 8',
+    text: 'Wraps that export as native Android and iOS apps, with an opt-in daily reminder as a local notification and a small native Android plugin that recolors the system bars with the theme.',
+  },
+  {
+    name: 'Laravel API',
+    text: 'Laravel 13 with Sanctum tokens: parent accounts, Google and Apple sign-in, child accounts on the family plan, progress sync, sponsor ads, announcements, and Stripe billing.',
+  },
+  {
+    name: 'Offline first',
+    text: 'Progress is saved on the device, so lessons work offline, and the server merges it on sign-in, on open, and after each lesson: the best score per lesson, the latest streak, and energy ledgers joined by entry id.',
+  },
+  {
+    name: 'The public demo',
+    text: 'A demo build answers the API’s calls on the device, so planetpooyah.com/app runs the real app with no sign-in and no server. One script builds it and publishes it with the website to GitHub Pages.',
+  },
+];
+---
+
+<CaseStudy
+  name="Planet Pooyah"
+  description="Case study: Planet Pooyah, a game-like app that teaches children of the Iranian diaspora to read and write Persian and know the culture behind it, founded and built by Sām Kazemi in Next.js, Capacitor, and Laravel."
+  summary="A game-like learning app that helps children of the Iranian diaspora read and write Persian and know the stories, history, and traditions behind it. One Next.js codebase runs on the web, Android, and iOS, on a Laravel API."
+  role="Founder"
+  org="Planet Pooyah"
+  period="Oct 2026 – Present"
+  status="Web demo live; app stores next"
+  live="https://planetpooyah.com/"
+  liveLabel="planetpooyah.com"
+  stack={[
+    'Next.js 16',
+    'React 19',
+    'TypeScript',
+    'Capacitor 8 (iOS / Android)',
+    'Laravel 13 API',
+    'Laravel Sanctum',
+    'Stripe (Laravel Cashier)',
+    'Vitest',
+    'PHPUnit',
+    'CSS Modules',
+    'SVG illustration',
+    'Cloudflare Workers',
+    'GitHub Pages',
+  ]}
+>
+  <section class="reveal">
+    <p class="eyebrow">The problem</p>
+    <h2>Persian fades a little with each generation</h2>
+    <p>
+      Many children of Iranian families abroad hear Persian at home and understand it, but can’t
+      read or write it, and they know less of the stories and traditions their parents grew up
+      with. Research on Iranian Americans finds the same pattern from one generation to the next:
+      reading and writing fall behind speaking, and by the third generation they are often gone.
+    </p>
+    <p>
+      Parents want their children to know where they come from. What they’re short of is time and
+      expertise: few have hours each week to teach a right-to-left alphabet, the Shahnameh, and
+      2,500 years of history. Weekend schools depend on where a family lives, and books and videos
+      lack the structure and fun that keep children coming back. Sām, who minored in Persian
+      Studies, founded Planet Pooyah in October 2026 to close that gap.
+    </p>
+    <figure class="cs-shot">
+      <Screenshot
+        src={home}
+        alt="The Planet Pooyah home page: Learn Persian and the culture behind it, with buttons to try the first lessons, and the app’s learning path on a phone beside the Simorgh mascot"
+        widths={[800, 1200, 1600, 2200]}
+        sizes={desktopSizes}
+        class="cs-screen"
+      />
+      <figcaption>The home page at planetpooyah.com, with the learning path on a phone.</figcaption>
+    </figure>
+  </section>
+
+  <section class="reveal">
+    <p class="eyebrow">The product</p>
+    <h2>More than a language app</h2>
+    <p>
+      Planet Pooyah is a learning path a child plays a few minutes of each day, made for ages 5 to
+      14 and managed by a parent. Language apps teach words and phrases. Planet Pooyah puts the
+      literature, culture, and history behind them on the same path as the letters, so a lesson on
+      two new letters might be followed by a chapter of Ferdowsi’s Book of Kings, a Nowruz
+      tradition, or Cyrus the Great.
+    </p>
+    <p>
+      The curriculum has 59 lessons in six units so far, each unit set in a new place to explore,
+      from the Simorgh’s Mountain to the palace city of Ctesiphon. Every lesson is tagged language,
+      culture, literature, or history, lists its sources, and follows written content standards: no
+      fact without a source, no one region or religion presented as every Iranian’s experience, and
+      simpler wording that never distorts the facts.
+    </p>
+    <figure class="cs-shot">
+      <Screenshot
+        src={tracks}
+        alt="The website’s More than a language app section: illustrated medallions for literature, with Rostam and a div, culture, with a family at Yalda Night, and history, with Cyrus the Great"
+        widths={[800, 1200, 1600, 2200]}
+        sizes={desktopSizes}
+        class="cs-screen"
+      />
+      <figcaption>Literature, culture, and history share the path with the alphabet.</figcaption>
+    </figure>
+    <figure class="cs-shot">
+      <div class="cs-phones">
+        {trackScreens.map((s) => <Screenshot src={s.src} alt={s.alt} widths={[300, 500, 780]} sizes={phoneSizes} class="cs-screen cs-phone" />)}
+      </div>
+      <figcaption>A Shahnameh story, the Nowruz Haft-Seen table, and the Cyrus Cylinder, all lessons on one path.</figcaption>
+    </figure>
+  </section>
+
+  <section class="reveal">
+    <p class="eyebrow">Reading and writing</p>
+    <h2>Letters traced with a finger</h2>
+    <p>
+      Reading and writing come first. Each new set of letters opens with a tracing lesson for
+      exactly those letters, which a unit test enforces: hear the letter, then write it on a board,
+      starting at a pulsing gold dot. Then the letters become words, dragged into place from right
+      to left:{' '}
+      <span lang="fa" dir="rtl">آب</span> (âb, water) and <span lang="fa" dir="rtl">بابا</span> (bâbâ, dad).
+    </p>
+    <p>
+      Each letter is a list of strokes in writing order and direction on a 200-by-200 board. Ink
+      only grows while the finger stays near the end of the ink, so a stroke can’t be skipped, drawn
+      backwards, or cut across, and lifting the finger keeps what’s drawn so far. Keyboard and
+      switch users draw each stroke with Enter or Space. The rules live in a pure, unit-tested
+      module, apart from the component that draws them.
+    </p>
+    <figure class="cs-shot">
+      <div class="cs-phones">
+        {writingScreens.map((s) => <Screenshot src={s.src} alt={s.alt} widths={[300, 500, 780]} sizes={phoneSizes} class="cs-screen cs-phone" />)}
+      </div>
+      <figcaption>Alef waiting at its gold dot, be half drawn from right to left, and âb built from its letters.</figcaption>
+    </figure>
+  </section>
+
+  <section class="reveal">
+    <p class="eyebrow">Lessons</p>
+    <h2>No two steps in a row feel the same</h2>
+    <p>
+      Lessons are typed data, not components. A lesson is a list of steps of eight kinds: teaching
+      cards, multiple-choice questions, picture-book stories, flip cards, tracing, and three
+      mini-games (match the pairs, tap all that fit, and put in order). Adding a lesson means adding
+      an entry to one file, with no new component unless it needs a new kind of step.
+    </p>
+    <p>
+      A lesson is also a queue. A wrong answer gets an encouraging message and goes to the back of
+      the queue, so a lesson ends once every question is answered right, never on a fail screen.
+      Quick reviews along the path bring back earlier letters and stories, and a unit review closes
+      each unit.
+    </p>
+    <p>
+      On first run, the Simorgh says hello and a grown-up answers a few questions: the
+      child’s age, why they’re learning, how much Persian and culture they know, and a daily goal.
+      An optional placement check then skips what the child already reads, two questions per unit,
+      with no right-or-wrong feedback so it’s never discouraging. The answers shape the app: the
+      youngest learners get bigger lesson text and a smaller daily goal.
+    </p>
+    <figure class="cs-shot">
+      <div class="cs-phones">
+        {lessonScreens.map((s) => <Screenshot src={s.src} alt={s.alt} widths={[300, 500, 780]} sizes={phoneSizes} class="cs-screen cs-phone" />)}
+      </div>
+      <figcaption>A question answered right, flip cards about Iran, and a page from the story of Zal and the Simorgh.</figcaption>
+    </figure>
+  </section>
+
+  <section class="reveal">
+    <p class="eyebrow">Sound</p>
+    <h2>Persian read aloud by native speakers</h2>
+    <p>
+      Speaker buttons read letters and words aloud on teaching cards, answers, game tiles, and the
+      tracing board. Every clip is recorded twice, by a male and a female native speaker, on a small
+      local recording page Sām built: it trims and levels each take, saves it as a WAV, and lists it
+      in a manifest, so a speaker button only appears once its clip exists. Lessons switch voice page
+      by page, introduced by the Simorgh or by Rostam, and a clip missing in one voice plays in the
+      other.
+    </p>
+    <p>
+      The sound effects are generated by a script rather than downloaded: a bright rising chime for
+      a right answer, a soft low one for a wrong answer, and an arpeggio when a lesson is finished.
+    </p>
+  </section>
+
+  <section class="reveal">
+    <p class="eyebrow">Coming back</p>
+    <h2>A daily habit, without the guilt</h2>
+    <p>
+      Every finished lesson earns XP, keeps a streak going, and earns energy to spend in the Bazaar,
+      on items like Simorgh’s Feather, which keeps a streak safe through a missed day. A broken
+      streak resets quietly, with no shaming message. Learners build their own avatar from parts,
+      including Iranian outfits and hats, and finishing a unit can unlock something to wear: pass
+      Rostam’s Seven Trials and his helmet and leopard-skin coat are theirs.
+    </p>
+    <p>
+      Energy is a ledger, not a number. Every earning and purchase is an entry with a unique id, the
+      balance is their sum, and the phone and the server merge ledgers by id, so nothing counts
+      twice when a family learns on two devices.
+    </p>
+    <figure class="cs-shot">
+      <div class="cs-phones">
+        {habitScreens.map((s) => <Screenshot src={s.src} alt={s.alt} widths={[300, 500, 780]} sizes={phoneSizes} class="cs-screen cs-phone" />)}
+      </div>
+      <figcaption>The learning path, the avatar maker in Rostam’s outfit, and the Bazaar.</figcaption>
+    </figure>
+  </section>
+
+  <section class="reveal">
+    <p class="eyebrow">Built for children</p>
+    <h2>Private by design</h2>
+    <p>
+      A parent creates the account and confirms they’re the guardian before any lesson. The app
+      keeps the parent’s email, the lesson progress, and the answers to the first-run questions, and
+      never a child’s name, birth date, or photo. Children choose a username from two word lists on
+      the server, like BraveSimorgh42, with no free typing.
+    </p>
+    <p>
+      Anything that leaves the app or spends money sits behind a grown-ups check, a times-table
+      question. Free accounts see one sponsor ad after a lesson, served by Planet Pooyah’s own API
+      instead of an ad network: it counts total views and clicks per ad, and nothing about who saw
+      it. Crash reports keep the error and the page, never an account, IP address, or device id.
+    </p>
+  </section>
+
+  <section class="reveal">
+    <p class="eyebrow">Business model</p>
+    <h2>Free to learn, paid for by families</h2>
+    <p>
+      Planet Pooyah is freemium, the model language apps have proven at scale. Every lesson is free,
+      with five hearts that refill over time. Planet Pooyah+ costs $9.99 a month or $69.99 a year
+      after a seven-day free trial, and adds no ads, unlimited mistakes, practice built from the
+      learner’s own mistakes, Legendary challenges, up to four learners on one plan, and a weekly
+      progress email to the parent.
+    </p>
+    <p>
+      Checkout runs on Stripe through Laravel Cashier, so card details never reach Planet Pooyah’s
+      servers, and Stripe’s webhooks keep each account’s plan up to date. Inside the phone apps,
+      where Apple and Google require their own billing, the plan shows as coming soon until store
+      billing is built.
+    </p>
+    <figure class="cs-shot">
+      <div class="cs-phones">
+        {plusScreens.map((s) => <Screenshot src={s.src} alt={s.alt} widths={[300, 500, 780]} sizes={phoneSizes} class="cs-screen cs-phone" />)}
+      </div>
+      <figcaption>Planet Pooyah+ and its two plans, the Practice tab locked on a free account, and the learner’s profile.</figcaption>
+    </figure>
+  </section>
+
+  <section class="reveal">
+    <p class="eyebrow">The website</p>
+    <h2>A front door for families, and a case for investors</h2>
+    <p>
+      The website at planetpooyah.com is plain HTML and CSS on the app’s own design tokens, with its
+      own written design system: colors with checked contrast, type, spacing, and components, and
+      Persian set in Vazirmatn, right to left. Every screenshot on it is the real app.
+    </p>
+    <p>
+      Its Investors page makes the case with sources: research on Persian language loss among
+      Iranian Americans, Pew and Census counts of the community, and Duolingo’s public numbers for
+      the freemium model. Every figure is footnoted, and every chart has a table behind it. The
+      contact form posts to a Cloudflare Worker, behind Turnstile.
+    </p>
+    <figure class="cs-shot cs-shot--wide">
+      <div class="cs-pair">
+        <Screenshot
+          src={investorsMarket}
+          alt="The Investors page’s community section: 750,000 Iranian Americans in 2024, 310,000 born in the US, 375,000 in California, with bar charts of the counts and where they were born"
+          widths={[600, 900, 1400]}
+          sizes={pairSizes}
+          class="cs-screen"
+        />
+        <Screenshot
+          src={investorsNiche}
+          alt="The Investors page’s niche section: what language apps teach compared with Planet Pooyah, and a bar chart of the lessons by track"
+          widths={[600, 900, 1400]}
+          sizes={pairSizes}
+          class="cs-screen"
+        />
+      </div>
+      <figcaption>The Investors page: the size of the community, and the niche Planet Pooyah fills.</figcaption>
+    </figure>
+  </section>
+
+  <section class="reveal">
+    <p class="eyebrow">Architecture</p>
+    <h2>One codebase for the web, Android, and iOS</h2>
+    <ul class="cs-flow">
+      {
+        layers.map((l) => (
+          <li>
+            <div>
+              <strong>{l.name}</strong>
+              <span>{l.text}</span>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="reveal">
+    <p class="eyebrow">Where it stands</p>
+    <h2>From first commit to a public demo in four weeks</h2>
+    <p>
+      The first commit landed on October 18, 2026, and the website and demo went live at
+      planetpooyah.com on November 13. The Android app already builds from the same code, and app
+      store releases come next.
+    </p>
+    <ul class="cs-metrics">
+      <li><strong>59</strong><span>lessons in six units</span></li>
+      <li><strong>316</strong><span>automated tests: 234 unit tests and 82 API feature tests</span></li>
+      <li><strong>3</strong><span>platforms from one codebase</span></li>
+      <li><strong>2</strong><span>native voices for every recorded clip</span></li>
+    </ul>
+  </section>
+
+  <section class="reveal">
+    <p class="eyebrow">Engineering highlights</p>
+    <h2>Small rules, well tested</h2>
+    <div class="cs-features">
+      <div class="card">
+        <span class="icon-badge"><Icon name="file-text" /></span>
+        <h3>Content as data</h3>
+        <p>
+          The whole curriculum is one typed file of units, lessons, and steps, with each lesson’s
+          track, sources, and review status. Tests check its rules, like every set of letters
+          starting with a tracing lesson.
+        </p>
+      </div>
+      <div class="card">
+        <span class="icon-badge"><Icon name="check-circle" /></span>
+        <h3>Pure, tested rules</h3>
+        <p>
+          XP, unlocking, streaks, hearts, energy, placement, and tracing are pure functions with
+          unit tests, and the components only draw them. The API has 82 feature tests, from sign-in
+          and family accounts to billing.
+        </p>
+      </div>
+      <div class="card">
+        <span class="icon-badge"><Icon name="cloud" /></span>
+        <h3>Offline first</h3>
+        <p>
+          Lessons run from the device and sync when they can. The server merges progress field by
+          field, so a phone that was offline for a week never overwrites a better score.
+        </p>
+      </div>
+      <div class="card">
+        <span class="icon-badge"><Icon name="lock" /></span>
+        <h3>Children’s privacy</h3>
+        <p>
+          No child names or photos, generated usernames, a grown-ups check before links and
+          purchases, first-party ads counted only in totals, and card details left to Stripe.
+        </p>
+      </div>
+      <div class="card">
+        <span class="icon-badge"><Icon name="users" /></span>
+        <h3>Accessible and right to left</h3>
+        <p>
+          Persian is always marked as Persian and right to left, tracing works by keyboard, motion
+          respects reduced-motion settings, and layouts respect the phone’s safe areas.
+        </p>
+      </div>
+      <div class="card">
+        <span class="icon-badge"><Icon name="pen-line" /></span>
+        <h3>Art drawn in code</h3>
+        <p>
+          The Simorgh mascot and its moods, the avatar parts, and over 6,000 lines of lesson
+          illustrations are SVG components, so they stay sharp at any size and ship with the app.
+        </p>
+      </div>
+    </div>
+  </section>
+</CaseStudy>

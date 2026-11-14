@@ -7,6 +7,7 @@ import clearpathPreview from '../../assets/photos/clearpath-preview.png';
 import wfsPreview from '../../assets/photos/wfs-preview.png';
 import websitePreview from '../../assets/photos/union-website-preview.png';
 import darkCirclesPreview from '../../assets/photos/dark-circles-preview.png';
+import planetPooyahPreview from '../../assets/photos/planet-pooyah-preview.png';
 
 type Project = {
   name: string;
@@ -27,6 +28,20 @@ type Project = {
 
 // Newest first, by start date.
 const projects: Project[] = [
+  {
+    name: 'Planet Pooyah',
+    org: 'Planet Pooyah',
+    role: 'Founder',
+    period: 'Oct 2026 – Present',
+    href: '/projects/planet-pooyah',
+    live: 'https://planetpooyah.com/',
+    liveLabel: 'planetpooyah.com',
+    image: planetPooyahPreview,
+    imageAlt: 'The Planet Pooyah home page on a desktop beside a lesson on a phone teaching the Haft-Seen table, with the Persian word in large letters',
+    tone: 'lapis',
+    text: 'A game-like app that helps children of the Iranian diaspora read and write Persian and know the stories, history, and traditions behind it. One Next.js codebase for the web, Android, and iOS, on a Laravel API with Stripe subscriptions.',
+    tags: ['Next.js', 'TypeScript', 'Capacitor', 'Laravel API', 'Stripe'],
+  },
   {
     name: 'Dark Circles',
     org: 'Violent Delights Productions',
@@ -86,7 +101,7 @@ const projects: Project[] = [
   <div class="container">
     <div class="section-head projects-head reveal">
       <p class="eyebrow">Projects</p>
-      <h2>Shipped work across health, labor, and entertainment</h2>
+      <h2>Shipped work in health, labor, education, and media</h2>
       <p class="lead">
         Case studies from the work Sām has led: what the problem was, what he built, and what
         changed because of it.

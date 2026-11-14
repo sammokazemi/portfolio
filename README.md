@@ -25,6 +25,7 @@ This repository is the source for his portfolio.
 
 | Project | What it is |
 | --- | --- |
+| [Planet Pooyah](https://sammokazemi.github.io/portfolio/projects/planet-pooyah/) | Game-like app teaching Persian and Iranian culture to diaspora children, in Next.js, Capacitor, and Laravel |
 | [ClearPath Virtual Health](https://sammokazemi.github.io/portfolio/projects/clearpath/) | HIPAA-compliant CCM/RPM platform with Medicare billing workflows |
 | [Union Workforce Ecosystem](https://sammokazemi.github.io/portfolio/projects/workforce-systems/) | Next.js and TypeScript on a Laravel API: one system of record for dispatch, dues, training, benefits |
 | [Labor Union Website](https://sammokazemi.github.io/portfolio/projects/labor-union-website/) | Public site for a district council of labor unions and its nine locals |
