@@ -187,7 +187,7 @@ export const resume = {
       dates: 'Oct 2026 – Present',
       points: [
         'Built a cross-platform learning app in Next.js and TypeScript for web, Android, and iOS from one codebase with Capacitor, on a Laravel REST API with offline-first sync that merges progress across devices.',
-        'Integrated Stripe subscriptions (Cashier, webhooks), Google/Apple sign-in, and child-privacy data minimization, covered by 316 automated tests (Vitest, PHPUnit).',
+        'Integrated Stripe subscriptions (Cashier, webhooks), Google/Apple sign-in, and child-privacy data minimization, covered by 325 automated tests (Vitest, PHPUnit).',
       ],
     },
   ],
